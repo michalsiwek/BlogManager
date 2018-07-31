@@ -13,12 +13,12 @@ namespace BlogManager.Models.Entries
     {
         public int Id { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
-        public int ApplicationUserId { get; set; }
+        [Required]
+        public Account Account { get; set; }
 
         [Required]
         public DateTime CreateDate { get; set; }
-        public DateTime? ModifyDate { get; set; }
+        public DateTime? LastModification { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -26,7 +26,8 @@ namespace BlogManager.Models.Entries
 
         [Required]
         public string Description { get; set; }
-        
+
+        [Required]
         public string Content { get; set; }
 
         public string ImageUrl { get; set; }

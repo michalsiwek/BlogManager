@@ -10,13 +10,13 @@ namespace BlogManager.Models.Accounts
     {
         [Required]
         public DateTime CreateDate { get; set; }
-        public DateTime? ModifyDate { get; set; }
+        public DateTime? LastModification { get; set; }
 
         [StringLength(255)]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         [StringLength(255)]
-        public string Surname { get; set; }
+        public string LastName { get; set; }
 
         public AccountType AccountType { get; set; }
     }

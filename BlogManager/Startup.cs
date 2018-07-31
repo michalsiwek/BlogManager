@@ -34,6 +34,7 @@ namespace BlogManager
                     var accountType = new AccountType();
                     accountType.Name = type;
                     accountType.Description = type + " Access";
+                    accountType.CreateDate = DateTime.Now;
                     roleManager.Create(accountType);
                 }
             }
@@ -48,13 +49,13 @@ namespace BlogManager
             var accountTypeName = "Admin";
 
             var account = new Account();
-            account.UserName = "admin";
+            account.UserName = "admin@blogmanager.com";
             account.Email = "admin@blogmanager.com";
             account.CreateDate = DateTime.Now;
             account.LockoutEnabled = false;
             account.AccountType = roleManager.FindByName(accountTypeName);
 
-            var accountPassword = "Admin1@";
+            var accountPassword = "admin1";
 
             var checkUser = userManager.Create(account, accountPassword);
 
