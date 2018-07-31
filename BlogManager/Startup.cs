@@ -38,21 +38,20 @@ namespace BlogManager
                 }
             }
 
-            context.SaveChanges();
         }
 
         private void CreateAdminAccount()
         {
-            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
+            var userManager = new UserManager<Account>(new UserStore<Account>(context));
             var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
 
             var accountTypeName = "Admin";
 
-            var account = new ApplicationUser();
+            var account = new Account();
             account.UserName = "admin";
             account.Email = "admin@blogmanager.com";
             account.CreateDate = DateTime.Now;
-            account.LockoutEnabled = true;
+            account.LockoutEnabled = false;
             account.AccountType = roleManager.FindByName(accountTypeName);
 
             var accountPassword = "Admin1@";
@@ -61,8 +60,6 @@ namespace BlogManager
 
             if(checkUser.Succeeded)
                 userManager.AddToRole(account.Id, accountTypeName);
-
-            context.SaveChanges();
 
         }
     }

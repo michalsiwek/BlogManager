@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using BlogManager.Models.Accounts;
 using System.ComponentModel.DataAnnotations;
 using System;
+using BlogManager.Models.Entries;
+using BlogManager.Models.Categories;
 
 namespace BlogManager.Models
 {
@@ -19,22 +21,15 @@ namespace BlogManager.Models
             // Add custom user claims here
             return userIdentity;
         }
-
-        [Required]
-        public DateTime CreateDate { get; set; }
-        public DateTime? ModifyDate { get; set; }
-
-        [StringLength(255)]
-        public string Name { get; set; }
-
-        [StringLength(255)]
-        public string Surname { get; set; }
-
-        public AccountType AccountType { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountType> AccountTypes { get; set; }
+        public DbSet<Entry> Entries { get; set; }
+        public DbSet<EntryCategory> EntryCategories { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
