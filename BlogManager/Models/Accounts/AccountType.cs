@@ -13,8 +13,6 @@ namespace BlogManager.Models.Accounts
 
         public string Description { get; set; }
 
-        public bool IsVerified { get; set; }
-
         [Required]
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }

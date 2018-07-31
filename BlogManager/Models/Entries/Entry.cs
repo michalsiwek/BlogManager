@@ -32,6 +32,8 @@ namespace BlogManager.Models.Entries
 
         public string ImageUrl { get; set; }
 
+        public bool IsVisible { get; set; }
+
         public EntryCategory EntryCategory { get; set; }
     }
 }

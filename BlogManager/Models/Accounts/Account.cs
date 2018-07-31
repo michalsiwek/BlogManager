@@ -18,7 +18,7 @@ namespace BlogManager.Models.Accounts
         [StringLength(255)]
         public string LastName { get; set; }
 
-        private bool IsVisible { get; set; }
+        public bool IsVerified { get; set; }
 
         public AccountType AccountType { get; set; }
     }

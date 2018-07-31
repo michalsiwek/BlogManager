@@ -47,7 +47,7 @@ namespace BlogManager
             var userManager = new ApplicationUserManager(new CustomUserStore(_context));
 
             var accountTypeName = "Admin";
-            var accountLogin = "admin1";
+            var accountLogin = "admin@blogmanager.com";
             var accountPassword = "admin1";
 
             var account = new Account
@@ -56,6 +56,7 @@ namespace BlogManager
                 UserName = accountLogin,
                 CreateDate = DateTime.Now,
                 LockoutEnabled = false,
+                IsVerified = true,
                 AccountType = roleManager.FindByName(accountTypeName)
             };
 
