@@ -42,10 +42,8 @@ namespace BlogManager.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class ApplicationDbContext : IdentityDbContext<Account, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<Entry> Entries { get; set; }
         public DbSet<EntryCategory> EntryCategories { get; set; }
 
