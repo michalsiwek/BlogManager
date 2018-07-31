@@ -9,6 +9,7 @@ namespace BlogManager.Models.Accounts
 {
     public class AccountType : IdentityRole
     {
+        new public int Id { get; set; }
         public string Description { get; set; }
 
         [Required]

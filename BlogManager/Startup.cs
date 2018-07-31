@@ -49,8 +49,8 @@ namespace BlogManager
             var accountTypeName = "Admin";
 
             var account = new Account();
-            account.UserName = "admin@blogmanager.com";
             account.Email = "admin@blogmanager.com";
+            account.UserName = account.Email;
             account.CreateDate = DateTime.Now;
             account.LockoutEnabled = false;
             account.AccountType = roleManager.FindByName(accountTypeName);
