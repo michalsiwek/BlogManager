@@ -18,7 +18,7 @@ namespace BlogManager.Models
     public class CustomUserLogin : IdentityUserLogin<int> { }
 
 
-    public class CustomUserStore : UserStore<ApplicationUser, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class CustomUserStore : UserStore<Account, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public CustomUserStore(ApplicationDbContext context)
             : base(context) { }
