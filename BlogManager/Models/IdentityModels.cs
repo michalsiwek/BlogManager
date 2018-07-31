@@ -14,6 +14,15 @@ using Microsoft.AspNet.Identity.Owin;
 namespace BlogManager.Models
 {
     public class CustomUserRole : IdentityUserRole<int> { }
+    public class CustomUserClaim : IdentityUserClaim<int> { }
+    public class CustomUserLogin : IdentityUserLogin<int> { }
+
+
+    public class CustomUserStore : UserStore<ApplicationUser, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    {
+        public CustomUserStore(ApplicationDbContext context)
+            : base(context) { }
+    }
 
     public class CustomRoleStore : RoleStore<AccountType, int, CustomUserRole>
     {
@@ -21,23 +30,10 @@ namespace BlogManager.Models
             : base(context) { }
     }
 
-    public class ApplicationRoleManager : RoleManager<AccountType, int>
-    {
-        public ApplicationRoleManager(IRoleStore<AccountType, int> roleStore)
-            : base(roleStore)
-        {
-        }
-
-        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
-        {
-            return new ApplicationRoleManager(new RoleStore<AccountType, int, CustomUserRole>(context.Get<ApplicationDbContext>()));
-        }
-    }
-
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -46,7 +42,7 @@ namespace BlogManager.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountType> AccountTypes { get; set; }
@@ -54,7 +50,7 @@ namespace BlogManager.Models
         public DbSet<EntryCategory> EntryCategories { get; set; }
 
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
 

@@ -19,11 +19,11 @@ namespace BlogManager
             CreateAdminAccount();
         }
 
-        private ApplicationDbContext context = new ApplicationDbContext();
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
         private void CreateRoles()
         {
-            var roleManager = new ApplicationRoleManager(new CustomRoleStore(context));
+            var roleManager = new RoleManager<AccountType, int>(new CustomRoleStore(_context));
 
             var startUpAccountTypes = new List<string> { "Admin", "Editor", "Guest" };
 
@@ -43,19 +43,21 @@ namespace BlogManager
 
         private void CreateAdminAccount()
         {
-            var userManager = new UserManager<Account>(new UserStore<Account>(context));
-            var roleManager = new ApplicationRoleManager(new CustomRoleStore(context));
+            var roleManager = new RoleManager<AccountType, int>(new CustomRoleStore(_context));
+            var userManager = new ApplicationUserManager(new CustomUserStore(_context));
 
             var accountTypeName = "Admin";
-
-            var account = new Account();
-            account.Email = "admin@blogmanager.com";
-            account.UserName = account.Email;
-            account.CreateDate = DateTime.Now;
-            account.LockoutEnabled = false;
-            account.AccountType = roleManager.FindByName(accountTypeName);
-
+            var accountLogin = "admin1";
             var accountPassword = "admin1";
+
+            var account = new Account
+            {
+                Email = accountLogin,
+                UserName = accountLogin,
+                CreateDate = DateTime.Now,
+                LockoutEnabled = false,
+                AccountType = roleManager.FindByName(accountTypeName)
+            };
 
             var checkUser = userManager.Create(account, accountPassword);
 
