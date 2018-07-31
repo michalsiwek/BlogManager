@@ -9,6 +9,13 @@ namespace BlogManager.Models.Accounts
 {
     public class AccountType : IdentityRole
     {
-        public string Description { get; set; } 
+        public string Description { get; set; }
+
+        public AccountType() { }
+
+        public AccountType(string accountTypeName)
+        {
+            this.Name = accountTypeName;
+        }
     }
 }

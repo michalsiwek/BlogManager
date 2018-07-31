@@ -23,7 +23,7 @@ namespace BlogManager
 
         private void CreateRoles()
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
 
             var startUpAccountTypes = new List<string> { "Admin", "Editor", "Guest" };
 
@@ -41,19 +41,22 @@ namespace BlogManager
 
         private void CreateAdminAccount()
         {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = new UserManager<Account>(new UserStore<Account>(context));
+
+            var accountTypeName = "Admin";
 
             var account = new Account();
             account.UserName = "admin";
             account.Email = "admin@blogmanager.com";
             account.CreateDate = DateTime.Now;
+            account.AccountType = new AccountType(accountTypeName);
 
             var accountPassword = "Admin1@";
 
             var checkUser = userManager.Create(account, accountPassword);
 
             if(checkUser.Succeeded)
-                userManager.AddToRole(account.Id, "Admin");
+                userManager.AddToRole(account.Id, accountTypeName);
 
         }
     }
