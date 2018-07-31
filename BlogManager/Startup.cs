@@ -43,7 +43,7 @@ namespace BlogManager
 
         private void CreateAdminAccount()
         {
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
 
             var accountTypeName = "Admin";
@@ -52,6 +52,7 @@ namespace BlogManager
             account.UserName = "admin";
             account.Email = "admin@blogmanager.com";
             account.CreateDate = DateTime.Now;
+            account.LockoutEnabled = true;
             account.AccountType = roleManager.FindByName(accountTypeName);
 
             var accountPassword = "Admin1@";
