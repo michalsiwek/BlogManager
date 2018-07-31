@@ -7,7 +7,7 @@ using System.Web;
 
 namespace BlogManager.Models.Accounts
 {
-    public class Account : IdentityUser
+    public class Account : ApplicationUser
     {
         [Required]
         public DateTime CreateDate { get; set; }
