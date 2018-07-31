@@ -43,12 +43,12 @@ namespace BlogManager
 
         private void CreateAdminAccount()
         {
-            var userManager = new UserManager<Account>(new UserStore<Account>(context));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
 
             var accountTypeName = "Admin";
 
-            var account = new Account();
+            var account = new ApplicationUser();
             account.UserName = "admin";
             account.Email = "admin@blogmanager.com";
             account.CreateDate = DateTime.Now;

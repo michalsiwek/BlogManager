@@ -3,6 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using BlogManager.Models.Accounts;
+using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace BlogManager.Models
 {
@@ -16,6 +19,18 @@ namespace BlogManager.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        [Required]
+        public DateTime CreateDate { get; set; }
+        public DateTime? ModifyDate { get; set; }
+
+        [StringLength(255)]
+        public string Name { get; set; }
+
+        [StringLength(255)]
+        public string Surname { get; set; }
+
+        public AccountType AccountType { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

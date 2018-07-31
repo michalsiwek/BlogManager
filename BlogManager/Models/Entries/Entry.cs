@@ -13,8 +13,8 @@ namespace BlogManager.Models.Entries
     {
         public int Id { get; set; }
 
-        public Account Account { get; set; }
-        public int AccountId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public int ApplicationUserId { get; set; }
 
         [Required]
         public DateTime CreateDate { get; set; }
