@@ -23,7 +23,7 @@ namespace BlogManager
 
         private void CreateRoles()
         {
-            var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
+            var roleManager = new ApplicationRoleManager(new CustomRoleStore(context));
 
             var startUpAccountTypes = new List<string> { "Admin", "Editor", "Guest" };
 
@@ -44,7 +44,7 @@ namespace BlogManager
         private void CreateAdminAccount()
         {
             var userManager = new UserManager<Account>(new UserStore<Account>(context));
-            var roleManager = new RoleManager<AccountType>(new RoleStore<AccountType>(context));
+            var roleManager = new ApplicationRoleManager(new CustomRoleStore(context));
 
             var accountTypeName = "Admin";
 

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace BlogManager.Models.Accounts
 {
-    public class AccountType : IdentityRole
+    public class AccountType : IdentityRole<int, CustomUserRole>
     {
         new public int Id { get; set; }
         public string Description { get; set; }
@@ -16,11 +16,7 @@ namespace BlogManager.Models.Accounts
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }
 
-        public AccountType() { }
+        public AccountType() : base() { }
 
-        public AccountType(string accountTypeName)
-        {
-            this.Name = accountTypeName;
-        }
     }
 }

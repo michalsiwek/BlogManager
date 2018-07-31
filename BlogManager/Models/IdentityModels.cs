@@ -8,9 +8,32 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using BlogManager.Models.Entries;
 using BlogManager.Models.Categories;
+using Microsoft.Owin;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace BlogManager.Models
 {
+    public class CustomUserRole : IdentityUserRole<int> { }
+
+    public class CustomRoleStore : RoleStore<AccountType, int, CustomUserRole>
+    {
+        public CustomRoleStore(ApplicationDbContext context)
+            : base(context) { }
+    }
+
+    public class ApplicationRoleManager : RoleManager<AccountType, int>
+    {
+        public ApplicationRoleManager(IRoleStore<AccountType, int> roleStore)
+            : base(roleStore)
+        {
+        }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+        {
+            return new ApplicationRoleManager(new RoleStore<AccountType, int, CustomUserRole>(context.Get<ApplicationDbContext>()));
+        }
+    }
+
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
