@@ -80,14 +80,22 @@ namespace BlogManager.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    ApplicationDbContext _context = new ApplicationDbContext();
+                    var user = _context.Users.First(u => u.Email.ToLower().Equals(model.Email.ToLower()));
+                    if(user.IsVerified)
+                        return RedirectToLocal(returnUrl);
+                    else
+                    {
+                        ModelState.AddModelError("", "You need to wait for account verification");
+                        return View(model);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Invalid login attempt");
                     return View(model);
             }
         }
