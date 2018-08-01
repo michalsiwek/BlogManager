@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808011129573_EntryLastModifiedBy.cs" />
+    <Compile Include="Migrations\201808011129573_EntryLastModifiedBy.Designer.cs">
+      <DependentUpon>201808011129573_EntryLastModifiedBy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -297,6 +301,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201807312053305_InitialData.resx">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808011129573_EntryLastModifiedBy.resx">
+      <DependentUpon>201808011129573_EntryLastModifiedBy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

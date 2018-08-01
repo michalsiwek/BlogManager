@@ -35,5 +35,7 @@ namespace BlogManager.Models.Entries
         public bool IsVisible { get; set; }
 
         public EntryCategory EntryCategory { get; set; }
+
+        public Account LastModifiedBy { get; set; }
     }
 }
