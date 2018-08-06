@@ -88,10 +88,9 @@ namespace BlogManager.Controllers
                 case CustomSignInStatus.LockedOut:
                     return View("Lockout");
                 case CustomSignInStatus.RequiresVerification:
-                    ModelState.AddModelError("", "You need to wait for account activation");
-                    return View(model);
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case CustomSignInStatus.Failure:
-                    ModelState.AddModelError("", "Login and/or password incorrect");
+                    ModelState.AddModelError("", "Incorrect login or password");
                     return View(model);
                 default:
                     ModelState.AddModelError("", "Something went wrong. Please try again later.");
