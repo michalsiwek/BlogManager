@@ -201,6 +201,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>
@@ -208,6 +209,10 @@
     <Compile Include="Migrations\201808011129573_EntryLastModifiedBy.cs" />
     <Compile Include="Migrations\201808011129573_EntryLastModifiedBy.Designer.cs">
       <DependentUpon>201808011129573_EntryLastModifiedBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061757008_IsVerifiedToIsActiveRename.cs" />
+    <Compile Include="Migrations\201808061757008_IsVerifiedToIsActiveRename.Designer.cs">
+      <DependentUpon>201808061757008_IsVerifiedToIsActiveRename.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -226,6 +231,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\my-styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -304,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808011129573_EntryLastModifiedBy.resx">
       <DependentUpon>201808011129573_EntryLastModifiedBy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061757008_IsVerifiedToIsActiveRename.resx">
+      <DependentUpon>201808061757008_IsVerifiedToIsActiveRename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

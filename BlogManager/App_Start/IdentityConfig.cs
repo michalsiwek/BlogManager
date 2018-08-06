@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BlogManager.Models;
 using BlogManager.Models.Accounts;
+using BlogManager.Helpers.Enums;
 
 namespace BlogManager
 {
@@ -105,6 +106,34 @@ namespace BlogManager
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+
+        public async Task<CustomSignInStatus> CustomUserSignInAsync(string email, string password, bool rememberMe, bool shouldLockout)
+        {
+            ApplicationDbContext _context = new ApplicationDbContext();
+            var user = _context.Users.FirstOrDefault(u => u.Email.ToLower().Equals(email.ToLower()));
+
+            if (user == null)
+                return CustomSignInStatus.Failure;
+
+            if (!user.IsActive)
+                return CustomSignInStatus.NeedToBeActivate;
+
+            var result = await PasswordSignInAsync(email, password, rememberMe, shouldLockout);
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return CustomSignInStatus.Success;
+                case SignInStatus.LockedOut:
+                    return CustomSignInStatus.LockedOut;
+                case SignInStatus.RequiresVerification:
+                    return CustomSignInStatus.RequiresVerification;
+                case SignInStatus.Failure:
+                    return CustomSignInStatus.Failure;
+                default:
+                    return CustomSignInStatus.UnknownError;
+            }
         }
     }
 }

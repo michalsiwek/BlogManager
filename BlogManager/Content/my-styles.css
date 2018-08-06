@@ -1,0 +1,22 @@
+﻿#app-footer {
+    text-align: center;
+    color:gray;
+    letter-spacing: 3px;
+}
+.validation-summary-errors ul, .validation-summary-errors li {
+    list-style: none;
+    display: inline;
+    padding: 0;
+}
+
+.validation-summary-errors {
+    background-color: #aa0000;
+    padding: 10px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+#register-link {
+    margin-top: 40px;
+}
