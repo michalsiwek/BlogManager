@@ -20,3 +20,22 @@
 #register-link {
     margin-top: 40px;
 }
+
+.entry-form-label {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.entry-form-control {
+    min-width: 95%;
+}
+.entry-desc-text-area {
+    min-height: 200px;
+    resize: none;
+}
+.entry-content-text-area {
+    min-height: 400px;
+    resize: none;
+}
