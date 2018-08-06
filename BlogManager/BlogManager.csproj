@@ -201,6 +201,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>

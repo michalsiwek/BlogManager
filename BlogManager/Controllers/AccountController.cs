@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BlogManager.Models;
 using BlogManager.Models.Accounts;
+using BlogManager.Helpers.Enums;
 
 namespace BlogManager.Controllers
 {
@@ -76,19 +77,24 @@ namespace BlogManager.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.CustomUserSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
-                case SignInStatus.Success:
+                case CustomSignInStatus.Success:
                     return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
+                case CustomSignInStatus.NeedToBeActivate:
                     ModelState.AddModelError("", "You need to wait for account activation");
                     return View(model);
-                case SignInStatus.Failure:
-                default:
+                case CustomSignInStatus.LockedOut:
+                    return View("Lockout");
+                case CustomSignInStatus.RequiresVerification:
+                    ModelState.AddModelError("", "You need to wait for account activation");
+                    return View(model);
+                case CustomSignInStatus.Failure:
                     ModelState.AddModelError("", "Login and/or password incorrect");
+                    return View(model);
+                default:
+                    ModelState.AddModelError("", "Something went wrong. Please try again later.");
                     return View(model);
             }
         }
