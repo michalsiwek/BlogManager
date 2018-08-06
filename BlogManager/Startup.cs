@@ -56,7 +56,7 @@ namespace BlogManager
                 UserName = accountLogin,
                 CreateDate = DateTime.Now,
                 LockoutEnabled = false,
-                IsVerified = true,
+                IsActive = true,
                 AccountType = roleManager.FindByName(accountTypeName)
             };
 
