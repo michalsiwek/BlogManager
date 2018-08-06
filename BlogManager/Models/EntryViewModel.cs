@@ -32,11 +32,13 @@ namespace BlogManager.Models
         [Display(Name = "Content")]
         public string Content { get; set; }
 
+        [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
         public bool IsVisible { get; set; }
 
-        public EntryCategory EntryCategory { get; set; }
+        [Display(Name = "Category")]
+        public IEnumerable<EntryCategory> EntryCategories { get; set; }
 
         public Account LastModifiedBy { get; set; }
     }
