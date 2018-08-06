@@ -106,5 +106,21 @@ namespace BlogManager
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+        public override async Task<SignInStatus> PasswordSignInAsync(string email, string password, bool rememberMe, bool shouldLockout)
+        {
+            ApplicationDbContext _context = new ApplicationDbContext();
+            var user = _context.Users.FirstOrDefault(u => u.Email.ToLower().Equals(email.ToLower()));
+
+            if(user == null)
+                return SignInStatus.Failure;
+
+            if (!user.IsActive)
+                return SignInStatus.RequiresVerification;
+
+            var result = await base.PasswordSignInAsync(email, password, rememberMe, shouldLockout);
+
+            return (result);
+        }
     }
 }

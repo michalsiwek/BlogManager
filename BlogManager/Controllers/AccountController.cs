@@ -80,22 +80,15 @@ namespace BlogManager.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    ApplicationDbContext _context = new ApplicationDbContext();
-                    var user = _context.Users.First(u => u.Email.ToLower().Equals(model.Email.ToLower()));
-                    if(user.IsVerified)
-                        return RedirectToLocal(returnUrl);
-                    else
-                    {
-                        ModelState.AddModelError("", "You need to wait for account verification");
-                        return View(model);
-                    }
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    ModelState.AddModelError("", "You need to wait for account activation");
+                    return View(model);
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt");
+                    ModelState.AddModelError("", "Login and/or password incorrect");
                     return View(model);
             }
         }
@@ -160,7 +153,7 @@ namespace BlogManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Account { UserName = model.Email, Email = model.Email, CreateDate = DateTime.Now, IsVerified = false };
+                var user = new Account { UserName = model.Email, Email = model.Email, CreateDate = DateTime.Now, IsActive = false };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
