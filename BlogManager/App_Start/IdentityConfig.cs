@@ -119,7 +119,7 @@ namespace BlogManager
             if (!user.IsActive)
                 return CustomSignInStatus.NeedToBeActivate;
 
-            var result = await base.PasswordSignInAsync(email, password, rememberMe, shouldLockout);
+            var result = await PasswordSignInAsync(email, password, rememberMe, shouldLockout);
 
             switch (result)
             {
