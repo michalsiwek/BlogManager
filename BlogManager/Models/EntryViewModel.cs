@@ -15,7 +15,5 @@ namespace BlogManager.Models
 
         [Display(Name = "Category")]
         public IEnumerable<EntryCategory> EntryCategories { get; set; }
-
-        public Account LastModifiedBy { get; set; }
     }
 }
