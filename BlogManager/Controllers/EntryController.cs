@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BlogManager.Models;
+using BlogManager.Models.Entries;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,11 +10,29 @@ namespace BlogManager.Controllers
 {
     public class EntryController : Controller
     {
+        private ApplicationDbContext _context = new ApplicationDbContext();
         // GET: Entry
-        [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult New()
         {
-            return View();
+            var entryCategories = _context.EntryCategories.ToList();
+
+            var viewModel = new EntryViewModel
+            {
+                //Id = null,
+                //Account = null,
+                //CreateDate = DateTime.Now,
+                //LastModification,
+                //Title
+                //Description
+                //Content
+                //ImageUrl
+                //IsVisible
+                Entry = new Entry(),
+                EntryCategories = entryCategories
+                //LastModifiedBy
+            };
+
+            return View(viewModel);
         }
     }
 }

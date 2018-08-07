@@ -21,8 +21,13 @@
     margin-top: 40px;
 }
 
+.field-validation-error {
+    margin-left: 20px;
+    font-size: 12px;
+}
+
 .entry-form-label {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 15px;
     margin-left: 10px;
     font-size: 16px;
@@ -38,4 +43,7 @@
 .entry-content-text-area {
     min-height: 400px;
     resize: none;
+}
+.entry-dropdown {
+    min-width: 95%;
 }
