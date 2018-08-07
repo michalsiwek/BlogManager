@@ -24,12 +24,17 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(EntryViewModel viewModel)
+        public ActionResult Create(Entry entry)
         {
-            viewModel.Entry.CreateDate = DateTime.Now;
-            viewModel.Entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == viewModel.Entry.EntryCategory.Id);
+            entry.CreateDate = DateTime.Now;
+            entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
+            entry.IsVisible = false;
 
-            return View();
+            _context.Entries.Add(entry);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
