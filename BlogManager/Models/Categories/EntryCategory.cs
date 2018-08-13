@@ -8,6 +8,7 @@ namespace BlogManager.Models.Categories
 {
     public class EntryCategory
     {
+        [Required(ErrorMessage = "Entry category is not selected")]
         public int Id { get; set; }
 
         [Required]

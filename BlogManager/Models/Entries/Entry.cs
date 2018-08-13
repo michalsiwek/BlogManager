@@ -21,15 +21,20 @@ namespace BlogManager.Models.Entries
         public DateTime? LastModification { get; set; }
 
         [Required]
+        [Display(Name = "Title")]
         [StringLength(255)]
         public string Title { get; set; }
 
         [Required]
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Content")]
         public string Content { get; set; }
 
+        [Display(Name = "Image Url")]
+        [Url]
         public string ImageUrl { get; set; }
 
         public bool IsVisible { get; set; }
