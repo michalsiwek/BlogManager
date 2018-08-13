@@ -1,0 +1,31 @@
+﻿@using BlogManager.Models
+@model EntriesViewModel
+@{
+    ViewBag.Title = "Entries";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-1 text-center">Id</th>
+            <th class="col-md-6 text-center">Title</th>
+            <th class="col-md-3 text-center">Author</th>
+            <th class="col-md-2 text-center">Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in Model.Entries)
+        {
+            <tr>
+                <td>@entry.Id</td>
+                <td>@entry.Title</td>
+                <td>@entry.Account.UserName</td>
+                <td>@entry.EntryCategory.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
