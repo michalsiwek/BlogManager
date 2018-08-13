@@ -13,11 +13,14 @@ namespace BlogManager.Controllers
 
         public ActionResult Index()
         {
-            var entries = new EntriesViewModel
+            var viewModel = new EntriesViewModel
             {
-                Entries = _context.Entries.ToList()
+                Entries = _context.Entries  // maybe Join
+                    .Include("AspNetUsers")
+                    .Include("EntryCategories")
+                    .ToList()
             };
-            return View(entries);
+            return View(viewModel);
         }
     }
 }
