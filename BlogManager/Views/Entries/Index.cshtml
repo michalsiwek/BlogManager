@@ -10,22 +10,42 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th class="col-md-1 text-center">Id</th>
-            <th class="col-md-6 text-center">Title</th>
-            <th class="col-md-3 text-center">Author</th>
-            <th class="col-md-2 text-center">Category</th>
+            <th class="col-md-5 text-center">Title</th>
+            <th class="col-md-2 text-center">Author</th>
+            <th class="col-md-1 text-center">Category</th>
+            <th class="col-md-1 text-center">Visible</th>
+            <th class="col-md-1 text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var entry in Model.Entries)
         {
             <tr>
-                <td>@entry.Id</td>
                 <td>@entry.Title</td>
-                <td>@entry.Account.UserName</td>
-                <td>@entry.EntryCategory.Name</td>
+                <td class="text-center">@entry.Account.UserName</td>
+                <td class="text-center">@entry.EntryCategory.Name</td>
+                <td class="text-center">
+                    @Html.CheckBoxFor(e => entry.IsVisible, new { @checked = "checked" })
+                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Actions
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Preview</a></li>
+                            <li><a href="#">Edit</a></li>
+                            <li><a href="#">Delete</a></li>
+                            <li class="divider"></li>
+                            <li><a id="dropdown-item-danger" href="#">Hide</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+<br />
 

@@ -10,7 +10,17 @@ namespace BlogManager.Controllers
 {
     public class EntryController : Controller
     {
-        private ApplicationDbContext _context = new ApplicationDbContext();
+        private ApplicationDbContext _context;
+
+        public EntryController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
         public ActionResult New()
         {
