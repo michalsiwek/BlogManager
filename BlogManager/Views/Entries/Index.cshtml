@@ -25,6 +25,18 @@
                 <td class="text-center">@entry.Account.UserName</td>
                 <td class="text-center">@entry.EntryCategory.Name</td>
                 <td class="text-center">
+                    <div class="btn-group">
+                        @if (entry.IsVisible)
+                        {
+                            <a href="#" class="btn btn-xs btn-success disabled">Show</a>
+                            <a href="#" class="btn btn-xs btn-danger">Hide</a>
+                        }
+                        else
+                        {
+                            <a href="#" class="btn btn-xs btn-success">Show</a>
+                            <a href="#" class="btn btn-xs btn-danger disabled">Hide</a>
+                        }
+                    </div>
                     @Html.CheckBoxFor(e => entry.IsVisible, new { @checked = "checked" })
                 </td>
                 <td class="text-center">
