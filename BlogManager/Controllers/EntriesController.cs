@@ -30,5 +30,30 @@ namespace BlogManager.Controllers
             };
             return View(viewModel);
         }
+        
+        public ActionResult Validate(int entryId, string isVisible)
+        {
+            var entryToValidate = _context.Entries.Single(e => e.Id == entryId);
+
+            switch (isVisible)
+            {
+                case "true":
+                    entryToValidate.IsVisible = true;
+                    entryToValidate.LastModification = DateTime.Now;
+                    entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                    _context.SaveChanges();
+                    break;
+                case "false":
+                    entryToValidate.IsVisible = false;
+                    entryToValidate.LastModification = DateTime.Now;
+                    entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                    _context.SaveChanges();
+                    break;
+                default:
+                    break;
+            }        
+
+            return RedirectToAction("Index", "Entries");
+        }
     }
 }

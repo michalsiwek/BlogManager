@@ -28,13 +28,13 @@
                     <div class="btn-group">
                         @if (entry.IsVisible)
                         {
-                            <a href="#" class="btn btn-xs btn-success glyphicon glyphicon-ok disabled"></a>
-                            <a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
+                            <a href="Entries/Validate/@entry.Id/true" class="btn btn-xs btn-success glyphicon glyphicon-ok disabled"></a>
+                            <a href="Entries/Validate/@entry.Id/false" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
                         }
                         else
                         {
-                            <a href="#" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
-                            <a href="#" class="btn btn-xs btn-danger glyphicon glyphicon-remove disabled"></a>
+                            <a href="Entries/Validate/@entry.Id/true" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
+                            <a href="Entries/Validate/@entry.Id/false" class="btn btn-xs btn-danger glyphicon glyphicon-remove disabled"></a>
                         }
                     </div>
                     @Html.CheckBoxFor(e => entry.IsVisible, new { @checked = "checked" })

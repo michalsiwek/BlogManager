@@ -26,6 +26,12 @@ namespace BlogManager
             );
 
             routes.MapRoute(
+                name: "ValidateEntry",
+                url: "{controller}/{action}/{entryId}/{isVisible}",
+                defaults: new { controller = "Entries", action = "Validate" }
+            );
+
+            routes.MapRoute(
                 name: "Entries",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Entries", action = "Index", id = UrlParameter.Optional }
