@@ -48,6 +48,7 @@
                         @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                @Html.HiddenFor(e => e.Entry.Id)
                 <br />
                 <hr />
                 <div class="form-group">
