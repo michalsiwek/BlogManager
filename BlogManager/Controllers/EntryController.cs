@@ -50,12 +50,12 @@ namespace BlogManager.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Preview(int id)
+        public ActionResult Preview(Entry entry)
         {
             var dbEntry = _context.Entries
                 .Include(e => e.Account)
                 .Include(e => e.EntryCategory)
-                .SingleOrDefault(e => e.Id == id);
+                .SingleOrDefault(e => e.Id == entry.Id);
 
             if (dbEntry == null)
                 return HttpNotFound();
