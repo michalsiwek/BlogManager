@@ -42,9 +42,14 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Preview</a></li>
                             <li>
-                                @using (Html.BeginForm("Edit", "Entry", new { id = entry.Id }))
+                                @using (Html.BeginForm("Preview", "Entry", new { id = entry.Id }))
+                                {
+                                    <input type="submit" value="Preview" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Edit", "Entry", new { id = entry.Id }, FormMethod.Get))
                                 {
                                     <input type="submit" value="Edit" class="btn-dropdown-item" />
                                 }

@@ -20,6 +20,12 @@ namespace BlogManager
             );
 
             routes.MapRoute(
+                name: "Preview",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Entry", action = "Preview", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Entry",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Entry", action = "Index", id = UrlParameter.Optional }

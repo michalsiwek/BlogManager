@@ -3,6 +3,7 @@ using BlogManager.Models.Entries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 
@@ -32,7 +33,7 @@ namespace BlogManager.Controllers
 
             return View(viewModel);
         }
-
+        
         public ActionResult Edit(int id)
         {
             var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == id);
@@ -44,6 +45,24 @@ namespace BlogManager.Controllers
             {
                 Entry = dbEntry,
                 EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult Preview(int id)
+        {
+            var dbEntry = _context.Entries
+                .Include(e => e.Account)
+                .Include(e => e.EntryCategory)
+                .SingleOrDefault(e => e.Id == id);
+
+            if (dbEntry == null)
+                return HttpNotFound();
+
+            var viewModel = new EntryPreviewViewModel
+            {
+                Entry = dbEntry
             };
 
             return View(viewModel);
