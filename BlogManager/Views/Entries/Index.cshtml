@@ -47,7 +47,7 @@
                             <li>
                                 @using (Html.BeginForm("Delete", "Entries", new { entryId = entry.Id }, FormMethod.Post))
                                 {
-                                    <input type="submit" value="Delete" class="btn-dropdown-item" />
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')"/>
                                 }
                             </li>
                             <li class="divider"></li>
@@ -78,3 +78,7 @@
 </table>
 <br />
 
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
