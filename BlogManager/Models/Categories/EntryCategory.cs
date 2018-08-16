@@ -20,5 +20,8 @@ namespace BlogManager.Models.Categories
         [Required]
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = new Entry(),
-                EntryCategories = _context.EntryCategories.ToList()
+                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
             };
 
             return View(viewModel);
@@ -43,7 +43,7 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = dbEntry,
-                EntryCategories = _context.EntryCategories.ToList()
+                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
             };
 
             return View(viewModel);

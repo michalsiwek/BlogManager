@@ -1,0 +1,44 @@
+﻿@using BlogManager.Models
+@model EntryCategoryViewModel
+@{
+    ViewBag.Title = "New Entry Category";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <section>
+            @using (Html.BeginForm("Save", "EntryCategory", FormMethod.Post))
+            {
+                <h4 class="text-center">Write something new</h4>
+                <hr />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.EntryCategory.Name, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextBoxFor(m => m.EntryCategory.Name, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.EntryCategory.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.EntryCategory.Description, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextAreaFor(m => m.EntryCategory.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
+                        @Html.ValidationMessageFor(m => m.EntryCategory.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <hr />
+                <div class="form-group">
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary btn-bg" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
