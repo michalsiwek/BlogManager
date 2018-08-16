@@ -65,3 +65,10 @@
     color: #ffffff;
     background-color: #375a7f;
 }
+.entry-cat-actions-btn {
+    min-height: 26px !important;
+    max-height: 26px !important;
+    font-size: 13px;
+    line-height: 80%;
+    border-radius: 3px;
+}

@@ -11,7 +11,7 @@
         <section>
             @using (Html.BeginForm("Save", "EntryCategory", FormMethod.Post))
             {
-                <h4 class="text-center">Write something new</h4>
+                <h4 class="text-center">Add new category</h4>
                 <hr />
                 <div class="form-group row">
                     @Html.LabelFor(m => m.EntryCategory.Name, new { @class = "col-md-12 control-label entry-form-label" })
