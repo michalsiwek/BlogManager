@@ -33,15 +33,47 @@ namespace BlogManager.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult Create(Entry entry)
+        public ActionResult Edit(int id)
         {
-            entry.CreateDate = DateTime.Now;
-            entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
-            entry.IsVisible = false;
+            var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == id);
 
-            _context.Entries.Add(entry);
+            if (dbEntry == null)
+                return HttpNotFound();
+
+            var viewModel = new EntryViewModel
+            {
+                Entry = dbEntry,
+                EntryCategories = _context.EntryCategories.ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Entry entry)
+        {
+            var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == entry.Id);
+
+            if(dbEntry == null)
+            {
+                entry.CreateDate = DateTime.Now;
+                entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
+                entry.IsVisible = false;
+                _context.Entries.Add(entry);
+            }
+            else
+            {
+                dbEntry.Title = entry.Title;
+                dbEntry.Description = entry.Description;
+                dbEntry.Content = entry.Content;
+                dbEntry.ImageUrl = entry.ImageUrl;
+                dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
+                entry.IsVisible = false;
+                dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                dbEntry.LastModification = DateTime.Now;
+            }
+            
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Entries");
