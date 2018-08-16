@@ -63,7 +63,6 @@ namespace BlogManager.Controllers
                 dbEntryCat.LastModification = DateTime.Now;
                 dbEntryCat.Name = entryCategory.Name;
                 dbEntryCat.Description = entryCategory.Description;
-                dbEntryCat.IsActive = false;
             }
 
             _context.SaveChanges();
