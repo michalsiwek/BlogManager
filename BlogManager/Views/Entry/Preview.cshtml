@@ -7,6 +7,14 @@
 <br />
 <h2>@ViewBag.Title.</h2>
 <h4>Category: @Model.Entry.EntryCategory.Name</h4>
+@if (@Model.Entry.IsVisible)
+{
+    <span class="label label-success custom-label">Visible</span>
+}
+else
+{
+    <span class="label label-danger custom-label">Hidden</span>
+}
 
 <div id="container">
     <main id="entry-main">
