@@ -13,7 +13,7 @@
             <th class="col-md-5 text-center">Title</th>
             <th class="col-md-2 text-center">Author</th>
             <th class="col-md-1 text-center">Category</th>
-            <th class="col-md-1 text-center">Visible</th>
+            <th class="col-md-1 text-center">Status</th>
             <th class="col-md-1 text-center"></th>
         </tr>
     </thead>
@@ -27,11 +27,11 @@
                 <td class="text-center">
                     @if (entry.IsVisible)
                     {
-                        <span class="label label-success custom-label">Yes</span>
+                        <span class="label label-success custom-label">Visible</span>
                     }
                     else
                     {
-                        <span class="label label-danger custom-label">No</span>
+                        <span class="label label-danger custom-label">Hidden</span>
                     }
                 </td>
                 <td class="text-center">
