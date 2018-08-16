@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 
 namespace BlogManager.Controllers
 {
@@ -31,11 +32,17 @@ namespace BlogManager.Controllers
             return View(viewModel);
         }
         
+        [HttpPost]
         public ActionResult Validate(int entryId, string isVisible)
         {
             var entryToValidate = _context.Entries.Single(e => e.Id == entryId);
 
-            switch (isVisible)
+            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name) && u.Id == 1);
+
+            if(account == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You have no permission to perform this action");
+
+            switch (isVisible.ToLower())
             {
                 case "true":
                     entryToValidate.IsVisible = true;
@@ -55,5 +62,17 @@ namespace BlogManager.Controllers
 
             return RedirectToAction("Index", "Entries");
         }
+
+        /*[HttpDelete]
+        public ActionResult Delete(int entryId)
+        {
+            var entryToDelete = _context.Entries.Single(e => e.Id == entryId);
+
+            _context.Entries.Remove(entryToDelete);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Entries");
+        }*/
     }
 }

@@ -25,19 +25,14 @@
                 <td class="text-center">@entry.Account.UserName</td>
                 <td class="text-center">@entry.EntryCategory.Name</td>
                 <td class="text-center">
-                    <div class="btn-group">
-                        @if (entry.IsVisible)
-                        {
-                            <a href="Entries/Validate/@entry.Id/true" class="btn btn-xs btn-success glyphicon glyphicon-ok disabled"></a>
-                            <a href="Entries/Validate/@entry.Id/false" class="btn btn-xs btn-danger glyphicon glyphicon-remove"></a>
-                        }
-                        else
-                        {
-                            <a href="Entries/Validate/@entry.Id/true" class="btn btn-xs btn-success glyphicon glyphicon-ok"></a>
-                            <a href="Entries/Validate/@entry.Id/false" class="btn btn-xs btn-danger glyphicon glyphicon-remove disabled"></a>
-                        }
-                    </div>
-                    @Html.CheckBoxFor(e => entry.IsVisible, new { @checked = "checked" })
+                    @if (entry.IsVisible)
+                    {
+                        <span class="label label-success custom-label">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger custom-label">No</span>
+                    }
                 </td>
                 <td class="text-center">
                     <div class="btn-group">
@@ -51,7 +46,24 @@
                             <li><a href="#">Edit</a></li>
                             <li><a href="#">Delete</a></li>
                             <li class="divider"></li>
-                            <li><a id="dropdown-item-danger" href="#">Hide</a></li>
+                            @if (entry.IsVisible)
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Hide" class="btn-dropdown-item"/>
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Publish" class="btn-dropdown-item"/>
+                                    }
+                                </li>
+                            }
                         </ul>
                     </div>
                 </td>

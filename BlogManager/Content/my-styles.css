@@ -47,3 +47,19 @@
 .entry-dropdown {
     min-width: 95%;
 }
+.btn-dropdown-item {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #ebebeb;
+    white-space: nowrap;
+    background-color: transparent;
+    -webkit-appearance: listitem !important;
+}
+.dropdown-menu > li > form:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #375a7f;
+}
