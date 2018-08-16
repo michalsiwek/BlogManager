@@ -43,7 +43,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Preview</a></li>
-                            <li><a href="#">Edit</a></li>
+                            <li>
+                                @using (Html.BeginForm("Edit", "Entry", new { id = entry.Id }))
+                                {
+                                    <input type="submit" value="Edit" class="btn-dropdown-item" />
+                                }
+                            </li>
                             <li>
                                 @using (Html.BeginForm("Delete", "Entries", new { entryId = entry.Id }, FormMethod.Post))
                                 {

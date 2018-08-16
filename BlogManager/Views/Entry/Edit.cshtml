@@ -1,7 +1,7 @@
 ﻿@using BlogManager.Models
 @model EntryViewModel
 @{
-    ViewBag.Title = "New Entry";
+    ViewBag.Title = "Edit";
 }
 
 <br />
@@ -11,7 +11,7 @@
         <section>
             @using (Html.BeginForm("Save", "Entry", FormMethod.Post))
             {
-                <h4 class="text-center">Write something new</h4>
+                <h4 class="text-center">Entry edit form</h4>
                 <hr />
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.Title, new { @class = "col-md-12 control-label entry-form-label" })
@@ -45,9 +45,10 @@
                     @Html.LabelFor(m => m.EntryCategories, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
                         @Html.DropDownListFor(m => m.Entry.EntryCategory.Id, new SelectList(Model.EntryCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
-                        @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger"})
+                        @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                @Html.HiddenFor(e => e.Entry.Id)
                 <br />
                 <hr />
                 <div class="form-group">

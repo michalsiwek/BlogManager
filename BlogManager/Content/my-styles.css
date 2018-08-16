@@ -49,6 +49,8 @@
 }
 .btn-dropdown-item {
     display: block;
+    min-width: 100% !important;
+    text-align: left !important;
     padding: 3px 20px;
     clear: both;
     font-weight: normal;
