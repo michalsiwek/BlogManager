@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Create", "Entry"))
+            @using (Html.BeginForm("Create", "Entry", FormMethod.Post))
             {
                 <h4 class="text-center">Write something new</h4>
                 <hr />

@@ -44,7 +44,12 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">Preview</a></li>
                             <li><a href="#">Edit</a></li>
-                            <li><a href="#">Delete</a></li>
+                            <li>
+                                @using (Html.BeginForm("Delete", "Entries", new { entryId = entry.Id }, FormMethod.Post))
+                                {
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" />
+                                }
+                            </li>
                             <li class="divider"></li>
                             @if (entry.IsVisible)
                             {

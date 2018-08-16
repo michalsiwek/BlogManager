@@ -35,25 +35,25 @@ namespace BlogManager.Controllers
         [HttpPost]
         public ActionResult Validate(int entryId, string isVisible)
         {
-            var entryToValidate = _context.Entries.Single(e => e.Id == entryId);
+            var entryToValidate = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+            if (entryToValidate == null)
+                return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name) && u.Id == 1);
+            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            /*if(account == null)
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
-            if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "You have no permission to perform this action");
+            entryToValidate.LastModifiedBy = account;
+            entryToValidate.LastModification = DateTime.Now;
 
             switch (isVisible.ToLower())
             {
                 case "true":
                     entryToValidate.IsVisible = true;
-                    entryToValidate.LastModification = DateTime.Now;
-                    entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                     _context.SaveChanges();
                     break;
                 case "false":
                     entryToValidate.IsVisible = false;
-                    entryToValidate.LastModification = DateTime.Now;
-                    entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                     _context.SaveChanges();
                     break;
                 default:
@@ -63,16 +63,21 @@ namespace BlogManager.Controllers
             return RedirectToAction("Index", "Entries");
         }
 
-        /*[HttpDelete]
+        [HttpPost]
         public ActionResult Delete(int entryId)
         {
-            var entryToDelete = _context.Entries.Single(e => e.Id == entryId);
+            var entryToDelete = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+            if (entryToDelete == null)
+                return HttpNotFound();
+
+            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            /*if (account == null)
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             _context.Entries.Remove(entryToDelete);
-
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Entries");
-        }*/
+        }
     }
 }

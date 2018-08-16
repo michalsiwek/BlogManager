@@ -44,7 +44,7 @@ namespace BlogManager.Controllers
             _context.Entries.Add(entry);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "EntriesController");
+            return RedirectToAction("Index", "Entries");
         }
     }
 }
