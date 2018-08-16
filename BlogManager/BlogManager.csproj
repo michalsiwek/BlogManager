@@ -197,6 +197,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
+    <Compile Include="Controllers\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\EntryCategoryController.cs" />
     <Compile Include="Controllers\EntryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -220,12 +222,23 @@
     <Compile Include="Migrations\201808132028564_DefaultEntryCategory.Designer.cs">
       <DependentUpon>201808132028564_DefaultEntryCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808161657433_CategoryIsActiveProperty.cs" />
+    <Compile Include="Migrations\201808161657433_CategoryIsActiveProperty.Designer.cs">
+      <DependentUpon>201808161657433_CategoryIsActiveProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.cs" />
+    <Compile Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.Designer.cs">
+      <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
+    <Compile Include="Models\EntryCategoriesViewModel.cs" />
+    <Compile Include="Models\EntryCategoryViewModel.cs" />
+    <Compile Include="Models\EntryPreviewViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -303,6 +316,10 @@
     <Content Include="Views\Entry\New.cshtml" />
     <Content Include="Views\Entries\Index.cshtml" />
     <Content Include="Views\Entry\Edit.cshtml" />
+    <Content Include="Views\EntryCategory\Edit.cshtml" />
+    <Content Include="Views\EntryCategory\New.cshtml" />
+    <Content Include="Views\EntryCategories\Index.cshtml" />
+    <Content Include="Views\Entry\Preview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -333,6 +350,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808132028564_DefaultEntryCategory.resx">
       <DependentUpon>201808132028564_DefaultEntryCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808161657433_CategoryIsActiveProperty.resx">
+      <DependentUpon>201808161657433_CategoryIsActiveProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.resx">
+      <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

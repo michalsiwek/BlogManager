@@ -1,0 +1,93 @@
+﻿@using BlogManager.Models
+@model EntryCategoriesViewModel
+@{
+    ViewBag.Title = "Entry Categories";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-1 text-center">Id</th>
+            <th class="col-md-2 text-center">Name</th>
+            <th class="col-md-5 text-center">Description</th>
+            <th class="col-md-2 text-center">CreateDate</th>
+            <th class="col-md-1 text-center">Status</th>
+            <th class="col-md-1 text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model.EntryCategories)
+        {
+        <tr>
+            <td class="text-center">@category.Id</td>
+            <td class="text-center">@category.Name</td>
+            <td class="text-center">@category.Description</td>
+            <td class="text-center">@category.CreateDate.ToShortDateString()</td>
+            <td class="text-center">
+                @if (category.IsActive)
+                {
+                    <span class="label label-success custom-label">Active</span>
+                }
+                else
+                {
+                    <span class="label label-danger custom-label">Disabled</span>
+                }
+            </td>
+            <td class="text-center">
+                @if (category.Id != 1)
+                {
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-info btn-sm dropdown-toggle entry-cat-actions-btn" data-toggle="dropdown" aria-expanded="false">
+                            Actions
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("Edit", "EntryCategory", new { id = category.Id }))
+                                {
+                                    <input type="submit" value="Edit" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Delete", "EntryCategories", new { id = category.Id }, FormMethod.Post))
+                                {
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
+                                }
+                            </li>
+                            <li class="divider"></li>
+                            @if (category.IsActive)
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Activate", "EntryCategories", new { catId = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Disable" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Activate", "EntryCategories", new { catId = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Enable" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

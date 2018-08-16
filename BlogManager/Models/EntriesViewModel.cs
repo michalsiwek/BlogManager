@@ -8,6 +8,6 @@ namespace BlogManager.Models
 {
     public class EntriesViewModel
     {
-        public List<Entry> Entries { get; set; }
+        public IEnumerable<Entry> Entries { get; set; }
     }
 }
