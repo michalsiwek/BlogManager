@@ -6,6 +6,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
+using BlogManager.Helpers;
 
 namespace BlogManager.Controllers
 {
@@ -77,6 +78,7 @@ namespace BlogManager.Controllers
             {
                 entry.CreateDate = DateTime.Now;
                 entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                entry.Content = entry.Content.ConvertToHtmlParagraps();
                 entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 entry.IsVisible = false;
                 _context.Entries.Add(entry);
@@ -85,7 +87,7 @@ namespace BlogManager.Controllers
             {
                 dbEntry.Title = entry.Title;
                 dbEntry.Description = entry.Description;
-                dbEntry.Content = entry.Content;
+                dbEntry.Content = entry.Content.ConvertToHtmlParagraps();
                 dbEntry.ImageUrl = entry.ImageUrl;
                 dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 dbEntry.IsVisible = false;

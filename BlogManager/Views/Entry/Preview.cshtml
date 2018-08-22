@@ -23,12 +23,12 @@ else
                 <h1>Nunc lobortis cursus laoreet</h1>
             </header>
             <p id="entry-data">@Model.Entry.CreateDate.ToShortDateString() | @Model.Entry.CreateDate.ToShortTimeString() | @Model.Entry.Account.UserName</p>
-            <div class="entry-main-img">
+            <br />
+            <div id="main-img-container">
                 <img src="@Model.Entry.ImageUrl" alt="entry-main-img" />
             </div>
-            <p>
-                @Model.Entry.Content
-            </p>
+            <br />
+            @Html.Raw(@Model.Entry.Content)
         </div>
     </main>
 </div>
