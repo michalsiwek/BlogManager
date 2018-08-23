@@ -46,6 +46,7 @@ namespace BlogManager.Models
     {
         public DbSet<Entry> Entries { get; set; }
         public DbSet<EntryCategory> EntryCategories { get; set; }
+        public DbSet<Paragraph> Paragraphs { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection")

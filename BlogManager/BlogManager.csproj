@@ -237,6 +237,7 @@
     <Compile Include="Models\Categories\EntryCategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
+    <Compile Include="Models\Entries\Paragraph.cs" />
     <Compile Include="Models\EntryCategoriesViewModel.cs" />
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />

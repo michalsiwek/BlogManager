@@ -33,6 +33,8 @@ namespace BlogManager.Models.Entries
         [Display(Name = "Content")]
         public string Content { get; set; }
 
+        public List<Paragraph> Paragraphs { get; set; }
+
         [Display(Name = "Image Url")]
         [Url]
         public string ImageUrl { get; set; }

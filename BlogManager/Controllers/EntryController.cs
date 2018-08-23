@@ -73,12 +73,15 @@ namespace BlogManager.Controllers
         public ActionResult Save(Entry entry)
         {
             var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == entry.Id);
+            var dbParagraphs = _context.Paragraphs.Where(p => p.Entry_Id == entry.Id).ToList();
 
-            if(dbEntry == null)
+            if (dbEntry == null)
             {
                 entry.CreateDate = DateTime.Now;
                 entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-                entry.Content = entry.Content.ConvertToHtmlParagraps();
+                entry.Content = entry.Content;
+                entry.Paragraphs = entry.GetParagraphsFromContent();
+                dbParagraphs = entry.Paragraphs;
                 entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 entry.IsVisible = false;
                 _context.Entries.Add(entry);
@@ -87,14 +90,15 @@ namespace BlogManager.Controllers
             {
                 dbEntry.Title = entry.Title;
                 dbEntry.Description = entry.Description;
-                dbEntry.Content = entry.Content.ConvertToHtmlParagraps();
-                dbEntry.ImageUrl = entry.ImageUrl;
+                dbEntry.Content = entry.Content;
+                dbEntry.Paragraphs = entry.GetParagraphsFromContent();
+                dbParagraphs = dbEntry.Paragraphs;
                 dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 dbEntry.IsVisible = false;
                 dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 dbEntry.LastModification = DateTime.Now;
             }
-            
+
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Entries");
