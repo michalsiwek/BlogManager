@@ -206,6 +206,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
+    <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>
@@ -230,12 +231,17 @@
     <Compile Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.Designer.cs">
       <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808230911476_ContentParagraphs.cs" />
+    <Compile Include="Migrations\201808230911476_ContentParagraphs.Designer.cs">
+      <DependentUpon>201808230911476_ContentParagraphs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
+    <Compile Include="Models\Entries\Paragraph.cs" />
     <Compile Include="Models\EntryCategoriesViewModel.cs" />
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />
@@ -356,6 +362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.resx">
       <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808230911476_ContentParagraphs.resx">
+      <DependentUpon>201808230911476_ContentParagraphs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
