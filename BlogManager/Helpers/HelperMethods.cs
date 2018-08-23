@@ -1,8 +1,10 @@
-﻿using BlogManager.Models.Entries;
+﻿using BlogManager.Models;
+using BlogManager.Models.Entries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 
 namespace BlogManager.Helpers
 {
@@ -10,17 +12,17 @@ namespace BlogManager.Helpers
     {
         public static string ConvertToHtmlParagraps(this string content)
         {
-            var temp = content;
-            temp = temp.Replace("\r\n\r\n", "</p>\n<p>").Trim();
-            temp = "<p>" + temp + "</p>";
-            return temp;
+            var output = content.NormalizeContent();
+            output = output.Replace("\r\n\r\n", "</p>\n<p>");
+            output = "<p>" + output + "</p>";
+            return output;
         }
         
         public static List<Paragraph> GetParagraphsFromContent(this Entry entry)
         {
             List<Paragraph> output = new List<Paragraph>();
 
-            var temp = entry.Content;
+            var temp = entry.Content.NormalizeContent();
             int subContentId = 0;
 
             temp = temp.Replace("\r\n\r\n", "|").Trim();
@@ -32,12 +34,21 @@ namespace BlogManager.Helpers
                 output.Add(new Paragraph()
                 {
                     SubContentId = subContentId,
-                    Entry_Id = entry.Id,
+                    EntryId = entry.Id,
                     Body = p
                 });
             }
 
             return output;
         }
+
+        public static string NormalizeContent(this string content)
+        {
+            var output = content.Trim();
+            while(output.Contains("\r\n\r\n\r\n"))
+                output = output.Replace("\r\n\r\n\r\n", "\r\n\r\n");
+            return output;
+        }
+
     }
 }

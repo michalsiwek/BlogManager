@@ -231,6 +231,10 @@
     <Compile Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.Designer.cs">
       <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808230911476_ContentParagraphs.cs" />
+    <Compile Include="Migrations\201808230911476_ContentParagraphs.Designer.cs">
+      <DependentUpon>201808230911476_ContentParagraphs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -358,6 +362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808161742354_DefaultEntryCatIsActiveSeed.resx">
       <DependentUpon>201808161742354_DefaultEntryCatIsActiveSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808230911476_ContentParagraphs.resx">
+      <DependentUpon>201808230911476_ContentParagraphs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

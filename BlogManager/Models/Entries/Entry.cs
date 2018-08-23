@@ -44,5 +44,6 @@ namespace BlogManager.Models.Entries
         public EntryCategory EntryCategory { get; set; }
 
         public Account LastModifiedBy { get; set; }
+
     }
 }

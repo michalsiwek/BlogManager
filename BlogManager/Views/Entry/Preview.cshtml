@@ -28,7 +28,10 @@ else
                 <img src="@Model.Entry.ImageUrl" alt="entry-main-img" />
             </div>
             <br />
-            @Html.Raw(@Model.Entry.Content)
+            @foreach(var paragraph in Model.Entry.Paragraphs)
+            {
+                <p>@paragraph.Body</p>
+            }
         </div>
     </main>
 </div>
