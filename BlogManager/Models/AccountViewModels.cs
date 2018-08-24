@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlogManager.Models.Accounts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlogManager.Models
@@ -108,5 +109,13 @@ namespace BlogManager.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class ManageAccountViewModel
+    {
+        public Account Account { get; set; }
+
+        [Display(Name = "Account Type")]
+        public IEnumerable<AccountType> AccountTypes { get; set; }
     }
 }

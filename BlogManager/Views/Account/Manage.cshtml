@@ -1,0 +1,74 @@
+﻿@using BlogManager.Models
+@model ManageAccountViewModel
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <section>
+            @using (Html.BeginForm("Save", "Account", FormMethod.Post))
+            {
+                <h4 class="text-center">Account manage form</h4>
+                <hr />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.Email, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.ValueFor(m => m.Account.Email)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.UserName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label  text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.ValueFor(m => m.Account.UserName)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.FirstName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.ValueFor(m => m.Account.FirstName)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.LastName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.ValueFor(m => m.Account.LastName)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.CreateDate, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.ValueFor(m => m.Account.CreateDate)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Account.IsActive, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.CheckBoxFor(m => m.Account.IsActive)
+                    </span>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.AccountTypes, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        @Html.DropDownListFor(m => m.Account.AccountType.Id, new SelectList(Model.AccountTypes, "Id", "Name"), "Select...", new { @class = "form-control col-md-6 col-sm-6 col-xs-6 center-block" })
+                        @Html.ValidationMessageFor(m => m.Account.AccountType.Id, "", new { @class = "text-danger" })
+                    </span>
+                </div>
+                @Html.HiddenFor(a => a.Account.Id)
+                <br />
+                <hr />
+                <div class="form-group">
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary btn-bg" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

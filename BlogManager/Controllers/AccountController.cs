@@ -19,6 +19,7 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -428,6 +429,22 @@ namespace BlogManager.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        public ActionResult Manage(int id)
+        {
+            var dbAccount = _context.Users.SingleOrDefault(u => u.Id == id);
+
+            if(dbAccount == null)
+                return HttpNotFound();
+
+            var viewModel = new ManageAccountViewModel
+            {
+                Account = dbAccount,
+                AccountTypes = _context.Roles.ToList()
+            };
+
+            return View(viewModel);
         }
 
         #region Helpers
