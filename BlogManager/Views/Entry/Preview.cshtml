@@ -24,14 +24,39 @@ else
             </header>
             <p id="entry-data">@Model.Entry.CreateDate.ToShortDateString() | @Model.Entry.CreateDate.ToShortTimeString() | @Model.Entry.Account.UserName</p>
             <br />
-            <div id="main-img-container">
+            <div class="main-img-container">
                 <img src="@Model.Entry.ImageUrl" alt="entry-main-img" />
             </div>
             <br />
-            @foreach(var paragraph in Model.Entry.Paragraphs)
+            @foreach (var paragraph in Model.Entry.Paragraphs)
             {
                 <p>@paragraph.Body</p>
             }
+        </div>
+        @Html.HiddenFor(e => e.Entry.Id)
+        <br />
+        <hr />
+        <div>
+            <div>
+                @using (Html.BeginForm("Index", "Entries", FormMethod.Get, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                {
+                    <input type="submit" value="Back" class="btn preview-input-btn btn-bg pull-right" />
+                }
+                @if(Model.Entry.IsVisible)
+                {
+                    using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible }, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                    {
+                        <input type="submit" value="Hide" class="btn preview-input-btn btn-danger btn-bg text-left" />
+                    }
+                }
+                else
+                {
+                    using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible}, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                    {
+                        <input type="submit" value="Publish" class="btn preview-input-btn btn-success btn-bg text-left" />
+                    }
+                }
+            </div>
         </div>
     </main>
 </div>

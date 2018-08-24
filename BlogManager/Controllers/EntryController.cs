@@ -98,6 +98,7 @@ namespace BlogManager.Controllers
                 dbEntry.Description = entry.Description.Trim();
                 dbEntry.Content = entry.Content.NormalizeContent();
                 dbEntry.Paragraphs = entry.GetParagraphsFromContent();
+                dbEntry.ImageUrl = entry.ImageUrl;
                 dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 dbEntry.IsVisible = false;
                 dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));

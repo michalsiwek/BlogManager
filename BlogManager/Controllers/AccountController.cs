@@ -61,6 +61,9 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+                return RedirectToAction("Index", "Home");
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -148,6 +151,8 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
