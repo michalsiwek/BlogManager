@@ -1,0 +1,101 @@
+﻿@using BlogManager.Models
+@model AccountsViewModel
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+@Html.ValidationSummary(true, "", new { @class = "text-center" })
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-1 text-center">Id</th>
+            <th class="col-md-4 text-center">Email</th>
+            <th class="col-md-2 text-center">Type</th>
+            <th class="col-md-2 text-center">Created</th>
+            <th class="col-md-1 text-center">Status</th>
+            <th class="col-md-1 text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td class="text-center">@account.Id</td>
+                <td class="text-center">@account.Email</td>
+                @if (@account.AccountType == null)
+                {
+                    <td class="text-center text-danger">Not assigned</td>
+                }
+                else
+                {
+                    <td class="text-center">@account.AccountType.Name</td>
+                }
+                <td class="text-center">@account.CreateDate.ToShortDateString()</td>
+                <td class="text-center">
+                    @if (account.IsActive)
+                    {
+                        <span class="label label-success custom-label">Enabled</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger custom-label">Disabled</span>
+                    }
+                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Actions
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("Manage", "Account", new { id = account.Id }, FormMethod.Get))
+                                {
+                                    <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Delete", "Accounts", new { id = account.Id }, FormMethod.Post))
+                                {
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
+                                }
+                            </li>
+                            @if (account.AccountType != null)
+                            {
+                                <li class="divider"></li>
+                                if (account.IsActive)
+                                {
+                                    <li>
+                                        @using (Html.BeginForm("Validate", "Accounts", new { accountId = account.Id, isActive = !account.IsActive }, FormMethod.Post))
+                                        {
+                                            <input type="submit" value="Disable" class="btn-dropdown-item" />
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        @using (Html.BeginForm("Validate", "Accounts", new { accountId = account.Id, isActive = !account.IsActive }, FormMethod.Post))
+                                        {
+                                            <input type="submit" value="Enable" class="btn-dropdown-item" />
+                                        }
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
