@@ -53,7 +53,7 @@
                     @Html.LabelFor(m => m.AccountTypes, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
                     <span class="col-md-6 col-sm-6 col-xs-6">
                         @Html.DropDownListFor(m => m.Account.AccountType.Id, new SelectList(Model.AccountTypes, "Id", "Name"), "Select...", new { @class = "form-control col-md-6 col-sm-6 col-xs-6 center-block" })
-                        @Html.ValidationMessageFor(m => m.Account.AccountType.Id, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.Account.AccountType.Id, "", new { @class = "col-lg-10 col-md-10 col-sm-10 col-xs-10 text-danger" })
                     </span>
                 </div>
                 @Html.HiddenFor(a => a.Account.Id)
