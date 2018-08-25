@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -39,6 +40,9 @@ namespace BlogManager.Controllers
             if (dbEntryCat == null)
                 return HttpNotFound();
 
+            if (dbEntryCat.Id == 1)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Forbidden action");
+
             var viewModel = new EntryCategoryViewModel
             {
                 EntryCategory = dbEntryCat
@@ -55,7 +59,6 @@ namespace BlogManager.Controllers
             if (dbEntryCat == null)
             {
                 entryCategory.CreateDate = DateTime.Now;
-                entryCategory.IsActive = false;
                 _context.EntryCategories.Add(entryCategory);
             }
             else
@@ -63,6 +66,7 @@ namespace BlogManager.Controllers
                 dbEntryCat.LastModification = DateTime.Now;
                 dbEntryCat.Name = entryCategory.Name;
                 dbEntryCat.Description = entryCategory.Description;
+                dbEntryCat.IsActive = entryCategory.IsActive;
             }
 
             _context.SaveChanges();

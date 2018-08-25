@@ -1,6 +1,27 @@
-﻿#app-footer {
+﻿.navbar-dropdown-menu {
+    background-color: rgba(0, 101, 76, 0.95);
+}
+
+.navbar-dropdown-menu form {
+    min-height: 40px;
+}
+
+.navbar-dropdown-menu > li > form:hover {
+    color: #111;
+    background-color: rgba(183, 183, 183, 0.95) !important;
+}
+
+.navbar-dropdown-menu > li > form:hover > input {
+    color: #111 !important;
+}
+
+.navbar-dropdown-menu input {
+    line-height: 50px;
+}
+
+#app-footer {
     text-align: center;
-    color:gray;
+    color: gray;
     letter-spacing: 3px;
 }
 .validation-summary-errors ul, .validation-summary-errors li {
