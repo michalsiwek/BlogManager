@@ -27,7 +27,7 @@ namespace BlogManager.Controllers
         {
             var viewModel = new AccountsViewModel
             {
-                Accounts = _context.Users.Include(u => u.AccountType).Where(u => u.AccountType.Id != 1).ToList()
+                Accounts = _context.Users.Include(u => u.AccountType).Where(u => u.Id != 1).ToList()
             };
             return View(viewModel);
         }

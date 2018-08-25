@@ -6,6 +6,7 @@
 
 <br />
 <h2>@ViewBag.Title.</h2>
+<br />
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
@@ -23,11 +24,21 @@
                 <div class="form-group row">
                     @Html.LabelFor(m => m.EntryCategory.Description, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextAreaFor(m => m.EntryCategory.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
+                        @Html.TextBoxFor(m => m.EntryCategory.Description, new { @class = "form-control center-block entry-form-control" })
                         @Html.ValidationMessageFor(m => m.EntryCategory.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <br />
+                <br />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.EntryCategory.IsActive, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        <label class="switch">
+                            @Html.CheckBoxFor(m => m.EntryCategory.IsActive)
+                            <div class="slider round"></div>
+                        </label>
+                    </span>
+                </div>
                 <hr />
                 <div class="form-group">
                     <div class="text-center">

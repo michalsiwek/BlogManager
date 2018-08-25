@@ -21,12 +21,72 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("New Entry", "New", "Entry")</li>
-                    <li>@Html.ActionLink("Entries", "Index", "Entries")</li>
-                    <li>@Html.ActionLink("Galleries", "Index", "Home")</li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Entries
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navbar-dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("New", "Entry"))
+                                {
+                                    <input type="submit" value="New" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Index", "Entries"))
+                                {
+                                    <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                }
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Galleries
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navbar-dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("Index", "Home"))
+                                {
+                                    <input type="submit" value="New" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Index", "Home"))
+                                {
+                                    <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Categories
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navbar-dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("New", "EntryCategory"))
+                                {
+                                    <input type="submit" value="New" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Index", "EntryCategories"))
+                                {
+                                    <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                }
+                            </li>
+                        </ul>
+
+                    </li>
                     <li>@Html.ActionLink("Accounts", "Index", "Accounts")</li>
-                    <li>@Html.ActionLink("New Category", "New", "EntryCategory")</li>
-                    <li>@Html.ActionLink("Categories", "Index", "EntryCategories")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
