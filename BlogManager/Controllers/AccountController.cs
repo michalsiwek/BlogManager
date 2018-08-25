@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
+using System.Net;
 
 namespace BlogManager.Controllers
 {
@@ -19,6 +20,7 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -59,6 +61,9 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+                return RedirectToAction("Index", "Home");
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -146,6 +151,8 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+                return RedirectToAction("Index", "Home");
             return View();
         }
 
@@ -428,6 +435,42 @@ namespace BlogManager.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        [Authorize]
+        public ActionResult Manage(int id)
+        {
+            var dbAccount = _context.Users.SingleOrDefault(u => u.Id == id);
+
+            if(dbAccount == null)
+                return HttpNotFound();
+
+            if (dbAccount.Id == 1)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Forbidden action");
+
+            var viewModel = new ManageAccountViewModel
+            {
+                Account = dbAccount,
+                AccountTypes = _context.Roles.ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult SaveChanges(Account account)
+        {
+            var dbAccount = _context.Users.SingleOrDefault(u => u.Id == account.Id);
+
+            if (dbAccount == null)
+                return HttpNotFound();
+
+            dbAccount.IsActive = account.IsActive;
+            dbAccount.AccountType = _context.Roles.SingleOrDefault(r => r.Id == account.AccountType.Id);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Accounts");
         }
 
         #region Helpers

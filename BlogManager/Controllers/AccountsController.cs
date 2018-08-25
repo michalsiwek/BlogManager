@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -26,7 +27,7 @@ namespace BlogManager.Controllers
         {
             var viewModel = new AccountsViewModel
             {
-                Accounts = _context.Users.Where(u => u.AccountType.Id != 1).ToList()
+                Accounts = _context.Users.Include(u => u.AccountType).Where(u => u.AccountType.Id != 1).ToList()
             };
             return View(viewModel);
         }
@@ -39,7 +40,7 @@ namespace BlogManager.Controllers
                 return View(model);
             }
 
-            var accountToValidate = _context.Users.SingleOrDefault(u => u.Id == accountId);
+            var accountToValidate = _context.Users.Include(u => u.AccountType).SingleOrDefault(u => u.Id == accountId);
             if (accountToValidate == null)
                 return HttpNotFound();
 
