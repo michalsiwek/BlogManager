@@ -50,5 +50,13 @@ namespace BlogManager.Helpers
             return output;
         }
 
+        public static Entry Normalize(this Entry entry)
+        {
+            entry.Title = entry.Title.Trim();
+            entry.Description = entry.Description.Trim();
+            entry.Content = entry.Content.NormalizeContent();
+            return entry;
+        }
+
     }
 }

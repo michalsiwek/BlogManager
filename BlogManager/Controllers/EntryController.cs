@@ -74,15 +74,18 @@ namespace BlogManager.Controllers
         [HttpPost]
         public ActionResult Save(Entry entry)
         {
-            var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == entry.Id);            
+            var dbEntry = _context.Entries
+                .Include(e => e.EntryCategory)
+                .SingleOrDefault(e => e.Id == entry.Id);            
 
             if (dbEntry == null)
             {
+                entry.Normalize();
                 entry.CreateDate = DateTime.Now;
                 entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-                entry.Title = entry.Title.Trim();
-                entry.Description = entry.Description.Trim();
-                entry.Content = entry.Content.NormalizeContent();
+                entry.Title = entry.Title;
+                entry.Description = entry.Description;
+                entry.Content = entry.Content;
                 entry.Paragraphs = entry.GetParagraphsFromContent();
                 entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 entry.IsVisible = false;
@@ -94,13 +97,17 @@ namespace BlogManager.Controllers
             }
             else
             {
-                dbEntry.Title = entry.Title.Trim();
-                dbEntry.Description = entry.Description.Trim();
-                dbEntry.Content = entry.Content.NormalizeContent();
+                entry.Normalize();
+
+                if (!dbEntry.Equals(entry))
+                    dbEntry.IsVisible = false;
+
+                dbEntry.Title = entry.Title;
+                dbEntry.Description = entry.Description;
+                dbEntry.Content = entry.Content;
                 dbEntry.Paragraphs = entry.GetParagraphsFromContent();
                 dbEntry.ImageUrl = entry.ImageUrl;
                 dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
-                dbEntry.IsVisible = false;
                 dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 dbEntry.LastModification = DateTime.Now;
 
