@@ -12,17 +12,23 @@ namespace BlogManager.Models.Accounts
     public class Account : ApplicationUser
     {
         [Required]
+        [Display(Name = "Created")]
+        [DataType(DataType.Date)]
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }
 
         [StringLength(255)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [StringLength(255)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Active")]
         public bool IsActive { get; set; }
 
+        [Display(Name = "Account Type")]
         public AccountType AccountType { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Account, int> manager)
