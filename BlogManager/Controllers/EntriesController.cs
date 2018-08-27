@@ -25,10 +25,14 @@ namespace BlogManager.Controllers
 
         public ActionResult Index()
         {
+            if (!ModelState.IsValid)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var viewModel = new EntriesViewModel
             {
                 Entries = _context.Entries.Include(e => e.Account).Include(e => e.EntryCategory).ToList()
             };
+
             return View(viewModel);
         }
         
