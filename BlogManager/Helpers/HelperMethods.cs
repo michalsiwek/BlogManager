@@ -10,6 +10,18 @@ namespace BlogManager.Helpers
 {
     public static class HelperMethods
     {
+        public static string UnPolish(this string text)
+        {
+            return text.Replace("ą", "a")
+                .Replace("ę", "e")
+                .Replace("ć", "c")
+                .Replace("ł", "l")
+                .Replace("ó", "o")
+                .Replace("ń", "n")
+                .Replace("ś", "s")
+                .Replace("ź", "z")
+                .Replace("ż", "z");
+        }
         public static string ConvertToHtmlParagraps(this string content)
         {
             var output = content.NormalizeContent();

@@ -22,16 +22,30 @@ namespace BlogManager.Controllers.Api
 
         public IEnumerable<EntryDto> GetEntries(string query = null)
         {
-            var entryQuery = _context.Entries
+            var entriesQuery = _context.Entries
+                .Include(e => e.Account)
                 .Include(e => e.EntryCategory)
+                .Include(e => e.Paragraphs)
                 .Where(e => e.IsVisible == true);
 
             if(!String.IsNullOrWhiteSpace(query))
-                entryQuery = entryQuery.Where(e => e.Title.Contains(query));
+                entriesQuery = entriesQuery.Where(e => e.EntryCategory.Name.Replace(" ", "_").ToLower().Equals(query));
 
-            var entryDtos = entryQuery.ToList().Select(Mapper.Map<Entry, EntryDto>);
+            return entriesQuery.ToList().Select(Mapper.Map<Entry, EntryDto>);
+        }
 
-            return Ok(entryDtos);
+        public IHttpActionResult GetEntry(int id)
+        {
+            var entry = _context.Entries
+                .Include(e => e.Account)
+                .Include(e => e.EntryCategory)
+                .Include(e => e.Paragraphs)
+                .SingleOrDefault(e => e.Id == id && e.IsVisible == true);
+
+            if (entry == null)
+                return NotFound();
+
+            return Ok(Mapper.Map<Entry, EntryDto>(entry));
         }
     }
 }

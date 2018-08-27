@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BlogManager.App_Start;
+using BlogManager.Dtos;
+using BlogManager.Models.Entries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,12 @@ namespace BlogManager
     {
         protected void Application_Start()
         {
-            Mapper.Initialize(c => c.AddProfile<MappingProfile>());
+            Mapper.Initialize(cfg => cfg.CreateMap<Entry, EntryDto>()
+                .ForMember(e => e.Author, a => a.MapFrom(b => b.Account.UserName))
+                .ForMember(e => e.LastEditor, a => a.MapFrom(b => b.LastModifiedBy.UserName))
+                .ForMember(e => e.Content, a => a.MapFrom(b => b.Paragraphs.Select(p => p.Body)))
+                .ForMember(e => e.CategoryId, c => c.MapFrom(b => b.EntryCategory.Id))
+                .ForMember(e => e.CategoryName, c => c.MapFrom(b => b.EntryCategory.Name)));
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

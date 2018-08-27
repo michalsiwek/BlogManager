@@ -37,7 +37,10 @@ namespace BlogManager.Controllers
         
         public ActionResult Edit(int id)
         {
-            var dbEntry = _context.Entries.SingleOrDefault(e => e.Id == id);
+            var dbEntry = _context.Entries
+                .Include(e => e.EntryCategory)
+                .Include(e => e.Account)
+                .SingleOrDefault(e => e.Id == id);
 
             if (dbEntry == null)
                 return HttpNotFound();

@@ -45,6 +45,9 @@ namespace BlogManager.Models.Entries
 
         public Account LastModifiedBy { get; set; }
 
+
+        #region Overrides
+
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -55,11 +58,17 @@ namespace BlogManager.Models.Entries
             if (this.EntryCategory.Id == temp.EntryCategory.Id &&
                this.Title.Equals(temp.Title) &&
                this.Description.Equals(temp.Description) &&
-               this.Content.Equals(temp.Content) &&
-               this.ImageUrl.Equals(temp.ImageUrl))
-                return true;
+               this.Content.Equals(temp.Content))
+            {
+                if (ImageUrl == null)
+                    return temp.ImageUrl == null;
+                else
+                    return ImageUrl.Equals(temp.ImageUrl);
+            }
             else
                 return false;
         }
+
+        #endregion
     }
 }

@@ -14,11 +14,14 @@ namespace BlogManager.Dtos
 
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Content { get; set; }
+        public IEnumerable<string> Content { get; set; }
         public string ImageUrl { get; set; }
-        public int EntryCategoryId { get; set; }
 
-        public int AccountId { get; set; }
-        public int LastModifiedById { get; set; }
+
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+        public string Author { get; set; }
+        public string LastEditor { get; set; }
     }
 }
