@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "Entry Edit";
 }
-
 <br />
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "Entry", FormMethod.Post))
+            <div id="preview"></div>
+            <input id='close-preview' type='hidden' value='Close' class='btn btn-default btn-bg'/>
+            @using (Html.BeginForm("Save", "Entry", FormMethod.Post, new { @id = "entry-form" }))
             {
                 <h4 class="text-center">Entry edit form</h4>
                 <hr />
@@ -53,14 +54,15 @@
                 <hr />
                 <div class="form-group">
                     <div class="text-center">
-                        <input type="submit" value="Save" class="btn btn-primary btn-bg" />
+                        <input id="show-preview" type="button" value="Preview" class="btn btn-default btn-bg" />
+                        <input type="submit" value="Save" class="btn btn-success btn-bg" />
                     </div>
                 </div>
             }
         </section>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
 }
