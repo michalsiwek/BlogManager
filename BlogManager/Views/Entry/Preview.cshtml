@@ -20,7 +20,7 @@ else
     <main id="entry-main">
         <div id="content">
             <header>
-                <h1>Nunc lobortis cursus laoreet</h1>
+                <h1>@Model.Entry.Title</h1>
             </header>
             <p id="entry-data">@Model.Entry.CreateDate.ToShortDateString() | @Model.Entry.CreateDate.ToShortTimeString() | @Model.Entry.Account.UserName</p>
             <br />
