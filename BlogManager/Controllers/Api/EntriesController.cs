@@ -20,6 +20,7 @@ namespace BlogManager.Controllers.Api
             _context = new ApplicationDbContext();
         }
 
+        [HttpGet]
         public IEnumerable<EntryDto> GetEntries(string query = null)
         {
             var entriesQuery = _context.Entries
@@ -35,6 +36,7 @@ namespace BlogManager.Controllers.Api
             return entriesQuery.ToList().Select(Mapper.Map<Entry, EntryDto>);
         }
 
+        [HttpGet]
         public IHttpActionResult GetEntry(int id)
         {
             var entry = _context.Entries
@@ -47,6 +49,21 @@ namespace BlogManager.Controllers.Api
                 return NotFound();
 
             return Ok(Mapper.Map<Entry, EntryDto>(entry));
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public IHttpActionResult DeleteEntry(int id)
+        {
+            var entryFromDb = _context.Entries.SingleOrDefault(e => e.Id == id);
+
+            if (entryFromDb == null)
+                return NotFound();
+
+            _context.Entries.Remove(entryFromDb);
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }

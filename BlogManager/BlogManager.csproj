@@ -214,7 +214,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\Api\AccountsController.cs" />
     <Compile Include="Controllers\Api\EntriesController.cs" />
+    <Compile Include="Controllers\Api\EntryCategoriesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
     <Compile Include="Controllers\EntryCategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
