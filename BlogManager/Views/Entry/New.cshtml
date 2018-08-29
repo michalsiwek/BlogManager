@@ -6,38 +6,41 @@
 
 <br />
 <h2>@ViewBag.Title.</h2>
+<h4 id="preview-header"></h4>
+<br />
+<div id="preview"></div>
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "Entry", FormMethod.Post))
+            @using (Html.BeginForm("Save", "Entry", FormMethod.Post, new { @id = "entry-form" }))
             {
                 <h4 class="text-center">Write something new</h4>
                 <hr />
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.Title, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextBoxFor(m => m.Entry.Title, new { @class = "form-control center-block entry-form-control" })
+                        @Html.TextBoxFor(m => m.Entry.Title, new { @id = "entry-title", @class = "form-control center-block entry-form-control" })
                         @Html.ValidationMessageFor(m => m.Entry.Title, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.Description, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextAreaFor(m => m.Entry.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
+                        @Html.TextAreaFor(m => m.Entry.Description, new { @id = "entry-desc", @class = "form-control center-block entry-form-control entry-desc-text-area" })
                         @Html.ValidationMessageFor(m => m.Entry.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.Content, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextAreaFor(m => m.Entry.Content, new { @class = "form-control center-block entry-form-control entry-content-text-area" })
+                        @Html.TextAreaFor(m => m.Entry.Content, new { @id = "entry-content", @class = "form-control center-block entry-form-control entry-content-text-area" })
                         @Html.ValidationMessageFor(m => m.Entry.Content, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.ImageUrl, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextBoxFor(m => m.Entry.ImageUrl, new { @class = "form-control center-block entry-form-control" })
+                        @Html.TextBoxFor(m => m.Entry.ImageUrl, new { @id = "entry-img", @class = "form-control center-block entry-form-control" })
                         @Html.ValidationMessageFor(m => m.Entry.ImageUrl, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -45,13 +48,14 @@
                     @Html.LabelFor(m => m.EntryCategories, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
                         @Html.DropDownListFor(m => m.Entry.EntryCategory.Id, new SelectList(Model.EntryCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
-                        @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger"})
+                        @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <br />
                 <hr />
                 <div class="form-group">
                     <div class="text-center">
+                        <input id="show-preview" type="button" value="Preview" class="btn btn-default btn-bg" />
                         <input type="submit" value="Save" class="btn btn-primary btn-bg" />
                     </div>
                 </div>
@@ -62,4 +66,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
 }
