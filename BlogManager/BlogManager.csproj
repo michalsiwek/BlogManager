@@ -218,7 +218,6 @@
     <Compile Include="Controllers\EntriesController.cs" />
     <Compile Include="Controllers\EntryCategoriesController.cs" />
     <Compile Include="Controllers\EntryCategoryController.cs" />
-    <Compile Include="Controllers\EntryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Dtos\EntryDto.cs" />
@@ -345,13 +344,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Entry\New.cshtml" />
+    <Content Include="Views\Entries\New.cshtml" />
     <Content Include="Views\Entries\Index.cshtml" />
-    <Content Include="Views\Entry\Edit.cshtml" />
+    <Content Include="Views\Entries\Edit.cshtml" />
     <Content Include="Views\EntryCategory\Edit.cshtml" />
     <Content Include="Views\EntryCategory\New.cshtml" />
     <Content Include="Views\EntryCategories\Index.cshtml" />
-    <Content Include="Views\Entry\Preview.cshtml" />
+    <Content Include="Views\Entries\Preview.cshtml" />
     <Content Include="Views\Accounts\Index.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
   </ItemGroup>

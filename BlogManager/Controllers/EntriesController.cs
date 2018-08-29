@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net;
+using BlogManager.Models.Entries;
+using BlogManager.Helpers;
 
 namespace BlogManager.Controllers
 {
@@ -35,7 +37,109 @@ namespace BlogManager.Controllers
 
             return View(viewModel);
         }
-        
+
+        public ActionResult New()
+        {
+            var viewModel = new EntryViewModel
+            {
+                Entry = new Entry(),
+                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var dbEntry = _context.Entries
+                .Include(e => e.EntryCategory)
+                .Include(e => e.Account)
+                .SingleOrDefault(e => e.Id == id);
+
+            if (dbEntry == null)
+                return HttpNotFound();
+
+            var viewModel = new EntryViewModel
+            {
+                Entry = dbEntry,
+                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult Preview(Entry entry)
+        {
+            var dbEntry = _context.Entries
+                .Include(e => e.Account)
+                .Include(e => e.EntryCategory)
+                .SingleOrDefault(e => e.Id == entry.Id);
+
+            if (dbEntry == null)
+                return HttpNotFound();
+
+            dbEntry.Paragraphs = _context.Paragraphs.Where(p => p.EntryId == dbEntry.Id).ToList();
+
+            var viewModel = new EntryPreviewViewModel
+            {
+                Entry = dbEntry
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Entry entry)
+        {
+            var dbEntry = _context.Entries
+                .Include(e => e.EntryCategory)
+                .SingleOrDefault(e => e.Id == entry.Id);
+
+            if (dbEntry == null)
+            {
+                entry.Normalize();
+                entry.CreateDate = DateTime.Now;
+                entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                entry.Title = entry.Title;
+                entry.Description = entry.Description;
+                entry.Content = entry.Content;
+                entry.Paragraphs = entry.GetParagraphsFromContent();
+                entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
+                entry.IsVisible = false;
+
+                _context.Entries.Add(entry);
+
+                foreach (var p in entry.Paragraphs)
+                    _context.Paragraphs.Add(p);
+            }
+            else
+            {
+                entry.Normalize();
+
+                if (!dbEntry.Equals(entry))
+                    dbEntry.IsVisible = false;
+
+                dbEntry.Title = entry.Title;
+                dbEntry.Description = entry.Description;
+                dbEntry.Content = entry.Content;
+                dbEntry.Paragraphs = entry.GetParagraphsFromContent();
+                dbEntry.ImageUrl = entry.ImageUrl;
+                dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
+                dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                dbEntry.LastModification = DateTime.Now;
+
+                var dbParagraphs = _context.Paragraphs.Where(p => p.EntryId == entry.Id).ToList();
+                foreach (var p in dbParagraphs)
+                    _context.Paragraphs.Remove(p);
+                dbParagraphs.Clear();
+                dbParagraphs = dbEntry.Paragraphs;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Entries");
+        }
+
         [HttpPost]
         public ActionResult Validate(int entryId, string isVisible)
         {
