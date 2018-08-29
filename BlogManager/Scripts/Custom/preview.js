@@ -25,7 +25,7 @@
     var shortTime = currentdate.getHours().toString().twoDigitsDate() + ":" + currentdate.getMinutes().toString().twoDigitsDate();
 
     var output = "<div id='container'><main id='entry-main'><div id='content'><header><h1>" + title + "</h1></header>";
-    output = output + "<p id='entry-data'>" + shortDate + " | " + shortTime + " | UserName</p><br><div class='main-img-container'>";
+    output = output + "<p id='entry-data'>" + shortDate + " | " + shortTime + "</p><br><div class='main-img-container'>";
     output = output + "<img src='" + img + "' alt='entry-main-img'>";
     output = output + "</div><br>" + content + "</div><br><hr></main></div>";
 
