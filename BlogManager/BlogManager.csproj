@@ -217,7 +217,6 @@
     <Compile Include="Controllers\Api\EntriesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
     <Compile Include="Controllers\EntryCategoriesController.cs" />
-    <Compile Include="Controllers\EntryCategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Dtos\EntryDto.cs" />
@@ -347,8 +346,8 @@
     <Content Include="Views\Entries\New.cshtml" />
     <Content Include="Views\Entries\Index.cshtml" />
     <Content Include="Views\Entries\Edit.cshtml" />
-    <Content Include="Views\EntryCategory\Edit.cshtml" />
-    <Content Include="Views\EntryCategory\New.cshtml" />
+    <Content Include="Views\EntryCategories\Edit.cshtml" />
+    <Content Include="Views\EntryCategories\New.cshtml" />
     <Content Include="Views\EntryCategories\Index.cshtml" />
     <Content Include="Views\Entries\Preview.cshtml" />
     <Content Include="Views\Accounts\Index.cshtml" />
@@ -357,6 +356,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\Galleries\" />
+    <Folder Include="Views\EntryCategory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
