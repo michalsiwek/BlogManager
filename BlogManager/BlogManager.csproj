@@ -259,6 +259,10 @@
     <Compile Include="Migrations\201808251752159_EntryCatDescStringLimit.Designer.cs">
       <DependentUpon>201808251752159_EntryCatDescStringLimit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810031352320_GalleriesMigration.cs" />
+    <Compile Include="Migrations\201810031352320_GalleriesMigration.Designer.cs">
+      <DependentUpon>201810031352320_GalleriesMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -271,6 +275,8 @@
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
+    <Compile Include="Models\Galleries\Gallery.cs" />
+    <Compile Include="Models\Galleries\Picture.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Accounts\AccountType.cs" />
@@ -357,7 +363,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Galleries\" />
     <Folder Include="Views\EntryCategory\" />
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808251752159_EntryCatDescStringLimit.resx">
       <DependentUpon>201808251752159_EntryCatDescStringLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810031352320_GalleriesMigration.resx">
+      <DependentUpon>201810031352320_GalleriesMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
