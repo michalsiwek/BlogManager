@@ -24,10 +24,13 @@ else
             </header>
             <p id="entry-data">@Model.Entry.CreateDate.ToShortDateString() | @Model.Entry.CreateDate.ToShortTimeString() | @Model.Entry.Account.UserName</p>
             <br />
-            <div class="main-img-container">
-                <img src="@Model.Entry.ImageUrl" alt="entry-main-img" />
-            </div>
-            <br />
+            @if (!string.IsNullOrWhiteSpace(Model.Entry.ImageUrl))
+            {
+                <div class="main-img-container">
+                    <img src="@Model.Entry.ImageUrl" alt="entry-main-img" />
+                </div>
+                <br />
+            }
             @foreach (var paragraph in Model.Entry.Paragraphs)
             {
                 <p>@paragraph.Body</p>

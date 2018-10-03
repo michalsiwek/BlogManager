@@ -43,13 +43,13 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                @using (Html.BeginForm("Preview", "Entry", new { id = entry.Id }))
+                                @using (Html.BeginForm("Preview", "Entries", new { id = entry.Id }))
                                 {
                                     <input type="submit" value="Preview" class="btn-dropdown-item" />
                                 }
                             </li>
                             <li>
-                                @using (Html.BeginForm("Edit", "Entry", new { id = entry.Id }, FormMethod.Get))
+                                @using (Html.BeginForm("Edit", "Entries", new { id = entry.Id }, FormMethod.Get))
                                 {
                                     <input type="submit" value="Edit" class="btn-dropdown-item" />
                                 }

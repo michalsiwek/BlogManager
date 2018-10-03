@@ -1,19 +1,19 @@
 ﻿@using BlogManager.Models
 @model EntryViewModel
 @{
-    ViewBag.Title = "Entry Edit";
+    ViewBag.Title = "New Entry";
 }
 
 <br />
 <h2>@ViewBag.Title.</h2>
-<h4 id="preview-header"></h4>
+<h4 id="preview-header" class="text-info"></h4>
 <div id="preview"></div>
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "Entry", FormMethod.Post, new { @id = "entry-form" }))
+            @using (Html.BeginForm("Save", "Entries", FormMethod.Post, new { @id = "entry-form" }))
             {
-                <h4 class="text-center">Entry edit form</h4>
+                <h4 class="text-center">Write something new</h4>
                 <hr />
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Entry.Title, new { @class = "col-md-12 control-label entry-form-label" })
@@ -50,19 +50,19 @@
                         @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                @Html.HiddenFor(e => e.Entry.Id)
                 <br />
                 <hr />
                 <div class="form-group">
                     <div class="text-center">
                         <input id="show-preview" type="button" value="Preview" class="btn btn-default btn-bg" />
-                        <input type="submit" value="Save" class="btn btn-success btn-bg" />
+                        <input type="submit" value="Save" class="btn btn-primary btn-bg" />
                     </div>
                 </div>
             }
         </section>
     </div>
 </div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
