@@ -219,6 +219,7 @@
     <Compile Include="Controllers\Api\EntryCategoriesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
     <Compile Include="Controllers\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\GalleriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Dtos\EntryDto.cs" />
@@ -263,6 +264,10 @@
     <Compile Include="Migrations\201810031352320_GalleriesMigration.Designer.cs">
       <DependentUpon>201810031352320_GalleriesMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810041100085_GalleryStatusAttMigration.cs" />
+    <Compile Include="Migrations\201810041100085_GalleryStatusAttMigration.Designer.cs">
+      <DependentUpon>201810041100085_GalleryStatusAttMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -275,8 +280,10 @@
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
+    <Compile Include="Models\GalleriesViewModel.cs" />
     <Compile Include="Models\Galleries\Gallery.cs" />
     <Compile Include="Models\Galleries\Picture.cs" />
+    <Compile Include="Models\GalleryViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Accounts\AccountType.cs" />
@@ -360,10 +367,11 @@
     <Content Include="Views\Entries\Preview.cshtml" />
     <Content Include="Views\Accounts\Index.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Galleries\Index.cshtml" />
+    <Content Include="Views\Galleries\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\EntryCategory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -405,6 +413,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810031352320_GalleriesMigration.resx">
       <DependentUpon>201810031352320_GalleriesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810041100085_GalleryStatusAttMigration.resx">
+      <DependentUpon>201810041100085_GalleryStatusAttMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

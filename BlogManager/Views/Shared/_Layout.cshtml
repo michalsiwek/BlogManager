@@ -41,7 +41,6 @@
                                 }
                             </li>
                         </ul>
-
                     </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -51,13 +50,13 @@
                         </a>
                         <ul class="dropdown-menu navbar-dropdown-menu">
                             <li>
-                                @using (Html.BeginForm("Index", "Home"))
+                                @using (Html.BeginForm("New", "Galleries"))
                                 {
                                     <input type="submit" value="New" class="btn-dropdown-item" />
                                 }
                             </li>
                             <li>
-                                @using (Html.BeginForm("Index", "Home"))
+                                @using (Html.BeginForm("Index", "Galleries"))
                                 {
                                     <input type="submit" value="Manage" class="btn-dropdown-item" />
                                 }

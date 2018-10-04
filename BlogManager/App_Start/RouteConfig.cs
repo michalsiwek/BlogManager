@@ -48,6 +48,12 @@ namespace BlogManager
                 url: "{controller}/{action}",
                 defaults: new { controller = "EntryCategories", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Galleries",
+                url: "{controller}/{action}",
+                defaults: new { controller = "Galleries", action = "Index", id = UrlParameter.Optional }
+            );
         }
     }
 }

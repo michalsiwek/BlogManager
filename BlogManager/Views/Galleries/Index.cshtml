@@ -1,0 +1,88 @@
+﻿@using BlogManager.Models
+@model GalleriesViewModel
+@{
+    ViewBag.Title = "Pictures Galleries";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th class="col-md-1 text-center">Date</th>
+            <th class="col-md-4 text-center">Title</th>
+            <th class="col-md-2 text-center">Author</th>
+            <th class="col-md-1 text-center">Status</th>
+            <th class="col-md-1 text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gallery in Model.Galleries)
+        {
+            <tr>
+                <td class="text-center">@gallery.CreateDate.ToShortDateString()</td>
+                <td>@gallery.Title</td>
+                <td class="text-center">@gallery.Account.UserName</td>
+                <td class="text-center">
+                    @if (gallery.IsVisible)
+                    {
+                        <span class="label label-success custom-label">Visible</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger custom-label">Hidden</span>
+                    }
+                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Actions
+                            <span>&nbsp;&nbsp;</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @using (Html.BeginForm("Edit", "Galleries", new { id = gallery.Id }, FormMethod.Get))
+                                {
+                                    <input type="submit" value="Edit" class="btn-dropdown-item" />
+                                }
+                            </li>
+                            <li>
+                                @using (Html.BeginForm("Delete", "Galleries", new { galleryId = gallery.Id }, FormMethod.Post))
+                                {
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
+                                }
+                            </li>
+                            <li class="divider"></li>
+                            @if (gallery.IsVisible)
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Validate", "Galleries", new { galleryId = gallery.Id, isVisible = !gallery.IsVisible }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Hide" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    @using (Html.BeginForm("Validate", "Galleries", new { galleryId = gallery.Id, isVisible = !gallery.IsVisible }, FormMethod.Post))
+                                    {
+                                        <input type="submit" value="Publish" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
