@@ -7,13 +7,13 @@ namespace BlogManager.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class GalleriesMigration : IMigrationMetadata
+    public sealed partial class PictureGalleriesMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(GalleriesMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PictureGalleriesMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201810031352320_GalleriesMigration"; }
+            get { return "201810051636488_PictureGalleriesMigration"; }
         }
         
         string IMigrationMetadata.Source

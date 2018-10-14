@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "Galleries", FormMethod.Post))
+            @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <h4 class="text-center">Add new category</h4>
                 <hr />
@@ -27,6 +27,12 @@
                         @Html.TextBoxFor(m => m.Gallery.Description, new { @class = "form-control center-block entry-form-control" })
                         @Html.ValidationMessageFor(m => m.Gallery.Description, "", new { @class = "text-danger" })
                     </div>
+                </div>
+                <br />
+                <br />
+                <div class="form-group" row>
+                    <input type="file" name="files" multiple="Multiple" />
+                    <input type="submit" name="Submit" id="Submit" value="Upload" />
                 </div>
                 <br />
                 <br />
@@ -47,6 +53,7 @@
                 </div>
             }
         </section>
+        <hr />
     </div>
 </div>
 

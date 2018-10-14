@@ -7,12 +7,15 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.IO;
+using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
 {
     public class GalleriesController : Controller
     {
         private ApplicationDbContext _context;
+        private DbRepository _dbRepository;
 
         public GalleriesController()
         {
@@ -58,16 +61,29 @@ namespace BlogManager.Controllers
                 gallery.CreateDate = DateTime.Now;
                 gallery.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 gallery.Pictures = new List<Picture>();
-
+                
                 _context.Galleries.Add(gallery);
+                _context.SaveChanges();
+                var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
+
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    var file = Request.Files[i];
+                    var fileName = Path.GetFileName(file.FileName);
+                    var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
+                    Directory.CreateDirectory(dirPath);
+                    var path = Path.Combine(dirPath + "\\", fileName);
+                    file.SaveAs(path);
+                    gallery.Pictures.Add(new Picture(file.FileName, path, DateTime.Now));
+                }
 
                 foreach (var p in gallery.Pictures)
                     _context.Pictures.Add(p);
             }
             else
             {
-
-            }
+                // EDIT FORM
+            }            
 
             _context.SaveChanges();
 
@@ -118,5 +134,6 @@ namespace BlogManager.Controllers
 
             return RedirectToAction("Index", "Galleries");
         }
+
     }
 }

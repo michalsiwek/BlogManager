@@ -15,5 +15,15 @@ namespace BlogManager.Models.Galleries
         public string Url { get; set; }
         public DateTime UploadDate { get; set; }
         public int GalleryId { get; set; }
+
+        public Picture() { }
+
+        public Picture(string fileName, string url, DateTime uploadDate)
+        {
+            Id = Guid.NewGuid();
+            FileName = fileName;
+            Url = url;
+            UploadDate = uploadDate;
+        }
     }
 }
