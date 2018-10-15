@@ -15,7 +15,7 @@ namespace BlogManager.Controllers
     public class GalleriesController : Controller
     {
         private ApplicationDbContext _context;
-        private DbRepository _dbRepository;
+        private DbRepository _dbRepository = new DbRepository();
 
         public GalleriesController()
         {
@@ -60,6 +60,7 @@ namespace BlogManager.Controllers
             {
                 gallery.CreateDate = DateTime.Now;
                 gallery.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+                gallery.IsVisible = false;
                 gallery.Pictures = new List<Picture>();
                 
                 _context.Galleries.Add(gallery);

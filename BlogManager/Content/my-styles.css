@@ -199,3 +199,8 @@ input[type="checkbox"]:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+/* FILE INPUT */
+[hidden] {
+    display: none !important;
+}
