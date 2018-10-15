@@ -368,6 +368,7 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Galleries\Index.cshtml" />
     <Content Include="Views\Galleries\New.cshtml" />
+    <Content Include="Views\Galleries\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

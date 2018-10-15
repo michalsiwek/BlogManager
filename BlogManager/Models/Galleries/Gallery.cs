@@ -11,6 +11,7 @@ namespace BlogManager.Models.Galleries
     {
         public int Id { get; set; }
         public Account Account { get; set; }
+        [Display(Name = "Add pictures")]
         public List<Picture> Pictures { get; set; }
         [Required]
         public string Title { get; set; }

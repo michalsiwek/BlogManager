@@ -50,6 +50,26 @@ namespace BlogManager.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Edit(int id)
+        {
+            var dbGallery = _context.Galleries
+                .Include(g => g.Pictures)
+                .Include(g => g.Account)
+                .SingleOrDefault(g => g.Id == id);
+
+            if (dbGallery == null)
+                return HttpNotFound();
+
+            var viewModel = new GalleryViewModel
+            {
+                Gallery = dbGallery
+            };
+
+            viewModel.Gallery.Pictures = _context.Pictures.Where(p => p.GalleryId == id).ToList();
+
+            return View(viewModel);
+        }
+
         [HttpPost]
         public ActionResult Save(Gallery gallery)
         {
