@@ -87,22 +87,27 @@ namespace BlogManager.Controllers
 
                 _context.Galleries.Add(gallery);
                 _context.SaveChanges();
-                var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
 
-                for (int i = 0; i < Request.Files.Count; i++)
+                if(!Request.Files.AllKeys[0].Equals("files"))
                 {
-                    var file = Request.Files[i];
-                    var fileName = Path.GetFileName(file.FileName);
-                    var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
-                    Directory.CreateDirectory(dirPath);
-                    var serverPath = Path.Combine(dirPath + "\\", fileName);
-                    var dbPath = string.Format("/Pictures/{0}/{1}", galleryId, fileName);
-                    file.SaveAs(serverPath);
-                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
-                }
+                    var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
 
-                foreach (var p in gallery.Pictures)
-                    _context.Pictures.Add(p);
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        var file = Request.Files[i];
+                        var fileName = Path.GetFileName(file.FileName);
+                        var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
+                        Directory.CreateDirectory(dirPath);
+                        var serverPath = Path.Combine(dirPath + "\\", fileName);
+                        var dbPath = string.Format("/Pictures/{0}/{1}", galleryId, fileName);
+                        file.SaveAs(serverPath);
+                        gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
+                    }
+
+                    foreach (var p in gallery.Pictures)
+                        _context.Pictures.Add(p);
+                }
+                
             }
             else
             {
@@ -110,19 +115,22 @@ namespace BlogManager.Controllers
                 dbGallery.Description = gallery.Description;
                 dbGallery.IsVisible = gallery.IsVisible;
 
-                for (int i = 0; i < Request.Files.Count; i++)
+                if (!Request.Files.AllKeys[0].Equals("files"))
                 {
-                    var file = Request.Files[i];
-                    var fileName = Path.GetFileName(file.FileName);
-                    var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
-                    var serverPath = Path.Combine(dirPath + "\\", fileName);
-                    var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
-                    file.SaveAs(serverPath);
-                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
-                }
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        var file = Request.Files[i];
+                        var fileName = Path.GetFileName(file.FileName);
+                        var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
+                        var serverPath = Path.Combine(dirPath + "\\", fileName);
+                        var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
+                        file.SaveAs(serverPath);
+                        gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
+                    }
 
-                foreach (var p in gallery.Pictures)
-                    _context.Pictures.Add(p);
+                    foreach (var p in gallery.Pictures)
+                        _context.Pictures.Add(p);
+                }
             }            
 
             _context.SaveChanges();

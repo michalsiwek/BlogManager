@@ -55,7 +55,8 @@
                 <hr />
                 <div class="form-group">
                     <div class="text-center">
-                        <input id="show-preview" type="button" value="Preview" class="btn btn-default btn-bg" />
+                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Entries")'" />
+                        <input id="show-preview" type="button" value="Preview" class="btn btn-primary btn-bg" />
                         <input type="submit" value="Save" class="btn btn-success btn-bg" />
                     </div>
                 </div>
