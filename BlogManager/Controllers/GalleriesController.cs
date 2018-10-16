@@ -75,7 +75,7 @@ namespace BlogManager.Controllers
         {
             var dbGallery = _context.Galleries
                 .Include(g => g.Pictures)
-                .SingleOrDefault(e => e.Id == gallery.Id);
+                .SingleOrDefault(g => g.Id == gallery.Id);
 
             gallery.Pictures = new List<Picture>();
 
@@ -88,7 +88,7 @@ namespace BlogManager.Controllers
                 _context.Galleries.Add(gallery);
                 _context.SaveChanges();
 
-                if(!Request.Files.AllKeys[0].Equals("files"))
+                if(Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
                 {
                     var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
 
@@ -115,7 +115,7 @@ namespace BlogManager.Controllers
                 dbGallery.Description = gallery.Description;
                 dbGallery.IsVisible = gallery.IsVisible;
 
-                if (!Request.Files.AllKeys[0].Equals("files"))
+                if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
                 {
                     for (int i = 0; i < Request.Files.Count; i++)
                     {
