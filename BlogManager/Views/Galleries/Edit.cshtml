@@ -29,10 +29,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    @foreach (var pic in Model.Gallery.Pictures)
-                    {
-                        @Html.Raw("<img src='" + pic.Url + "'/>");
-                    }
+                    <div id="gallery-container">
+                        @foreach (var pic in Model.Gallery.Pictures)
+                        {
+                            <div class="gallery-item">
+                                <div class="img-container">
+                                    @Html.Raw("<img src='" + pic.Url + "' img-id='" + pic.Id + "'/>")
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <br />
                 <div class="form-group row">
@@ -46,6 +52,7 @@
                         <input id="upload-file-info" type="text" class="form-control" readonly>
                     </div>
                 </div>
+                @Html.HiddenFor(g => g.Gallery.Id)
                 <br />
                 <hr />
                 <div class="form-group">

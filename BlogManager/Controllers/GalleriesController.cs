@@ -74,15 +74,17 @@ namespace BlogManager.Controllers
         public ActionResult Save(Gallery gallery)
         {
             var dbGallery = _context.Galleries
+                .Include(g => g.Pictures)
                 .SingleOrDefault(e => e.Id == gallery.Id);
+
+            gallery.Pictures = new List<Picture>();
 
             if (dbGallery == null)
             {
                 gallery.CreateDate = DateTime.Now;
                 gallery.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 gallery.IsVisible = false;
-                gallery.Pictures = new List<Picture>();
-                
+
                 _context.Galleries.Add(gallery);
                 _context.SaveChanges();
                 var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
@@ -93,9 +95,10 @@ namespace BlogManager.Controllers
                     var fileName = Path.GetFileName(file.FileName);
                     var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
                     Directory.CreateDirectory(dirPath);
-                    var path = Path.Combine(dirPath + "\\", fileName);
-                    file.SaveAs(path);
-                    gallery.Pictures.Add(new Picture(file.FileName, path, DateTime.Now));
+                    var serverPath = Path.Combine(dirPath + "\\", fileName);
+                    var dbPath = string.Format("/Pictures/{0}/{1}", galleryId, fileName);
+                    file.SaveAs(serverPath);
+                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
                 }
 
                 foreach (var p in gallery.Pictures)
@@ -103,7 +106,24 @@ namespace BlogManager.Controllers
             }
             else
             {
-                // EDIT FORM
+                dbGallery.Title = gallery.Title;
+                dbGallery.Description = gallery.Description;
+                dbGallery.IsVisible = gallery.IsVisible;
+
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    var file = Request.Files[i];
+                    var fileName = Path.GetFileName(file.FileName);
+                    var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
+                    var serverPath = Path.Combine(dirPath + "\\", fileName);
+                    var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
+                    file.SaveAs(serverPath);
+                    dbGallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
+                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
+                }
+
+                foreach (var p in gallery.Pictures)
+                    _context.Pictures.Add(p);
             }            
 
             _context.SaveChanges();
