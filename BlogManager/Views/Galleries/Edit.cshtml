@@ -46,6 +46,27 @@
                                 <div class="img-container">
                                     @Html.Raw("<img src='" + pic.Url + "' img-id='" + pic.Id + "'/>")
                                 </div>
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                @Html.Raw("<img src='" + pic.Url + "'/>")
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>
@@ -55,7 +76,7 @@
                     <div class="input-group col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
                         <label class="input-group-btn">
                             <span class="btn btn-default">
-                                Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><input id="files-selector" type="file" name="files" style="display: none;" enctype = "multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
+                                Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><input id="files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
                             </span>
                         </label>
                         <input id="upload-file-info" type="text" class="form-control" readonly>
@@ -78,4 +99,9 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
+    <script>
+        $('.img-container').click(function (event) {
+            $('#myModal').modal();
+        });
+    </script>
 }
