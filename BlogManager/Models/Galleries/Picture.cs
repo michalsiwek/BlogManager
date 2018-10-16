@@ -25,5 +25,14 @@ namespace BlogManager.Models.Galleries
             Url = url;
             UploadDate = uploadDate;
         }
+
+        public Picture(string fileName, string url, DateTime uploadDate, int galleryId)
+        {
+            Id = Guid.NewGuid();
+            FileName = fileName;
+            Url = url;
+            UploadDate = uploadDate;
+            GalleryId = galleryId;
+        }
     }
 }
