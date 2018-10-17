@@ -9,5 +9,10 @@ namespace BlogManager.Models
     public class GalleryViewModel
     {
         public Gallery Gallery { get; set; }
+        public GalleryViewModel() { }
+        public GalleryViewModel(Gallery gallery)
+        {
+            Gallery = gallery;
+        }
     }
 }

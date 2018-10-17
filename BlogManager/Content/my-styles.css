@@ -206,14 +206,17 @@ input[type="checkbox"]:checked + .slider:before {
 }
 
 /* Galleries Pictures */
-#gallery-container {
+#test2 {
+    width: 1300px;
+    max-width: 1300px;
+    left: -260px;
     position: relative;
-    width: 80vw;
-    margin-left: calc(-40vw + 50%);
+}
+#gallery-container {
+    text-align: center;
     margin-top: 10px;
     margin-bottom: 50px;
     font-size: 0;
-    max-width: 1300px;
 }
 
 .gallery-item {
@@ -228,16 +231,16 @@ input[type="checkbox"]:checked + .slider:before {
     overflow: hidden;
 }
 
-.img-container img {
+.img-container .gallery-picture {
     width: 100%;
     min-width: 100%;
     min-height: 100%;
-    opacity: 0.9;
+    opacity: 0.6;
     transition: all 0.3s linear;
     -webkit-backface-visibility: hidden;
 }
 
-.gallery-item:hover img {
+.gallery-item:hover .gallery-picture {
     -ms-transform: scale(1.01) translateZ(0); /* IE 9 */
     -webkit-transform: scale(1.01) translateZ(0); /* Chrome, Safari, Opera */
     transform: scale(1.01) translateZ(0);

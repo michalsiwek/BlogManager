@@ -60,10 +60,7 @@ namespace BlogManager.Controllers
             if (dbGallery == null)
                 return HttpNotFound();
 
-            var viewModel = new GalleryViewModel
-            {
-                Gallery = dbGallery
-            };
+            var viewModel = new GalleryViewModel(dbGallery);
 
             viewModel.Gallery.Pictures = _context.Pictures.Where(p => p.GalleryId == id).ToList();
 

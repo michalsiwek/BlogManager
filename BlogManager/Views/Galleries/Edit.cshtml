@@ -38,36 +38,38 @@
                         </label>
                     </span>
                 </div>
-                <div class="form-group row">
-                    <div id="gallery-container" class="text-center">
+                <div id="test2" class="form-group row">
+                    <div id="gallery-container">
                         @foreach (var pic in Model.Gallery.Pictures)
                         {
-                            <div class="gallery-item">
-                                <div class="img-container">
-                                    @Html.Raw("<img src='" + pic.Url + "' img-id='" + pic.Id + "'/>")
-                                </div>
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                     aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                        <div class="gallery-item">
+                            <div class="img-container">
+                                @Html.Raw("<img src='" + pic.Url + "' class='gallery-picture' img-id='" + pic.Id + "'/>")
+                            </div>
+                            <div class="modal fade" id="modal-@pic.Id" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close modal-close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                @Html.Raw("<img style='width: 100%;' id='modal-picture' src='" + pic.Url + "' />")
                                             </div>
-                                            <div class="modal-body">
-                                                @Html.Raw("<img src='" + pic.Url + "'/>")
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         }
                     </div>
                 </div>
@@ -101,7 +103,9 @@
     @Scripts.Render("~/bundles/custom")
     <script>
         $('.img-container').click(function (event) {
-            $('#myModal').modal();
+            var picId = $(this).children('.gallery-picture').attr('img-id');
+            var modalId = "#modal-" + picId;
+            $(modalId).modal();
         });
     </script>
 }
