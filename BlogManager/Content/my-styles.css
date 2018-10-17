@@ -200,19 +200,16 @@ input[type="checkbox"]:checked + .slider:before {
     border-radius: 50%;
 }
 
-/* FILE INPUT */
-[hidden] {
-    display: none !important;
+/* File Input */
+.file-input-container {
+    padding: 0 25px 0 0;
 }
 
 /* Galleries Pictures */
-#test2 {
-    width: 1300px;
-    max-width: 1300px;
-    left: -260px;
-    position: relative;
-}
 #gallery-container {
+    position: relative;
+    width: 140%;
+    left: -20%;
     text-align: center;
     margin-top: 10px;
     margin-bottom: 50px;
