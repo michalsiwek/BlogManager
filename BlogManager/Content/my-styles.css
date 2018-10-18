@@ -243,3 +243,9 @@ input[type="checkbox"]:checked + .slider:before {
     transform: scale(1.01) translateZ(0);
     opacity: 1;
 }
+
+/* PIcture edit partial view */
+.pic-desc-text-area {
+    min-height: 150px;
+    resize: none;
+}

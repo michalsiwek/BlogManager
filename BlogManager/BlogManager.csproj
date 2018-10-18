@@ -284,6 +284,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Accounts\AccountType.cs" />
+    <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DbRepository.cs" />
     <Compile Include="Startup.cs" />
@@ -369,6 +370,7 @@
     <Content Include="Views\Galleries\Index.cshtml" />
     <Content Include="Views\Galleries\New.cshtml" />
     <Content Include="Views\Galleries\Edit.cshtml" />
+    <Content Include="Views\Galleries\_PictureEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

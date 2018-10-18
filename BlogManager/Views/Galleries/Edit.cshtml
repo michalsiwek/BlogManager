@@ -12,7 +12,7 @@
         <section>
             @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <h4 class="text-center">Edit current gallery</h4>
+                <h4 class="text-center">Edit gallery</h4>
                 <hr />
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Gallery.Title, new { @class = "col-md-12 control-label entry-form-label" })
@@ -38,41 +38,6 @@
                         </label>
                     </span>
                 </div>
-                <div id="test2" class="form-group row">
-                    <div id="gallery-container">
-                        @foreach (var pic in Model.Gallery.Pictures)
-                        {
-                        <div class="gallery-item">
-                            <div class="img-container">
-                                @Html.Raw("<img src='" + pic.Url + "' class='gallery-picture' img-id='" + pic.Id + "'/>")
-                            </div>
-                            <div class="modal fade" id="modal-@pic.Id" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close modal-close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div>
-                                                @Html.Raw("<img style='width: 100%;' id='modal-picture' src='" + pic.Url + "' />")
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        }
-                    </div>
-                </div>
                 <div class="form-group row">
                     @Html.LabelFor(m => m.Gallery.Pictures, new { @class = "col-md-12 control-label entry-form-label" })
                     <div class="file-input-container">
@@ -96,6 +61,41 @@
                     </div>
                 </div>
             }
+            <br />
+            <br />
+            <h4 class="text-center">Edit current pictures</h4>
+            <hr />
+            <div class="form-group row">
+                <div id="gallery-container">
+                    @foreach (var picture in Model.Gallery.Pictures)
+                    {
+                        <div class="gallery-item">
+                            <div class="img-container">
+                                @Html.Raw("<img src='" + picture.Url + "' class='gallery-picture' img-id='" + picture.Id + "'/>")
+                            </div>
+                            <div class="modal fade" id="modal-@picture.Id" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close modal-close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="form-content">
+                                                @Html.Action("PictureEdit", "Galleries", new { id = picture.Id })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         </section>
     </div>
 </div>

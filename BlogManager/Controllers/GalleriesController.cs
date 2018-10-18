@@ -180,5 +180,39 @@ namespace BlogManager.Controllers
             return RedirectToAction("Index", "Galleries");
         }
 
+        public ActionResult PictureEdit(Guid id)
+        {
+            var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == id);
+
+            if (dbPicture == null)
+                return HttpNotFound();
+
+            PictureViewModel viewModel = new PictureViewModel();
+            viewModel.Picture = dbPicture;
+
+            return PartialView("_PictureEdit", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult PictureSaveChanges(Picture picture)
+        {
+            var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == picture.Id);
+
+            if (dbPicture == null)
+                return HttpNotFound();
+
+            dbPicture.Author = picture.Author;
+            dbPicture.Descripton = picture.Descripton;
+
+            _context.SaveChanges();
+
+            GalleryViewModel viewModel = new GalleryViewModel();
+            viewModel.Gallery = _context.Galleries
+                .Include(g => g.Pictures)
+                .SingleOrDefault(g => g.Id == picture.GalleryId);
+
+            return View("Edit", viewModel);
+        }
+
     }
 }
