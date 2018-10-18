@@ -26,6 +26,7 @@ namespace BlogManager
             // Custom scripts
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                         "~/Scripts/Custom/preview.js",
+                        "~/Scripts/Custom/open-modal.js",
                         "~/Scripts/Custom/pictures-upload.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

@@ -71,15 +71,12 @@
                                         <label class="input-group-btn">
                                             <span id="browse-pic-bt" class="btn btn-default">
                                                 Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                <input id="files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
+                                                <input id="edit-gal-files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
                                             </span>
                                         </label>
                                         <input id="upload-file-info" type="text" class="form-control" style="border-radius: 0 4px 4px 0;" readonly>
                                         <label class="input-group-btn">
-                                            <span id="add-pic-btn" class="btn btn-primary" style="border-radius: 4px; left: 5px;">
-                                                Add pictures&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                <input type="submit" style="display: none;" value="Add pictures"/>
-                                            </span>
+                                            <input id="add-pic-btn" type="submit" value="Add Pictures" class="btn btn-success btn-bg" disabled />
                                         </label>
 
                                     </div>
@@ -136,11 +133,4 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
-    <script>
-        $('.img-container').click(function (event) {
-            var picId = $(this).children('.gallery-picture').attr('img-id');
-            var modalId = "#modal-" + picId;
-            $(modalId).modal();
-        });
-    </script>
 }
