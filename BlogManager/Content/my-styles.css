@@ -251,6 +251,15 @@ input[type="checkbox"]:checked + .slider:before {
 
 /* Picture edit partial view */
 .pic-desc-text-area {
-    min-height: 150px;
+    min-height: 100px;
     resize: none;
+}
+
+#browse-pic-bt {
+    left: 20px;
+    width: 150px;
+    min-width: 70px;
+}
+.file-input-container {
+    margin-top: 10px;
 }
