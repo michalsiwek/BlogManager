@@ -263,3 +263,7 @@ input[type="checkbox"]:checked + .slider:before {
 .file-input-container {
     margin-top: 10px;
 }
+
+body {
+    overflow-y: overlay;
+}

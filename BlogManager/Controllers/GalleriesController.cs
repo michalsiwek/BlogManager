@@ -238,5 +238,28 @@ namespace BlogManager.Controllers
             return View("Edit", viewModel);
         }
 
+        public ActionResult DeletePicture(Guid id)
+        {
+            var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);
+            if (picToDelete == null)
+                return HttpNotFound();
+
+            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            /*if (account == null)
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
+
+            _context.Pictures.Remove(picToDelete);
+            _context.SaveChanges();
+
+            var viewModel = new GalleryViewModel
+            {
+                Gallery = _context.Galleries
+                    .Include(g => g.Pictures)
+                    .SingleOrDefault(g => g.Id == picToDelete.GalleryId)
+            };
+
+            return View($"Edit", viewModel);
+        }
+
     }
 }
