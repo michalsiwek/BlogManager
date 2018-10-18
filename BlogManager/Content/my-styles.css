@@ -244,7 +244,12 @@ input[type="checkbox"]:checked + .slider:before {
     opacity: 1;
 }
 
-/* PIcture edit partial view */
+.edit-gallery-tab {
+    width: 50%;
+    text-align: center;
+}
+
+/* Picture edit partial view */
 .pic-desc-text-area {
     min-height: 150px;
     resize: none;

@@ -10,90 +10,100 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <h4 class="text-center">Edit gallery</h4>
-                <hr />
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.Gallery.Title, new { @class = "col-md-12 control-label entry-form-label" })
-                    <div>
-                        @Html.TextBoxFor(m => m.Gallery.Title, new { @class = "form-control center-block entry-form-control" })
-                        @Html.ValidationMessageFor(m => m.Gallery.Title, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.Gallery.Description, new { @class = "col-md-12 control-label entry-form-label" })
-                    <div>
-                        @Html.TextAreaFor(m => m.Gallery.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
-                        @Html.ValidationMessageFor(m => m.Gallery.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <br />
-                <div class="form-group row">
-                    @Html.LabelFor(g => g.Gallery.IsVisible, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        <label class="switch">
-                            @Html.CheckBoxFor(g => g.Gallery.IsVisible)
-                            <div class="slider round"></div>
-                        </label>
-                    </span>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.Gallery.Pictures, new { @class = "col-md-12 control-label entry-form-label" })
-                    <div class="file-input-container">
-                        <div class="input-group col-sm-offset-3 col-xs-offset-1">
-                            <label class="input-group-btn">
-                                <span class="btn btn-default">
-                                    Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><input id="files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
-                                </span>
-                            </label>
-                            <input id="upload-file-info" type="text" class="form-control" readonly>
-                        </div>
-                    </div>
-                </div>
-                @Html.HiddenFor(g => g.Gallery.Id)
-                <br />
-                <hr />
-                <div class="form-group">
-                    <div class="text-center">
-                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Galleries")'" />
-                        <input id="submit-gallery-form" type="submit" value="Save" class="btn btn-success btn-bg" />
-                    </div>
-                </div>
-            }
-            <br />
-            <br />
-            <h4 class="text-center">Edit current pictures</h4>
-            <hr />
-            <div class="form-group row">
-                <div id="gallery-container">
-                    @foreach (var picture in Model.Gallery.Pictures)
+            <ul class="nav nav-tabs">
+                <li class="edit-gallery-tab active"><a href="#gallery-data" data-toggle="tab" aria-expanded="true">Gallery Data</a></li>
+                <li class="edit-gallery-tab"><a href="#gallery-pictures" data-toggle="tab" aria-expanded="false">Pictures</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="gallery-data">
+                    @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
-                        <div class="gallery-item">
-                            <div class="img-container">
-                                @Html.Raw("<img src='" + picture.Url + "' class='gallery-picture' img-id='" + picture.Id + "'/>")
+                        <br />
+                        <h4 class="text-center">Edit gallery data</h4>
+                        <hr />
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.Gallery.Title, new { @class = "col-md-12 control-label entry-form-label" })
+                            <div>
+                                @Html.TextBoxFor(m => m.Gallery.Title, new { @class = "form-control center-block entry-form-control" })
+                                @Html.ValidationMessageFor(m => m.Gallery.Title, "", new { @class = "text-danger" })
                             </div>
-                            <div class="modal fade" id="modal-@picture.Id" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close modal-close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div id="form-content">
-                                                @Html.Action("PictureEdit", "Galleries", new { id = picture.Id })
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.Gallery.Description, new { @class = "col-md-12 control-label entry-form-label" })
+                            <div>
+                                @Html.TextAreaFor(m => m.Gallery.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
+                                @Html.ValidationMessageFor(m => m.Gallery.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group row">
+                            @Html.LabelFor(g => g.Gallery.IsVisible, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                            <span class="col-md-6 col-sm-6 col-xs-6">
+                                <label class="switch">
+                                    @Html.CheckBoxFor(g => g.Gallery.IsVisible)
+                                    <div class="slider round"></div>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.Gallery.Pictures, new { @class = "col-md-12 control-label entry-form-label" })
+                            <div class="file-input-container">
+                                <div class="input-group col-sm-offset-3 col-xs-offset-1">
+                                    <label class="input-group-btn">
+                                        <span class="btn btn-default">
+                                            Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><input id="files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
+                                        </span>
+                                    </label>
+                                    <input id="upload-file-info" type="text" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        @Html.HiddenFor(g => g.Gallery.Id)
+                        <br />
+                        <hr />
+                        <div class="form-group">
+                            <div class="text-center">
+                                <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Galleries")'" />
+                                <input id="submit-gallery-form" type="submit" value="Save" class="btn btn-success btn-bg" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane fade" id="gallery-pictures">
+                    <br />
+                    <h4 class="text-center">Edit gallery pictures</h4>
+                    <hr />
+                    <div class="form-group row">
+                        <div id="gallery-container">
+                            @foreach (var picture in Model.Gallery.Pictures)
+                            {
+                                <div class="gallery-item">
+                                    <div class="img-container">
+                                        @Html.Raw("<img src='" + picture.Url + "' class='gallery-picture' img-id='" + picture.Id + "'/>")
+                                    </div>
+                                    <div class="modal fade" id="modal-@picture.Id" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close modal-close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="form-content">
+                                                        @Html.Action("PictureEdit", "Galleries", new { id = picture.Id })
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
         </section>
