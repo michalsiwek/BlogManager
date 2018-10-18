@@ -11,11 +11,11 @@
     <div class="col-md-8 col-md-offset-2">
         <section>
             <ul class="nav nav-tabs">
-                <li class="edit-gallery-tab active"><a href="#gallery-data" data-toggle="tab" aria-expanded="true">Gallery Data</a></li>
-                <li class="edit-gallery-tab"><a href="#gallery-pictures" data-toggle="tab" aria-expanded="false">Pictures</a></li>
+                <li class="edit-gallery-tab active"><a href="#gallery-pictures" data-toggle="tab" aria-expanded="true">Pictures</a></li>
+                <li class="edit-gallery-tab"><a href="#gallery-data" data-toggle="tab" aria-expanded="false">Gallery Data</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="gallery-data">
+                <div class="tab-pane fade" id="gallery-data">
                     @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <br />
@@ -55,7 +55,7 @@
                         </div>
                     }
                 </div>
-                <div class="tab-pane fade" id="gallery-pictures">
+                <div class="tab-pane fade active in" id="gallery-pictures">
                     <br />
                     <h4 class="text-center">Edit gallery pictures</h4>
                     <hr />
