@@ -1,10 +1,15 @@
 ﻿@using BlogManager.Models
 @model PictureViewModel
 
+@using (Html.BeginForm("DeletePicture", "Galleries", new { id = Model.Picture.Id }, FormMethod.Post))
+{
+    <input id="pic-del-btn" type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?')" />
+}
+
 @using (Html.BeginForm("PictureSaveChanges", "Galleries", FormMethod.Post, new { id = "form-pictureedit-appt" }))
 {
     @Html.ValidationSummary(true)
-    <img style='width: 100%;' id='modal-picture' src="@Model.Picture.Url" />
+    <img id='modal-picture' src="@Model.Picture.Url" />
     @Html.LabelFor(p => p.Picture.Author, new { @class = "control-label entry-form-label" })
     <div>
         @Html.TextBoxFor(p => p.Picture.Author, new { @class = "form-control center-block entry-form-control" })
@@ -18,8 +23,7 @@
     @Html.HiddenFor(p => p.Picture.GalleryId)
     @Html.HiddenFor(p => p.Picture.Id)
     <div class="modal-footer" style="margin-top: 20px;">
-        <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger modal-close" data-dismiss="modal" onclick="location.href='@Url.Action("DeletePicture", "Galleries", new {id = Model.Picture.Id})'">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-success">Save changes</button>
     </div>
 }

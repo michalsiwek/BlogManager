@@ -205,6 +205,10 @@ input[type="checkbox"]:checked + .slider:before {
     padding: 0 25px 0 0;
 }
 
+#upload-file-info {
+    max-width: 400px !important;
+}
+
 /* Galleries Pictures */
 #gallery-container {
     position: relative;
@@ -255,6 +259,11 @@ input[type="checkbox"]:checked + .slider:before {
     resize: none;
 }
 
+#modal-picture {
+    width: 100%;
+    border-radius: 4px;
+}
+
 #browse-pic-bt {
     left: 20px;
     width: 150px;
@@ -263,10 +272,15 @@ input[type="checkbox"]:checked + .slider:before {
     width: 150px;
     border-radius: 4px;
 }
+#pic-del-btn {
+    min-width: 100%;
+    margin-bottom: 10px;
+}
 .file-input-container {
     margin-top: 10px;
 }
 
+/* GLOBAL */
 body {
     overflow-y: overlay;
 }

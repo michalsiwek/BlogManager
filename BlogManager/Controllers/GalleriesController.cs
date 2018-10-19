@@ -52,6 +52,9 @@ namespace BlogManager.Controllers
 
         public ActionResult Edit(int id)
         {
+            if (!ModelState.IsValid)
+                return HttpNotFound();
+
             var dbGallery = _context.Galleries
                 .Include(g => g.Pictures)
                 .Include(g => g.Account)
@@ -194,10 +197,14 @@ namespace BlogManager.Controllers
 
             _context.SaveChanges();
 
-            GalleryViewModel viewModel = new GalleryViewModel();
-            viewModel.Gallery = _context.Galleries
-                .Include(g => g.Pictures)
-                .SingleOrDefault(g => g.Id == gallery.Id);
+            var viewModel = new GalleryViewModel
+            {
+                Gallery = _context.Galleries
+                    .Include(g => g.Pictures)
+                    .SingleOrDefault(g => g.Id == gallery.Id)
+            };
+
+            ModelState.Clear();
 
             return View("Edit", viewModel);
         }
@@ -238,6 +245,7 @@ namespace BlogManager.Controllers
             return View("Edit", viewModel);
         }
 
+        [HttpPost]
         public ActionResult DeletePicture(Guid id)
         {
             var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);
