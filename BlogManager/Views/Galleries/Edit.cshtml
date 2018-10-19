@@ -61,9 +61,10 @@
                     <hr />
                     @using (Html.BeginForm("UploadPictures", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
+                        @Html.ValidationSummary(true, "", new { @class = "text-center" })
                         <div class="form-group row">
                             <div style="margin-bottom: 65px;">
-                                @Html.LabelFor(m => m.Gallery.Pictures, new {@class = "col-md-12 control-label entry-form-label"})
+                                @Html.LabelFor(m => m.Gallery.Pictures, new { @class = "col-md-12 control-label entry-form-label" })
                             </div>
                             <div class="from-group">
                                 <div class="file-input-container">
@@ -78,7 +79,6 @@
                                         <label class="input-group-btn">
                                             <input id="add-pic-btn" type="submit" value="Add Pictures" class="btn btn-success btn-bg" disabled />
                                         </label>
-
                                     </div>
                                 </div>
                             </div>

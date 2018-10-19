@@ -169,6 +169,8 @@ namespace BlogManager.Controllers
         [HttpPost]
         public ActionResult UploadPictures(Gallery gallery)
         {
+            ModelState.Clear();
+
             var dbGallery = _context.Galleries
                 .Include(g => g.Pictures)
                 .SingleOrDefault(g => g.Id == gallery.Id);
@@ -177,7 +179,7 @@ namespace BlogManager.Controllers
 
             if (dbGallery == null)
                 return HttpNotFound();
-
+            
             if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
@@ -187,6 +189,11 @@ namespace BlogManager.Controllers
                     var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
                     var serverPath = Path.Combine(dirPath + "\\", fileName);
                     var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
+                    if (System.IO.File.Exists(serverPath))
+                    {
+                        ModelState.AddModelError("", "One or more files upload failed due to filename conflict");
+                        continue;
+                    }
                     file.SaveAs(serverPath);
                     gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
                 }
@@ -203,8 +210,6 @@ namespace BlogManager.Controllers
                     .Include(g => g.Pictures)
                     .SingleOrDefault(g => g.Id == gallery.Id)
             };
-
-            ModelState.Clear();
 
             return View("Edit", viewModel);
         }
@@ -258,6 +263,12 @@ namespace BlogManager.Controllers
 
             _context.Pictures.Remove(picToDelete);
             _context.SaveChanges();
+
+            var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", picToDelete.GalleryId));
+            var serverPath = Path.Combine(dirPath + "\\", picToDelete.FileName);
+
+            if (System.IO.File.Exists(serverPath))
+                System.IO.File.Delete(serverPath);
 
             var viewModel = new GalleryViewModel
             {
