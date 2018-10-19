@@ -10,6 +10,7 @@ using BlogManager.Models.Entries;
 using BlogManager.Models.Categories;
 using Microsoft.Owin;
 using Microsoft.AspNet.Identity.Owin;
+using BlogManager.Models.Galleries;
 
 namespace BlogManager.Models
 {
@@ -47,6 +48,8 @@ namespace BlogManager.Models
         public DbSet<Entry> Entries { get; set; }
         public DbSet<EntryCategory> EntryCategories { get; set; }
         public DbSet<Paragraph> Paragraphs { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
+        public DbSet<Gallery> Galleries { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection")

@@ -1,0 +1,23 @@
+﻿using BlogManager.Models.Accounts;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace BlogManager.Models.Galleries
+{
+    public class Gallery
+    {
+        public int Id { get; set; }
+        public Account Account { get; set; }
+        [Display(Name = "Add Pictures")]
+        public List<Picture> Pictures { get; set; }
+        [Required]
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime CreateDate { get; set; }
+        [Display(Name = "Is Visible")]
+        public bool IsVisible { get; set; }
+    }
+}

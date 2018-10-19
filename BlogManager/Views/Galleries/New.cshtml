@@ -1,0 +1,64 @@
+﻿@using BlogManager.Models
+@model GalleryViewModel
+@{
+    ViewBag.Title = "New Gallery";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <section>
+            @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h4 class="text-center">Add new gallery</h4>
+                <hr />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Gallery.Title, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextBoxFor(m => m.Gallery.Title, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.Gallery.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Gallery.Description, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextAreaFor(m => m.Gallery.Description, new { @class = "form-control center-block entry-form-control entry-desc-text-area" })
+                        @Html.ValidationMessageFor(m => m.Gallery.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div style="margin-bottom: 65px;">
+                        @Html.LabelFor(m => m.Gallery.Pictures, new { @class = "col-md-12 control-label entry-form-label" })
+                    </div>
+                    <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-sm-offset-1 col-lg-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span id="browse-pic-bt" class="btn btn-default">
+                                    Browse&hellip; <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <input id="new-gal-files-selector" type="file" name="files" style="display: none;" enctype="multipart/form-data" accept=".jpg,.jpeg,.png" multiple>
+                                </span>
+                            </label>
+                            <input id="upload-file-info" type="text" class="form-control asd" readonly>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <hr />
+                <div class="form-group">
+                    <div class="text-center">
+                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Galleries")'" />
+                        <input id="submit-gallery-form" type="submit" value="Save" class="btn btn-success btn-bg" disabled />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+}
