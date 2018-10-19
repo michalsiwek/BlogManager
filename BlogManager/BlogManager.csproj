@@ -268,6 +268,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
+    <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />

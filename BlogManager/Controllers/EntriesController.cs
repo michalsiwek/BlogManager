@@ -89,6 +89,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Entry entry)
         {
             var dbEntry = _context.Entries
@@ -141,6 +142,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Validate(int entryId, string isVisible)
         {
             var entryToValidate = _context.Entries.SingleOrDefault(e => e.Id == entryId);
@@ -172,6 +174,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int entryId)
         {
             var entryToDelete = _context.Entries.SingleOrDefault(e => e.Id == entryId);

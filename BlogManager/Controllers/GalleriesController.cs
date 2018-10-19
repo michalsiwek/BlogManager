@@ -71,6 +71,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Gallery gallery)
         {
             var dbGallery = _context.Galleries
@@ -122,6 +123,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Validate(int galleryId, string isVisible)
         {
             var galleryToValidate = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
@@ -150,6 +152,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int galleryId)
         {
             var galleryToDelete = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
@@ -167,6 +170,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UploadPictures(Gallery gallery)
         {
             ModelState.Clear();
@@ -228,6 +232,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PictureSaveChanges(Picture picture)
         {
             var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == picture.Id);
@@ -251,6 +256,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DeletePicture(Guid id)
         {
             var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);

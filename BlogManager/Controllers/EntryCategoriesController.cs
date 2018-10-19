@@ -60,6 +60,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(EntryCategory entryCategory)
         {
             var dbEntryCat = _context.EntryCategories.SingleOrDefault(c => c.Id == entryCategory.Id);
@@ -83,6 +84,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Activate(int catId, string isActive)
         {
             var categoryToActivate = _context.EntryCategories.SingleOrDefault(c => c.Id == catId);
@@ -111,6 +113,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int catId)
         {
             var categoryToDelete = _context.EntryCategories.SingleOrDefault(e => e.Id == catId);
