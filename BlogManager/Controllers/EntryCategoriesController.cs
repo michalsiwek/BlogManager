@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BlogManager.Controllers
 {
+    [Authorize(Roles = AccountTypeName.Admin + "," + AccountTypeName.Editor)]
     public class EntryCategoriesController : Controller
     {
         private ApplicationDbContext _context;
