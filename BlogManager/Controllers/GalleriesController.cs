@@ -130,10 +130,6 @@ namespace BlogManager.Controllers
             if (galleryToValidate == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
             switch (isVisible.ToLower())
             {
                 case "true":
@@ -159,10 +155,6 @@ namespace BlogManager.Controllers
             if (galleryToDelete == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
             _context.Galleries.Remove(galleryToDelete);
             _context.SaveChanges();
 
@@ -174,6 +166,8 @@ namespace BlogManager.Controllers
         public ActionResult UploadPictures(Gallery gallery)
         {
             ModelState.Clear();
+            var filenameConflict = false;
+            int filenameConflictsCount = 0;
 
             var dbGallery = _context.Galleries
                 .Include(g => g.Pictures)
@@ -193,11 +187,14 @@ namespace BlogManager.Controllers
                     var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
                     var serverPath = Path.Combine(dirPath + "\\", fileName);
                     var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
+
                     if (System.IO.File.Exists(serverPath))
                     {
-                        ModelState.AddModelError("", "One or more files upload failed due to filename conflict");
+                        filenameConflict = true;
+                        filenameConflictsCount++;
                         continue;
                     }
+
                     file.SaveAs(serverPath);
                     gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
                 }
@@ -214,6 +211,9 @@ namespace BlogManager.Controllers
                     .Include(g => g.Pictures)
                     .SingleOrDefault(g => g.Id == gallery.Id)
             };
+
+            if(filenameConflict)
+                ModelState.AddModelError("", $"{filenameConflictsCount} file(s) upload failed due to filename conflict");
 
             return View("Edit", viewModel);
         }
@@ -262,10 +262,6 @@ namespace BlogManager.Controllers
             var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);
             if (picToDelete == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             _context.Pictures.Remove(picToDelete);
             _context.SaveChanges();

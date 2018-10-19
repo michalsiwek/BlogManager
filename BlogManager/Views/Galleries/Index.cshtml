@@ -51,6 +51,7 @@
                             <li>
                                 @using (Html.BeginForm("Delete", "Galleries", new { galleryId = gallery.Id }, FormMethod.Post))
                                 {
+                                    @Html.AntiForgeryToken()
                                     <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
                                 }
                             </li>
@@ -60,6 +61,7 @@
                                 <li>
                                     @using (Html.BeginForm("Validate", "Galleries", new { galleryId = gallery.Id, isVisible = !gallery.IsVisible }, FormMethod.Post))
                                     {
+                                        @Html.AntiForgeryToken()
                                         <input type="submit" value="Hide" class="btn-dropdown-item" />
                                     }
                                 </li>
@@ -69,6 +71,7 @@
                                 <li>
                                     @using (Html.BeginForm("Validate", "Galleries", new { galleryId = gallery.Id, isVisible = !gallery.IsVisible }, FormMethod.Post))
                                     {
+                                        @Html.AntiForgeryToken()
                                         <input type="submit" value="Publish" class="btn-dropdown-item" />
                                     }
                                 </li>

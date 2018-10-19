@@ -148,12 +148,8 @@ namespace BlogManager.Controllers
             var entryToValidate = _context.Entries.SingleOrDefault(e => e.Id == entryId);
             if (entryToValidate == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
-            entryToValidate.LastModifiedBy = account;
+ 
+            entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
             entryToValidate.LastModification = DateTime.Now;
 
             switch (isVisible.ToLower())
@@ -180,10 +176,6 @@ namespace BlogManager.Controllers
             var entryToDelete = _context.Entries.SingleOrDefault(e => e.Id == entryId);
             if (entryToDelete == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             _context.Entries.Remove(entryToDelete);
             _context.SaveChanges();

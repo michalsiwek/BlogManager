@@ -12,6 +12,7 @@
         <section>
             @using (Html.BeginForm("Save", "EntryCategories", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
                 <h4 class="text-center">Add new category</h4>
                 <hr />
                 <div class="form-group row">

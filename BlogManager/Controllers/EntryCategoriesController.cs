@@ -92,10 +92,6 @@ namespace BlogManager.Controllers
             if (categoryToActivate == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
             switch (isActive.ToLower())
             {
                 case "true":
@@ -120,10 +116,6 @@ namespace BlogManager.Controllers
             var categoryToDelete = _context.EntryCategories.SingleOrDefault(e => e.Id == catId);
             if (categoryToDelete == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             _context.EntryCategories.Remove(categoryToDelete);
             _context.SaveChanges();

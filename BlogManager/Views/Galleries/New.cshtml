@@ -12,6 +12,7 @@
         <section>
             @using (Html.BeginForm("Save", "Galleries", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                @Html.AntiForgeryToken()
                 <h4 class="text-center">Add new gallery</h4>
                 <hr />
                 <div class="form-group row">
