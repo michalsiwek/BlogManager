@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
 using BlogManager.Models.Accounts;
 using BlogManager.Repositories;
@@ -112,9 +113,13 @@ namespace BlogManager.Controllers
                 {
                     var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
 
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (var i = 0; i < Request.Files.Count; i++)
                     {
                         var file = Request.Files[i];
+
+                        if (!FileSecurityValidation(file))
+                            continue;
+
                         var fileName = Path.GetFileName(file.FileName);
                         var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
                         Directory.CreateDirectory(dirPath);
@@ -213,9 +218,13 @@ namespace BlogManager.Controllers
             
             if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
             {
-                for (int i = 0; i < Request.Files.Count; i++)
+                for (var i = 0; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
+
+                    if(!FileSecurityValidation(file))
+                        continue;
+
                     var fileName = Path.GetFileName(file.FileName);
                     var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
                     var serverPath = Path.Combine(dirPath + "\\", fileName);
@@ -236,6 +245,7 @@ namespace BlogManager.Controllers
                     _context.Pictures.Add(p);
             }
 
+            GetSignedUser();
             dbGallery.LastModification = DateTime.Now;
             dbGallery.LastModifiedBy = _signedUser;
 
@@ -339,6 +349,16 @@ namespace BlogManager.Controllers
             };
 
             return View($"Edit", viewModel);
+        }
+
+        public bool FileSecurityValidation(HttpPostedFileBase file)
+        {
+            var fileFormatValidation = file.FileName.EndsWith(".jpg") ||
+                                       file.FileName.EndsWith(".jpeg") ||
+                                       file.FileName.EndsWith(".png");
+            var fileContentValidation = file.ContentType.StartsWith("image/");
+
+            return (fileFormatValidation && fileContentValidation);
         }
 
     }
