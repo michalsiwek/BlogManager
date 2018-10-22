@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
+using BlogManager.Helpers;
 using BlogManager.Models.Accounts;
 using BlogManager.Repositories;
 
@@ -19,12 +20,14 @@ namespace BlogManager.Controllers
         private ApplicationDbContext _context;
         private DbRepository _dbRepository;
         private Account _signedUser;
+        private IFileSecurityValidator _fileSecurityValidator;
 
         public GalleriesController()
         {
             _context = new ApplicationDbContext();
             _dbRepository = new DbRepository();
             _signedUser = new Account();
+            _fileSecurityValidator = new FileSecurityValidator();
         }
 
         protected override void Dispose(bool disposing)
@@ -117,7 +120,7 @@ namespace BlogManager.Controllers
                     {
                         var file = Request.Files[i];
 
-                        if (!FileSecurityValidation(file))
+                        if (!_fileSecurityValidator.FileSecurityValidation(file))
                             continue;
 
                         var fileName = Path.GetFileName(file.FileName);
@@ -222,7 +225,7 @@ namespace BlogManager.Controllers
                 {
                     var file = Request.Files[i];
 
-                    if(!FileSecurityValidation(file))
+                    if(!_fileSecurityValidator.FileSecurityValidation(file))
                         continue;
 
                     var fileName = Path.GetFileName(file.FileName);
@@ -349,16 +352,6 @@ namespace BlogManager.Controllers
             };
 
             return View($"Edit", viewModel);
-        }
-
-        public bool FileSecurityValidation(HttpPostedFileBase file)
-        {
-            var fileFormatValidation = file.FileName.EndsWith(".jpg") ||
-                                       file.FileName.EndsWith(".jpeg") ||
-                                       file.FileName.EndsWith(".png");
-            var fileContentValidation = file.ContentType.StartsWith("image/");
-
-            return (fileFormatValidation && fileContentValidation);
         }
 
     }

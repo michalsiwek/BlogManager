@@ -227,6 +227,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
+    <Compile Include="Helpers\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
