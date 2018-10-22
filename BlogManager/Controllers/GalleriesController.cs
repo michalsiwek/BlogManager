@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.IO;
+using BlogManager.Models.Accounts;
 using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
@@ -15,16 +16,26 @@ namespace BlogManager.Controllers
     public class GalleriesController : Controller
     {
         private ApplicationDbContext _context;
-        private DbRepository _dbRepository = new DbRepository();
+        private DbRepository _dbRepository;
+        private Account _signedUser;
 
         public GalleriesController()
         {
             _context = new ApplicationDbContext();
+            _dbRepository = new DbRepository();
+            _signedUser = new Account();
         }
 
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        private void GetSignedUser()
+        {
+            _signedUser = _context.Users
+                .Include(u => u.AccountType)
+                .SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
         }
 
         public ActionResult Index()
@@ -36,6 +47,10 @@ namespace BlogManager.Controllers
             {
                 Galleries = _context.Galleries.Include(e => e.Account).ToList()
             };
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                viewModel.Galleries = viewModel.Galleries.Where(e => e.Account.Equals(_signedUser)).ToList();
 
             return View(viewModel);
         }
@@ -62,6 +77,10 @@ namespace BlogManager.Controllers
 
             if (dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             var viewModel = new GalleryViewModel(dbGallery);
 
@@ -112,6 +131,10 @@ namespace BlogManager.Controllers
             }
             else
             {
+                GetSignedUser();
+                if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                    return RedirectToAction("Index", "Home");
+
                 dbGallery.Title = gallery.Title;
                 dbGallery.Description = gallery.Description;
                 dbGallery.IsVisible = gallery.IsVisible;
@@ -126,6 +149,10 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Validate(int galleryId, string isVisible)
         {
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                return RedirectToAction("Index", "Home");
+
             var galleryToValidate = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
             if (galleryToValidate == null)
                 return HttpNotFound();
@@ -154,6 +181,10 @@ namespace BlogManager.Controllers
             var galleryToDelete = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
             if (galleryToDelete == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !galleryToDelete.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             _context.Galleries.Remove(galleryToDelete);
             _context.SaveChanges();
@@ -221,9 +252,14 @@ namespace BlogManager.Controllers
         public ActionResult PictureEdit(Guid id)
         {
             var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == id);
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == dbPicture.GalleryId);
 
-            if (dbPicture == null)
+            if (dbPicture == null || dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             PictureViewModel viewModel = new PictureViewModel();
             viewModel.Picture = dbPicture;
@@ -236,9 +272,14 @@ namespace BlogManager.Controllers
         public ActionResult PictureSaveChanges(Picture picture)
         {
             var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == picture.Id);
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == dbPicture.GalleryId);
 
-            if (dbPicture == null)
+            if (dbPicture == null || dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             dbPicture.Author = picture.Author;
             dbPicture.Descripton = picture.Descripton;
@@ -260,8 +301,14 @@ namespace BlogManager.Controllers
         public ActionResult DeletePicture(Guid id)
         {
             var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);
-            if (picToDelete == null)
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == picToDelete.GalleryId);
+
+            if (picToDelete == null || dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             _context.Pictures.Remove(picToDelete);
             _context.SaveChanges();

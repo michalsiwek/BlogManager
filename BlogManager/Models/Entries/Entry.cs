@@ -45,6 +45,45 @@ namespace BlogManager.Models.Entries
 
         public Account LastModifiedBy { get; set; }
 
+        public void NormalizeContent()
+        {
+            var output = Content.Trim();
+            while (output.Contains("\r\n\r\n\r\n"))
+                output = output.Replace("\r\n\r\n\r\n", "\r\n\r\n");
+            Content = output;
+        }
+
+        public void NormalizeEntry()
+        {
+            Title = Title.Trim();
+            Description = Description.Trim();
+            NormalizeContent();
+        }
+
+        public void GetParagraphsFromContent()
+        {
+            List<Paragraph> output = new List<Paragraph>();
+
+            NormalizeContent();
+            var temp = Content;
+            int subContentId = 0;
+
+            temp = temp.Replace("\r\n\r\n", "|").Trim();
+            string[] paragraphs = temp.Split('|');
+
+            foreach (var p in paragraphs)
+            {
+                subContentId++;
+                output.Add(new Paragraph()
+                {
+                    SubContentId = subContentId,
+                    EntryId = Id,
+                    Body = p
+                });
+            }
+
+            Paragraphs = output;
+        }
 
         #region Overrides
 
@@ -55,18 +94,17 @@ namespace BlogManager.Models.Entries
 
             var temp = obj as Entry;
 
-            if (this.EntryCategory.Id == temp.EntryCategory.Id &&
-               this.Title.Equals(temp.Title) &&
-               this.Description.Equals(temp.Description) &&
-               this.Content.Equals(temp.Content))
+            if (EntryCategory.Id == temp.EntryCategory.Id &&
+               Title.Equals(temp.Title) &&
+               Description.Equals(temp.Description) &&
+               Content.Equals(temp.Content))
             {
                 if (ImageUrl == null)
                     return temp.ImageUrl == null;
-                else
-                    return ImageUrl.Equals(temp.ImageUrl);
+                return ImageUrl.Equals(temp.ImageUrl);
             }
-            else
-                return false;
+
+            return false;
         }
 
         #endregion

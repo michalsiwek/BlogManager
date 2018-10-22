@@ -36,16 +36,19 @@
                                 @Html.ValidationMessageFor(m => m.Gallery.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <br />
-                        <div class="form-group row">
-                            @Html.LabelFor(g => g.Gallery.IsVisible, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                            <span class="col-md-6 col-sm-6 col-xs-6">
-                                <label class="switch">
-                                    @Html.CheckBoxFor(g => g.Gallery.IsVisible)
-                                    <div class="slider round"></div>
-                                </label>
-                            </span>
-                        </div>
+                        if (User.IsInRole(AccountTypeName.Admin) || User.IsInRole(AccountTypeName.Editor))
+                        {
+                            <br />
+                            <div class="form-group row">
+                                @Html.LabelFor(g => g.Gallery.IsVisible, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                                <span class="col-md-6 col-sm-6 col-xs-6">
+                                    <label class="switch">
+                                        @Html.CheckBoxFor(g => g.Gallery.IsVisible)
+                                        <div class="slider round"></div>
+                                    </label>
+                                </span>
+                            </div>
+                        }
                         @Html.HiddenFor(g => g.Gallery.Id)
                         <hr />
                         <div class="form-group">
