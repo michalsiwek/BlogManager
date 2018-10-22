@@ -26,5 +26,9 @@ namespace BlogManager.Models.Galleries
         [Display(Name = "Is Visible")]
         public bool IsVisible { get; set; }
 
+        public Account LastModifiedBy { get; set; }
+
+        public DateTime? LastModification { get; set; }
+
     }
 }

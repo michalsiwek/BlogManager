@@ -138,6 +138,8 @@ namespace BlogManager.Controllers
                 dbGallery.Title = gallery.Title;
                 dbGallery.Description = gallery.Description;
                 dbGallery.IsVisible = gallery.IsVisible;
+                dbGallery.LastModification = DateTime.Now;
+                dbGallery.LastModifiedBy = _signedUser;
             }            
 
             _context.SaveChanges();
@@ -234,6 +236,9 @@ namespace BlogManager.Controllers
                     _context.Pictures.Add(p);
             }
 
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
+
             _context.SaveChanges();
 
             var viewModel = new GalleryViewModel
@@ -284,6 +289,9 @@ namespace BlogManager.Controllers
             dbPicture.Author = picture.Author;
             dbPicture.Descripton = picture.Descripton;
 
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
+
             _context.SaveChanges();
 
             var viewModel = new GalleryViewModel
@@ -311,6 +319,10 @@ namespace BlogManager.Controllers
                 return RedirectToAction("Index", "Home");
 
             _context.Pictures.Remove(picToDelete);
+
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
+
             _context.SaveChanges();
 
             var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", picToDelete.GalleryId));
