@@ -17,13 +17,18 @@ namespace BlogManager.Models.Accounts
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }
 
-        [StringLength(255)]
+        [StringLength(100)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [StringLength(255)]
+        [StringLength(100)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "Nickname")]
+        public string Nickname { get; set; }
 
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
