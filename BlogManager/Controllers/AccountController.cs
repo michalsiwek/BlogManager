@@ -12,6 +12,7 @@ using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
 using System.Net;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BlogManager.Controllers
 {
@@ -466,8 +467,12 @@ namespace BlogManager.Controllers
             if (dbAccount == null)
                 return HttpNotFound();
 
+
             dbAccount.IsActive = account.IsActive;
             dbAccount.AccountType = _context.Roles.SingleOrDefault(r => r.Id == account.AccountType.Id);
+
+            UserManager.AddToRole(dbAccount.Id, dbAccount.AccountType.Name);
+
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Accounts");

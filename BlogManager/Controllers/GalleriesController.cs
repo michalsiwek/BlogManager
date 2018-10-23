@@ -7,7 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
+using BlogManager.Helpers;
+using BlogManager.Models.Accounts;
 using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
@@ -15,16 +18,28 @@ namespace BlogManager.Controllers
     public class GalleriesController : Controller
     {
         private ApplicationDbContext _context;
-        private DbRepository _dbRepository = new DbRepository();
+        private DbRepository _dbRepository;
+        private Account _signedUser;
+        private IFileSecurityValidator _fileSecurityValidator;
 
         public GalleriesController()
         {
             _context = new ApplicationDbContext();
+            _dbRepository = new DbRepository();
+            _signedUser = new Account();
+            _fileSecurityValidator = new FileSecurityValidator();
         }
 
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        private void GetSignedUser()
+        {
+            _signedUser = _context.Users
+                .Include(u => u.AccountType)
+                .SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
         }
 
         public ActionResult Index()
@@ -36,6 +51,10 @@ namespace BlogManager.Controllers
             {
                 Galleries = _context.Galleries.Include(e => e.Account).ToList()
             };
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                viewModel.Galleries = viewModel.Galleries.Where(e => e.Account.Equals(_signedUser)).ToList();
 
             return View(viewModel);
         }
@@ -63,6 +82,10 @@ namespace BlogManager.Controllers
             if (dbGallery == null)
                 return HttpNotFound();
 
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
+
             var viewModel = new GalleryViewModel(dbGallery);
 
             viewModel.Gallery.Pictures = _context.Pictures.Where(p => p.GalleryId == id).ToList();
@@ -71,6 +94,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Gallery gallery)
         {
             var dbGallery = _context.Galleries
@@ -92,9 +116,13 @@ namespace BlogManager.Controllers
                 {
                     var galleryId = _dbRepository.GetRecentCreatedGalleryIdByAccount(gallery);
 
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    for (var i = 0; i < Request.Files.Count; i++)
                     {
                         var file = Request.Files[i];
+
+                        if (!_fileSecurityValidator.FileSecurityValidation(file))
+                            continue;
+
                         var fileName = Path.GetFileName(file.FileName);
                         var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", galleryId));
                         Directory.CreateDirectory(dirPath);
@@ -111,9 +139,15 @@ namespace BlogManager.Controllers
             }
             else
             {
+                GetSignedUser();
+                if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                    return RedirectToAction("Index", "Home");
+
                 dbGallery.Title = gallery.Title;
                 dbGallery.Description = gallery.Description;
                 dbGallery.IsVisible = gallery.IsVisible;
+                dbGallery.LastModification = DateTime.Now;
+                dbGallery.LastModifiedBy = _signedUser;
             }            
 
             _context.SaveChanges();
@@ -122,15 +156,16 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Validate(int galleryId, string isVisible)
         {
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                return RedirectToAction("Index", "Home");
+
             var galleryToValidate = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
             if (galleryToValidate == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             switch (isVisible.ToLower())
             {
@@ -150,15 +185,16 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int galleryId)
         {
             var galleryToDelete = _context.Galleries.SingleOrDefault(e => e.Id == galleryId);
             if (galleryToDelete == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !galleryToDelete.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             _context.Galleries.Remove(galleryToDelete);
             _context.SaveChanges();
@@ -167,9 +203,12 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult UploadPictures(Gallery gallery)
         {
             ModelState.Clear();
+            var filenameConflict = false;
+            int filenameConflictsCount = 0;
 
             var dbGallery = _context.Galleries
                 .Include(g => g.Pictures)
@@ -182,18 +221,25 @@ namespace BlogManager.Controllers
             
             if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
             {
-                for (int i = 0; i < Request.Files.Count; i++)
+                for (var i = 0; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
+
+                    if(!_fileSecurityValidator.FileSecurityValidation(file))
+                        continue;
+
                     var fileName = Path.GetFileName(file.FileName);
                     var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", dbGallery.Id));
                     var serverPath = Path.Combine(dirPath + "\\", fileName);
                     var dbPath = string.Format("/Pictures/{0}/{1}", dbGallery.Id, fileName);
+
                     if (System.IO.File.Exists(serverPath))
                     {
-                        ModelState.AddModelError("", "One or more files upload failed due to filename conflict");
+                        filenameConflict = true;
+                        filenameConflictsCount++;
                         continue;
                     }
+
                     file.SaveAs(serverPath);
                     gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
                 }
@@ -201,6 +247,10 @@ namespace BlogManager.Controllers
                 foreach (var p in gallery.Pictures)
                     _context.Pictures.Add(p);
             }
+
+            GetSignedUser();
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
 
             _context.SaveChanges();
 
@@ -211,15 +261,23 @@ namespace BlogManager.Controllers
                     .SingleOrDefault(g => g.Id == gallery.Id)
             };
 
+            if(filenameConflict)
+                ModelState.AddModelError("", $"{filenameConflictsCount} file(s) upload failed due to filename conflict");
+
             return View("Edit", viewModel);
         }
 
         public ActionResult PictureEdit(Guid id)
         {
             var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == id);
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == dbPicture.GalleryId);
 
-            if (dbPicture == null)
+            if (dbPicture == null || dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             PictureViewModel viewModel = new PictureViewModel();
             viewModel.Picture = dbPicture;
@@ -228,15 +286,24 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult PictureSaveChanges(Picture picture)
         {
             var dbPicture = _context.Pictures.SingleOrDefault(p => p.Id == picture.Id);
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == dbPicture.GalleryId);
 
-            if (dbPicture == null)
+            if (dbPicture == null || dbGallery == null)
                 return HttpNotFound();
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             dbPicture.Author = picture.Author;
             dbPicture.Descripton = picture.Descripton;
+
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
 
             _context.SaveChanges();
 
@@ -251,17 +318,24 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult DeletePicture(Guid id)
         {
             var picToDelete = _context.Pictures.SingleOrDefault(p => p.Id == id);
-            if (picToDelete == null)
+            var dbGallery = _context.Galleries.SingleOrDefault(g => g.Id == picToDelete.GalleryId);
+
+            if (picToDelete == null || dbGallery == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             _context.Pictures.Remove(picToDelete);
+
+            dbGallery.LastModification = DateTime.Now;
+            dbGallery.LastModifiedBy = _signedUser;
+
             _context.SaveChanges();
 
             var dirPath = Server.MapPath(string.Format("~/Pictures/{0}", picToDelete.GalleryId));

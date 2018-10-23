@@ -8,21 +8,31 @@ using System.Web.Mvc;
 using System.Net;
 using BlogManager.Models.Entries;
 using BlogManager.Helpers;
+using BlogManager.Models.Accounts;
 
 namespace BlogManager.Controllers
 {
     public class EntriesController : Controller
     {
         private ApplicationDbContext _context;
+        private Account _signedUser;
 
         public EntriesController()
         {
             _context = new ApplicationDbContext();
+            _signedUser = new Account();
         }
 
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        private void GetSignedUser()
+        {
+            _signedUser = _context.Users
+                .Include(u => u.AccountType)
+                .SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
         }
 
         public ActionResult Index()
@@ -32,8 +42,15 @@ namespace BlogManager.Controllers
 
             var viewModel = new EntriesViewModel
             {
-                Entries = _context.Entries.Include(e => e.Account).Include(e => e.EntryCategory).ToList()
+                Entries = _context.Entries
+                    .Include(e => e.Account)
+                    .Include(e => e.EntryCategory)
+                    .ToList()
             };
+
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                viewModel.Entries = viewModel.Entries.Where(e => e.Account.Equals(_signedUser)).ToList();       
 
             return View(viewModel);
         }
@@ -59,10 +76,14 @@ namespace BlogManager.Controllers
             if (dbEntry == null)
                 return HttpNotFound();
 
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbEntry.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
+
             var viewModel = new EntryViewModel
             {
                 Entry = dbEntry,
-                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
+                EntryCategories = _context.EntryCategories.Where(c => c.IsActive).ToList()
             };
 
             return View(viewModel);
@@ -78,6 +99,10 @@ namespace BlogManager.Controllers
             if (dbEntry == null)
                 return HttpNotFound();
 
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !dbEntry.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
+
             dbEntry.Paragraphs = _context.Paragraphs.Where(p => p.EntryId == dbEntry.Id).ToList();
 
             var viewModel = new EntryPreviewViewModel
@@ -89,6 +114,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Entry entry)
         {
             var dbEntry = _context.Entries
@@ -97,15 +123,16 @@ namespace BlogManager.Controllers
 
             if (dbEntry == null)
             {
-                entry.Normalize();
+                entry.NormalizeEntry();
                 entry.CreateDate = DateTime.Now;
                 entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 entry.Title = entry.Title;
                 entry.Description = entry.Description;
                 entry.Content = entry.Content;
-                entry.Paragraphs = entry.GetParagraphsFromContent();
                 entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 entry.IsVisible = false;
+
+                entry.GetParagraphsFromContent();
 
                 _context.Entries.Add(entry);
 
@@ -114,7 +141,11 @@ namespace BlogManager.Controllers
             }
             else
             {
-                entry.Normalize();
+                GetSignedUser();
+                if (!_signedUser.CanManageAllContent() && !dbEntry.Account.Equals(_signedUser))
+                    return RedirectToAction("Index", "Home");
+
+                entry.NormalizeEntry();
 
                 if (!dbEntry.Equals(entry))
                     dbEntry.IsVisible = false;
@@ -122,11 +153,12 @@ namespace BlogManager.Controllers
                 dbEntry.Title = entry.Title;
                 dbEntry.Description = entry.Description;
                 dbEntry.Content = entry.Content;
-                dbEntry.Paragraphs = entry.GetParagraphsFromContent();
                 dbEntry.ImageUrl = entry.ImageUrl;
                 dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
                 dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
                 dbEntry.LastModification = DateTime.Now;
+
+                dbEntry.GetParagraphsFromContent();
 
                 var dbParagraphs = _context.Paragraphs.Where(p => p.EntryId == entry.Id).ToList();
                 foreach (var p in dbParagraphs)
@@ -141,17 +173,19 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Validate(int entryId, string isVisible)
         {
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent())
+                return RedirectToAction("Index", "Home");
+
             var entryToValidate = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+
             if (entryToValidate == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
-            entryToValidate.LastModifiedBy = account;
+ 
+            entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
             entryToValidate.LastModification = DateTime.Now;
 
             switch (isVisible.ToLower())
@@ -172,15 +206,17 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int entryId)
         {
             var entryToDelete = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+
             if (entryToDelete == null)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
+            GetSignedUser();
+            if (!_signedUser.CanManageAllContent() && !entryToDelete.Account.Equals(_signedUser))
+                return RedirectToAction("Index", "Home");
 
             _context.Entries.Remove(entryToDelete);
             _context.SaveChanges();

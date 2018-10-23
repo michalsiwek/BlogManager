@@ -38,5 +38,12 @@ namespace BlogManager.Models.Accounts
             // Add custom user claims here
             return userIdentity;
         }
+
+        public bool CanManageAllContent()
+        {
+            if (AccountType.Name.Equals(AccountTypeName.Admin) || AccountType.Name.Equals(AccountTypeName.Editor))
+                return true;
+            return false;
+        }
     }
 }

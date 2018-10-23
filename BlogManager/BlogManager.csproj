@@ -227,6 +227,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
+    <Compile Include="Helpers\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
@@ -265,9 +266,14 @@
     <Compile Include="Migrations\201810051636488_PictureGalleriesMigration.Designer.cs">
       <DependentUpon>201810051636488_PictureGalleriesMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810221002002_GalleryModificationHistoryMigration.cs" />
+    <Compile Include="Migrations\201810221002002_GalleryModificationHistoryMigration.Designer.cs">
+      <DependentUpon>201810221002002_GalleryModificationHistoryMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
+    <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
@@ -416,6 +422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810051636488_PictureGalleriesMigration.resx">
       <DependentUpon>201810051636488_PictureGalleriesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810221002002_GalleryModificationHistoryMigration.resx">
+      <DependentUpon>201810221002002_GalleryModificationHistoryMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

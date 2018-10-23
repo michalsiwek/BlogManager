@@ -61,6 +61,7 @@
                             <li>
                                 @using (Html.BeginForm("Delete", "Accounts", new { id = account.Id }, FormMethod.Post))
                                 {
+                                    @Html.AntiForgeryToken()
                                     <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
                                 }
                             </li>
@@ -72,6 +73,7 @@
                                     <li>
                                         @using (Html.BeginForm("Validate", "Accounts", new { accountId = account.Id, isActive = !account.IsActive }, FormMethod.Post))
                                         {
+                                            @Html.AntiForgeryToken()
                                             <input type="submit" value="Disable" class="btn-dropdown-item" />
                                         }
                                     </li>
@@ -81,6 +83,7 @@
                                     <li>
                                         @using (Html.BeginForm("Validate", "Accounts", new { accountId = account.Id, isActive = !account.IsActive }, FormMethod.Post))
                                         {
+                                            @Html.AntiForgeryToken()
                                             <input type="submit" value="Enable" class="btn-dropdown-item" />
                                         }
                                     </li>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BlogManager.Controllers
 {
+    [Authorize(Roles = AccountTypeName.Admin)]
     public class AccountsController : Controller
     {
         private ApplicationDbContext _context;
@@ -33,6 +34,7 @@ namespace BlogManager.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Validate(int accountId, string isActive, AccountsViewModel model)
         {
             if (!ModelState.IsValid)
@@ -71,6 +73,7 @@ namespace BlogManager.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             var accountToValidate = _context.Users.SingleOrDefault(u => u.Id == id);

@@ -57,27 +57,33 @@
                             <li>
                                 @using (Html.BeginForm("Delete", "Entries", new { entryId = entry.Id }, FormMethod.Post))
                                 {
-                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')"/>
+                                    @Html.AntiForgeryToken()
+                                    <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
                                 }
                             </li>
-                            <li class="divider"></li>
-                            @if (entry.IsVisible)
+                            @if (User.IsInRole(AccountTypeName.Admin) || User.IsInRole(AccountTypeName.Editor))
                             {
-                                <li>
-                                    @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
-                                    {
-                                        <input type="submit" value="Hide" class="btn-dropdown-item"/>
-                                    }
-                                </li>
-                            }
-                            else
-                            {
-                                <li>
-                                    @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
-                                    {
-                                        <input type="submit" value="Publish" class="btn-dropdown-item"/>
-                                    }
-                                </li>
+                                <li class="divider"></li>
+                                if (entry.IsVisible)
+                                 {
+                                     <li>
+                                         @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                         {
+                                             @Html.AntiForgeryToken()
+                                             <input type="submit" value="Hide" class="btn-dropdown-item"/>
+                                         }
+                                     </li>
+                                 }
+                                 else
+                                 {
+                                     <li>
+                                         @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                         {
+                                             @Html.AntiForgeryToken()
+                                             <input type="submit" value="Publish" class="btn-dropdown-item" />
+                                         }
+                                     </li>
+                                 }
                             }
                         </ul>
                     </div>

@@ -47,7 +47,7 @@ namespace BlogManager
             var userManager = new ApplicationUserManager(new CustomUserStore(_context));
 
             var accountTypeName = "Admin";
-            var accountLogin = "admin@blogmanager.com";
+            var accountLogin = "admin@bm.com";
             var accountPassword = "admin1";
 
             var account = new Account

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BlogManager.Controllers
 {
+    [Authorize(Roles = AccountTypeName.Admin + "," + AccountTypeName.Editor)]
     public class EntryCategoriesController : Controller
     {
         private ApplicationDbContext _context;
@@ -60,6 +61,7 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(EntryCategory entryCategory)
         {
             var dbEntryCat = _context.EntryCategories.SingleOrDefault(c => c.Id == entryCategory.Id);
@@ -83,15 +85,12 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Activate(int catId, string isActive)
         {
             var categoryToActivate = _context.EntryCategories.SingleOrDefault(c => c.Id == catId);
             if (categoryToActivate == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             switch (isActive.ToLower())
             {
@@ -111,15 +110,12 @@ namespace BlogManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int catId)
         {
             var categoryToDelete = _context.EntryCategories.SingleOrDefault(e => e.Id == catId);
             if (categoryToDelete == null)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
 
             _context.EntryCategories.Remove(categoryToDelete);
             _context.SaveChanges();

@@ -41,22 +41,34 @@ else
         <hr />
         <div>
             <div>
-                @using (Html.BeginForm("Index", "Entries", FormMethod.Get, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                @if (User.IsInRole(AccountTypeName.Admin) || User.IsInRole(AccountTypeName.Editor))
                 {
-                    <input type="submit" value="Back" class="btn preview-input-btn btn-default btn-bg pull-right" />
-                }
-                @if(Model.Entry.IsVisible)
-                {
-                    using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible }, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                    using (Html.BeginForm("Index", "Entries", FormMethod.Get, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
                     {
-                        <input type="submit" value="Hide" class="btn preview-input-btn btn-danger btn-bg text-left" />
+                        <input type="submit" value="Back" class="btn preview-input-btn btn-default btn-bg pull-right" />
+                    }
+                    if (Model.Entry.IsVisible)
+                    {
+                        using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible }, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Hide" class="btn preview-input-btn btn-danger btn-bg text-left" />
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible }, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="submit" value="Publish" class="btn preview-input-btn btn-success btn-bg text-left" />
+                        }
                     }
                 }
                 else
                 {
-                    using (Html.BeginForm("Validate", "Entries", new { entryId = Model.Entry.Id, isVisible = !Model.Entry.IsVisible}, FormMethod.Post, new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6 preview-input-form" }))
+                    using (Html.BeginForm("Index", "Entries", FormMethod.Get, new { @class = "text-center col-lg-12 col-md-12 col-sm-12 col-xs-12 preview-input-form" }))
                     {
-                        <input type="submit" value="Publish" class="btn preview-input-btn btn-success btn-bg text-left" />
+                        <input type="submit" value="Back" class="btn preview-input-btn btn-default btn-bg" />
                     }
                 }
             </div>
