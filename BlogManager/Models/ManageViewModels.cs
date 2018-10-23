@@ -8,17 +8,7 @@ namespace BlogManager.Models
 {
     public class IndexViewModel
     {
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Display(Name = "Nickname")]
-        public string Nickname { get; set; }
-
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public Account Account { get; set; }
 
         [Display(Name = "Account Type")]
         public string AccountTypeName { get; set; }

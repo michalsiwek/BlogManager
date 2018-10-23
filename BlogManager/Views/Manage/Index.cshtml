@@ -9,49 +9,90 @@
     <div class="col-md-8 col-md-offset-2">
         <section>
             @Html.AntiForgeryToken()
-            <form>
-                <h4 class="text-center">Account data.</h4>
-                <hr />
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        @Html.ValueFor(m => m.Email)
-                    </span>
+            <h4 class="text-center">Account data.</h4>
+            <hr />
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.Email, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.Email)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.Nickname, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.Nickname)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.FirstName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.FirstName)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.LastName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.LastName)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.AccountTypeName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.AccountTypeName)
+                </span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="text-center">
+                    <input type="button" class="btn btn-default" value="Back" />
+                    <input id="edit-data-btn" type="button" class="btn btn-primary" value="Edit Data" />
+                    <input id="change-password-btn" type="button" class="btn btn-warning" value="Change Password" />
                 </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.Nickname, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        @Html.ValueFor(m => m.Nickname)
-                    </span>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        @Html.ValueFor(m => m.FirstName)
-                    </span>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        @Html.ValueFor(m => m.LastName)
-                    </span>
-                </div>
-                <div class="form-group row">
-                    @Html.LabelFor(m => m.AccountTypeName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
-                    <span class="col-md-6 col-sm-6 col-xs-6">
-                        @Html.ValueFor(m => m.AccountTypeName)
-                    </span>
-                </div>
-                <hr />
-                <div class="form-group">
-                    <div class="text-center">
-                        <input type="button" class="btn btn-default" value="Back" />
-                        <input type="button" class="btn btn-primary" value="Edit Data" />
-                        <input type="button" class="btn btn-warning" value="Change Password" />
-                    </div>
-                </div>
-            </form>
-            
+            </div>
         </section>
     </div>
 </div>
+
+<div class="modal fade" id="edit-data-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                    @Html.Action("EditData", "Manage")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+}

@@ -70,16 +70,54 @@ namespace BlogManager.Controllers
         {
             _account = GetLoggedInAccount();
 
+            if (_account == null)
+                return HttpNotFound();
+
             var model = new IndexViewModel
             {
-                Email = _account.Email,
-                Nickname = _account.Nickname,
-                FirstName = _account.FirstName,
-                LastName = _account.LastName,
-                AccountTypeName = _account.AccountType.Name,
+                Account = _account,
+                AccountTypeName = _account.AccountType.Name
             };
 
             return View(model);
+        }
+
+        public ActionResult EditData()
+        {
+            _account = GetLoggedInAccount();
+
+            if (_account == null)
+                return HttpNotFound();
+
+            var model = new PersonalDataViewModel
+            {
+                Account = _account
+            };
+
+            return PartialView("_EditData", model);
+        }
+
+        [HttpPost]
+        public ActionResult SavePersonalData(Account account)
+        {
+            _account = GetLoggedInAccount();
+
+            if (_account == null)
+                return HttpNotFound();
+
+            _account.Nickname = account.Nickname;
+            _account.FirstName = account.FirstName;
+            _account.LastName = account.LastName;
+
+            _context.SaveChanges();
+
+            var model = new IndexViewModel
+            {
+                Account = _account,
+                AccountTypeName = _account.AccountType.Name
+            };
+
+            return View("Index", model);
         }
 
         //
