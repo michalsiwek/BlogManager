@@ -65,23 +65,10 @@ namespace BlogManager.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        public Account Account { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        [Display(Name = "Nickname")]
-        public string Nickname { get; set; }
-
-        [StringLength(100)]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [StringLength(100)]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        [Display(Name = "Password recovery question")]
+        public IEnumerable<PasswordRecoveryQuestion> PasswordRecoveryQuestions { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

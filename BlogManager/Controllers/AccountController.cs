@@ -156,7 +156,13 @@ namespace BlogManager.Controllers
         {
             if (!string.IsNullOrEmpty(User.Identity.Name))
                 return RedirectToAction("Index", "Home");
-            return View();
+
+            var viewModel = new RegisterViewModel
+            {
+                Account = new Account(),
+                PasswordRecoveryQuestions = _context.PasswordRecoveryQuestions.ToList()
+            };
+            return View(viewModel);
         }
 
         //
@@ -170,24 +176,30 @@ namespace BlogManager.Controllers
             {
                 var user = new Account
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    Nickname = model.Nickname,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
+                    UserName = model.Account.Email,
+                    Email = model.Account.Email,
+                    Nickname = model.Account.Nickname,
+                    FirstName = model.Account.FirstName,
+                    LastName = model.Account.LastName,
+                    PasswordRecoveryAnswer = model.Account.PasswordRecoveryAnswer,
                     CreateDate = DateTime.Now,
                     IsActive = false
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(user.Email));
+                    if (dbAccount == null)
+                        return HttpNotFound();
+
+                    var dbPasswordRecoveryQuestion = _context.PasswordRecoveryQuestions
+                        .SingleOrDefault(p => p.Id == model.Account.PasswordRecoveryQuestion.Id);
+                    if (dbPasswordRecoveryQuestion == null)
+                        return HttpNotFound();
+
+                    dbAccount.PasswordRecoveryQuestion = dbPasswordRecoveryQuestion;
+                    _context.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
                 }

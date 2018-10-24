@@ -274,9 +274,18 @@
     <Compile Include="Migrations\201810231219567_AddAccountNicknameValMigration.Designer.cs">
       <DependentUpon>201810231219567_AddAccountNicknameValMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810241236334_PasswordRecoveryQuestionsMigration.cs" />
+    <Compile Include="Migrations\201810241236334_PasswordRecoveryQuestionsMigration.Designer.cs">
+      <DependentUpon>201810241236334_PasswordRecoveryQuestionsMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810241237466_PasswordRecoveryQuestionsSeedMigration.cs" />
+    <Compile Include="Migrations\201810241237466_PasswordRecoveryQuestionsSeedMigration.Designer.cs">
+      <DependentUpon>201810241237466_PasswordRecoveryQuestionsSeedMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
+    <Compile Include="Models\Accounts\PasswordRecoveryQuestion.cs" />
     <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
@@ -435,6 +444,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810231219567_AddAccountNicknameValMigration.resx">
       <DependentUpon>201810231219567_AddAccountNicknameValMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810241236334_PasswordRecoveryQuestionsMigration.resx">
+      <DependentUpon>201810241236334_PasswordRecoveryQuestionsMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810241237466_PasswordRecoveryQuestionsSeedMigration.resx">
+      <DependentUpon>201810241237466_PasswordRecoveryQuestionsSeedMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
