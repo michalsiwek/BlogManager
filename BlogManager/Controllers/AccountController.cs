@@ -171,7 +171,7 @@ namespace BlogManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -224,40 +224,27 @@ namespace BlogManager.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
-        [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public ActionResult ForgotPasswordActions(ForgotPasswordViewModel model, string remind, string reset)
         {
+            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
+            if (dbAccount == null)
+                ModelState.AddModelError("", "Email is invalid");
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                if (!string.IsNullOrEmpty(remind))
+                    return RedirectToAction("RemindViaEmail");
+                if (!string.IsNullOrEmpty(reset))
+                    return RedirectToAction("ResetPassword", new { email = model.Email });
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return View("ForgotPassword", model);
         }
 
         //
@@ -294,7 +281,7 @@ namespace BlogManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> PassReset(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
