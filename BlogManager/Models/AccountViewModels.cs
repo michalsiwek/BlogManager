@@ -100,6 +100,13 @@ namespace BlogManager.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "Recovery question")]
+        public string RecoveryQuestion { get; set; }
+
+        [Required]
+        [Display(Name = "Answer")]
+        public string Answer { get; set; }
+
         public string Code { get; set; }
     }
 
@@ -109,6 +116,13 @@ namespace BlogManager.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Recovery question")]
+        public string RecoveryQuestion { get; set; }
+
+        [Required]
+        [Display(Name = "Answer")]
+        public string Answer { get; set; }
     }
 
     public class ManageAccountViewModel

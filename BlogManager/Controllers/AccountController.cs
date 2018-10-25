@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -270,9 +271,22 @@ namespace BlogManager.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string email)
         {
-            return code == null ? View("Error") : View();
+            var dbAccount = _context.Users
+                .Include(a => a.PasswordRecoveryQuestion)
+                .SingleOrDefault(a => a.Email.Equals(email));
+
+            if (dbAccount == null)
+                return HttpNotFound();
+
+            var model = new ResetPasswordViewModel
+            {
+                Email = dbAccount.Email,
+                RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question
+            };
+
+            return View(model);
         }
 
         //
@@ -298,7 +312,7 @@ namespace BlogManager.Controllers
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
-            return View();
+            return View("Login");
         }
 
         //

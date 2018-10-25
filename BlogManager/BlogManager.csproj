@@ -394,6 +394,8 @@
     <Content Include="Views\Galleries\_PictureEdit.cshtml" />
     <Content Include="Views\Manage\_EditData.cshtml" />
     <Content Include="Views\Manage\_ChangePassword.cshtml" />
+    <Content Include="Views\Account\_RemindViaEmail.cshtml" />
+    <Content Include="Views\Account\_ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
