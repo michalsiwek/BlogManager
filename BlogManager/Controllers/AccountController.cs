@@ -271,7 +271,8 @@ namespace BlogManager.Controllers
             var model = new ResetPasswordViewModel
             {
                 Email = dbAccount.Email,
-                RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question
+                RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question,
+                Code = UserManager.GeneratePasswordResetToken(dbAccount.Id)
             };
 
             return View(model);
@@ -284,17 +285,17 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PassReset(ResetPasswordViewModel model)
         {
-            var user = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
-            if (user == null)
+            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
+            if (dbAccount == null)
                 return HttpNotFound();
 
-            if (!user.PasswordRecoveryAnswer.Equals(model.Answer))
+            if (!dbAccount.PasswordRecoveryAnswer.Equals(model.Answer))
             {
                 ModelState.AddModelError("", "Invalid answer");
                 return View("ResetPassword", model);
             }
 
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = await UserManager.ResetPasswordAsync(dbAccount.Id, model.Code, model.Password);
             if (result.Succeeded)
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
 
