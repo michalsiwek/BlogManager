@@ -236,12 +236,13 @@ namespace BlogManager.Controllers
             var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
             if (dbAccount == null)
                 ModelState.AddModelError("", "Email is invalid");
+
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(remind))
                     return RedirectToAction("RemindViaEmail");
                 if (!string.IsNullOrEmpty(reset))
-                    return RedirectToAction("ResetPassword", new { email = model.Email });
+                    return RedirectToAction("ResetPassword", new { @email = model.Email });
             }
 
             return View("ForgotPassword", model);
@@ -283,22 +284,28 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PassReset(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
             if (user == null)
+                return HttpNotFound();
+
+            if (!user.PasswordRecoveryAnswer.Equals(model.Answer))
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                ModelState.AddModelError("", "Invalid answer");
+                return View("ResetPassword", model);
             }
+
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
-            {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
+
             AddErrors(result);
+            return View("ResetPassword", model);
+        }
+
+        [AllowAnonymous]
+        public ActionResult RemindViaEmail(string email)
+        {
+
             return View("Login");
         }
 
