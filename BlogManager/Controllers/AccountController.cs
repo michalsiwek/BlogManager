@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -13,6 +14,9 @@ using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
 using System.Net;
+using System.Net.Mail;
+using System.Web.Configuration;
+using System.Web.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BlogManager.Controllers
@@ -240,7 +244,7 @@ namespace BlogManager.Controllers
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(remind))
-                    return RedirectToAction("RemindViaEmail");
+                    return RedirectToAction("RemindViaEmail", new { @email = model.Email });
                 if (!string.IsNullOrEmpty(reset))
                     return RedirectToAction("ResetPassword", new { @email = model.Email });
             }
@@ -306,6 +310,25 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult RemindViaEmail(string email)
         {
+            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(email));
+            if (dbAccount == null)
+                return HttpNotFound();
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+            smtpClient.EnableSsl = true;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential("blog.manager.app@gmail.com", "blogmanager1");
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+            MailMessage mail = new MailMessage();
+
+            mail.From = new MailAddress("blog.manager.app@gmail.com", "Blog Manager");
+            mail.To.Add(new MailAddress(email));
+            mail.Subject = @"Password reminder";
+            mail.Body = @"Password reminder";
+
+            smtpClient.Send(mail);
 
             return View("Login");
         }
