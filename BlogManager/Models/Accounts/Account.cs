@@ -17,11 +17,16 @@ namespace BlogManager.Models.Accounts
         public DateTime CreateDate { get; set; }
         public DateTime? LastModification { get; set; }
 
-        [StringLength(255)]
+        [Required]
+        [StringLength(100)]
+        [Display(Name = "Nickname")]
+        public string Nickname { get; set; }
+
+        [StringLength(100)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [StringLength(255)]
+        [StringLength(100)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -30,6 +35,13 @@ namespace BlogManager.Models.Accounts
 
         [Display(Name = "Account Type")]
         public AccountType AccountType { get; set; }
+
+        [Display(Name = "Question")]
+        public PasswordRecoveryQuestion PasswordRecoveryQuestion { get; set; }
+
+        [Required]
+        [Display(Name = "Answer")]
+        public string PasswordRecoveryAnswer { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Account, int> manager)
         {

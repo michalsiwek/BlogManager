@@ -50,6 +50,8 @@ namespace BlogManager.Models
         public DbSet<Paragraph> Paragraphs { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Gallery> Galleries { get; set; }
+        public DbSet<PasswordRecoveryQuestion> PasswordRecoveryQuestions { get; set; }
+        public DbSet<PasswordResetVerificationCode> PasswordResetVerificationCodes { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection")

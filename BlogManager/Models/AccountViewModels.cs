@@ -65,10 +65,10 @@ namespace BlogManager.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        public Account Account { get; set; }
+
+        [Display(Name = "Password recovery question")]
+        public IEnumerable<PasswordRecoveryQuestion> PasswordRecoveryQuestions { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -99,6 +99,17 @@ namespace BlogManager.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Recovery question")]
+        public string RecoveryQuestion { get; set; }
+
+        [Required]
+        [Display(Name = "Answer")]
+        public string Answer { get; set; }
+
+        [Required]
+        [Display(Name = "Verification Code")]
+        public string VerificationCode { get; set; }
 
         public string Code { get; set; }
     }

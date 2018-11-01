@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BlogManager.Models.Accounts;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -7,11 +8,17 @@ namespace BlogManager.Models
 {
     public class IndexViewModel
     {
+        public Account Account { get; set; }
+
+        [Display(Name = "Account Type")]
+        public string AccountTypeName { get; set; }
+
+        /*
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
-        public bool BrowserRemembered { get; set; }
+        public bool BrowserRemembered { get; set; } */
     }
 
     public class ManageLoginsViewModel

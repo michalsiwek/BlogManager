@@ -3,85 +3,96 @@
     ViewBag.Title = "Manage";
 }
 
+<br />
 <h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
-                }
-                else
-                {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-                }
-            </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <section>
+            @Html.AntiForgeryToken()
+            <h4 class="text-center">Account data.</h4>
+            <hr />
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.Email, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.Email)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.Nickname, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.Nickname)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.FirstName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.FirstName)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Account.LastName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.Account.LastName)
+                </span>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.AccountTypeName, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                <span class="col-md-6 col-sm-6 col-xs-6">
+                    @Html.ValueFor(m => m.AccountTypeName)
+                </span>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="text-center">
+                    <input id="edit-data-btn" type="button" class="btn btn-default" value="Edit Data" />
+                    <input id="change-password-btn" type="button" class="btn btn-primary" value="Change Password" />
+                </div>
+            </div>
+        </section>
+    </div>
 </div>
+
+<div class="modal fade" id="edit-data-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Account Data</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                    @Html.Action("EditData", "Manage")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                    @Html.Action("ChangePassword", "Manage")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+}

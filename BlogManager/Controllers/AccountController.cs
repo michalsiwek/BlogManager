@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -12,7 +14,7 @@ using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
 using System.Net;
-using Microsoft.AspNet.Identity.EntityFramework;
+using BlogManager.Helpers;
 
 namespace BlogManager.Controllers
 {
@@ -21,16 +23,18 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext _context = new ApplicationDbContext();
+        private ApplicationDbContext _context;
 
         public AccountController()
         {
+            _context = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _context = new ApplicationDbContext();
         }
 
         public ApplicationSignInManager SignInManager
@@ -154,7 +158,13 @@ namespace BlogManager.Controllers
         {
             if (!string.IsNullOrEmpty(User.Identity.Name))
                 return RedirectToAction("Index", "Home");
-            return View();
+
+            var viewModel = new RegisterViewModel
+            {
+                Account = new Account(),
+                PasswordRecoveryQuestions = _context.PasswordRecoveryQuestions.ToList()
+            };
+            return View(viewModel);
         }
 
         //
@@ -162,21 +172,36 @@ namespace BlogManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new Account { UserName = model.Email, Email = model.Email, CreateDate = DateTime.Now, IsActive = false };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var user = new Account
+                {
+                    UserName = model.Account.Email,
+                    Email = model.Account.Email,
+                    Nickname = model.Account.Nickname,
+                    FirstName = model.Account.FirstName,
+                    LastName = model.Account.LastName,
+                    PasswordRecoveryAnswer = model.Account.PasswordRecoveryAnswer,
+                    CreateDate = DateTime.Now,
+                    IsActive = false
+                };
+                
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(user.Email));
+                    if (dbAccount == null)
+                        return HttpNotFound();
+
+                    var dbPasswordRecoveryQuestion = _context.PasswordRecoveryQuestions
+                        .SingleOrDefault(p => p.Id == model.Account.PasswordRecoveryQuestion.Id);
+                    if (dbPasswordRecoveryQuestion == null)
+                        return HttpNotFound();
+
+                    dbAccount.PasswordRecoveryQuestion = dbPasswordRecoveryQuestion;
+                    _context.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -200,40 +225,10 @@ namespace BlogManager.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
-        }
-
-        //
-        // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
-
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
         }
 
         //
@@ -247,9 +242,23 @@ namespace BlogManager.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string email)
         {
-            return code == null ? View("Error") : View();
+            var dbAccount = _context.Users
+                .Include(a => a.PasswordRecoveryQuestion)
+                .SingleOrDefault(a => a.Email.Equals(email));
+
+            if (dbAccount == null)
+                return HttpNotFound();
+
+            var model = new ResetPasswordViewModel
+            {
+                Email = dbAccount.Email,
+                RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question,
+                Code = UserManager.GeneratePasswordResetToken(dbAccount.Id)
+            };
+
+            return View(model);
         }
 
         //
@@ -257,25 +266,94 @@ namespace BlogManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> PassReset(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
+            if (dbAccount == null)
+                return HttpNotFound();
+
+            if (!dbAccount.PasswordRecoveryAnswer
+                .Replace(" ", "").ToLower()
+                .Equals(model.Answer.Replace(" ", "").ToLower()))
             {
-                return View(model);
+                ModelState.AddModelError("", "Invalid answer");
+                return View("ResetPassword", model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
+
+            var code = _context.PasswordResetVerificationCodes
+                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
+
+            if (code == null)
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                ModelState.AddModelError("", "Verification code expired");
+                return View("ResetPassword", model);
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+
+            if(!model.VerificationCode.Equals(code.Code))
+            {
+                ModelState.AddModelError("", "Invalid verification code");
+                return View("ResetPassword", model);
+            }
+
+            code.IsActive = false;
+            _context.SaveChanges();
+
+            var result = await UserManager.ResetPasswordAsync(dbAccount.Id, model.Code, model.Password);
             if (result.Succeeded)
-            {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
+
             AddErrors(result);
-            return View();
+            return View("ResetPassword", model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult ProceedPasswordReset(string email)
+        {
+            var dbAccount = _context.Users
+                .Include(a => a.PasswordRecoveryQuestion)
+                .SingleOrDefault(a => a.Email.Equals(email));
+
+            if (dbAccount == null)
+            {
+                ModelState.AddModelError("", "Email is invalid");
+                return View("ForgotPassword");
+            }                
+
+            var verificationCode = _context.PasswordResetVerificationCodes
+                .Include(c => c.Account)
+                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
+
+            if (verificationCode == null)
+            {
+                verificationCode = new PasswordResetVerificationCode
+                {
+                    Account = dbAccount,
+                    Code = new Random().Next(10000, 99999).ToString(),
+                    ExpirationDate = DateTime.Now.AddMinutes(15),
+                    IsActive = true
+                };
+
+                _context.PasswordResetVerificationCodes.Add(verificationCode);
+                _context.SaveChanges();
+
+                var sendEmailHandler = new SendEmailHandler();
+                sendEmailHandler.SendVerificationCode(email, verificationCode.Code);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var model = new ResetPasswordViewModel
+                {
+                    Email = dbAccount.Email,
+                    RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question,
+                    Code = UserManager.GeneratePasswordResetToken(dbAccount.Id)
+                };
+
+                return View("ResetPassword", model);
+            }
+
+            return View("ForgotPassword");
         }
 
         //

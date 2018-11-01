@@ -49,11 +49,13 @@ namespace BlogManager
             var accountTypeName = "Admin";
             var accountLogin = "admin@bm.com";
             var accountPassword = "admin1";
+            var acconuntNickname = "Admin";
 
             var account = new Account
             {
                 Email = accountLogin,
                 UserName = accountLogin,
+                Nickname = acconuntNickname,
                 CreateDate = DateTime.Now,
                 LockoutEnabled = false,
                 IsActive = true,

@@ -1,0 +1,33 @@
+﻿@using BlogManager.Models
+@model PersonalDataViewModel
+
+@using (Html.BeginForm("SavePersonalData", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4 class="text-center">Edit personal data.</h4>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Account.Nickname, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Account.Nickname, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Account.Nickname, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Account.FirstName, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Account.FirstName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Account.LastName, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Account.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    @Html.HiddenFor(a => a.Account.Id)
+    <div class="modal-footer" style="margin-top: 20px;">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Save changes</button>
+    </div>
+}
