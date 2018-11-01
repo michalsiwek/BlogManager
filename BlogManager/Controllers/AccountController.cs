@@ -14,10 +14,7 @@ using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
 using System.Net;
-using System.Net.Mail;
-using System.Web.Configuration;
-using System.Web.Security;
-using Microsoft.AspNet.Identity.EntityFramework;
+using BlogManager.Helpers;
 
 namespace BlogManager.Controllers
 {
@@ -234,24 +231,6 @@ namespace BlogManager.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public ActionResult ForgotPasswordActions(ForgotPasswordViewModel model, string remind, string reset)
-        {
-            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
-            if (dbAccount == null)
-                ModelState.AddModelError("", "Email is invalid");
-
-            if (ModelState.IsValid)
-            {
-                if (!string.IsNullOrEmpty(remind))
-                    return RedirectToAction("RemindViaEmail", new { @email = model.Email });
-                if (!string.IsNullOrEmpty(reset))
-                    return RedirectToAction("ResetPassword", new { @email = model.Email });
-            }
-
-            return View("ForgotPassword", model);
-        }
-
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
@@ -293,11 +272,31 @@ namespace BlogManager.Controllers
             if (dbAccount == null)
                 return HttpNotFound();
 
-            if (!dbAccount.PasswordRecoveryAnswer.Equals(model.Answer))
+            if (!dbAccount.PasswordRecoveryAnswer
+                .Replace(" ", "").ToLower()
+                .Equals(model.Answer.Replace(" ", "").ToLower()))
             {
                 ModelState.AddModelError("", "Invalid answer");
                 return View("ResetPassword", model);
             }
+
+            var code = _context.PasswordResetVerificationCodes
+                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
+
+            if (code == null)
+            {
+                ModelState.AddModelError("", "Verification code expired");
+                return View("ResetPassword", model);
+            }
+
+            if(!model.VerificationCode.Equals(code.Code))
+            {
+                ModelState.AddModelError("", "Invalid verification code");
+                return View("ResetPassword", model);
+            }
+
+            code.IsActive = false;
+            _context.SaveChanges();
 
             var result = await UserManager.ResetPasswordAsync(dbAccount.Id, model.Code, model.Password);
             if (result.Succeeded)
@@ -307,30 +306,54 @@ namespace BlogManager.Controllers
             return View("ResetPassword", model);
         }
 
+        [HttpPost]
         [AllowAnonymous]
-        public ActionResult RemindViaEmail(string email)
+        public ActionResult ProceedPasswordReset(string email)
         {
-            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(email));
+            var dbAccount = _context.Users
+                .Include(a => a.PasswordRecoveryQuestion)
+                .SingleOrDefault(a => a.Email.Equals(email));
+
             if (dbAccount == null)
-                return HttpNotFound();
+            {
+                ModelState.AddModelError("", "Email is invalid");
+                return View("ForgotPassword");
+            }                
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            var verificationCode = _context.PasswordResetVerificationCodes
+                .Include(c => c.Account)
+                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
 
-            smtpClient.EnableSsl = true;
-            smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential("blog.manager.app@gmail.com", "blogmanager1");
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            if (verificationCode == null)
+            {
+                verificationCode = new PasswordResetVerificationCode
+                {
+                    Account = dbAccount,
+                    Code = new Random().Next(10000, 99999).ToString(),
+                    ExpirationDate = DateTime.Now.AddMinutes(15),
+                    IsActive = true
+                };
 
-            MailMessage mail = new MailMessage();
+                _context.PasswordResetVerificationCodes.Add(verificationCode);
+                _context.SaveChanges();
 
-            mail.From = new MailAddress("blog.manager.app@gmail.com", "Blog Manager");
-            mail.To.Add(new MailAddress(email));
-            mail.Subject = @"Password reminder";
-            mail.Body = @"Password reminder";
+                var sendEmailHandler = new SendEmailHandler();
+                sendEmailHandler.SendVerificationCode(email, verificationCode.Code);
+            }
 
-            smtpClient.Send(mail);
+            if (ModelState.IsValid)
+            {
+                var model = new ResetPasswordViewModel
+                {
+                    Email = dbAccount.Email,
+                    RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question,
+                    Code = UserManager.GeneratePasswordResetToken(dbAccount.Id)
+                };
 
-            return View("Login");
+                return View("ResetPassword", model);
+            }
+
+            return View("ForgotPassword");
         }
 
         //

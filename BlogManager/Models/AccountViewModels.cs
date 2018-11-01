@@ -107,6 +107,10 @@ namespace BlogManager.Models
         [Display(Name = "Answer")]
         public string Answer { get; set; }
 
+        [Required]
+        [Display(Name = "Verification Code")]
+        public string VerificationCode { get; set; }
+
         public string Code { get; set; }
     }
 

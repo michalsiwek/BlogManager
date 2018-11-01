@@ -230,6 +230,7 @@
     <Compile Include="Helpers\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
+    <Compile Include="Helpers\SendEmailHandler.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
       <DependentUpon>201807312053305_InitialData.cs</DependentUpon>
@@ -282,10 +283,15 @@
     <Compile Include="Migrations\201810241237466_PasswordRecoveryQuestionsSeedMigration.Designer.cs">
       <DependentUpon>201810241237466_PasswordRecoveryQuestionsSeedMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811011238350_PasswordResetVerificationCodeMigration.cs" />
+    <Compile Include="Migrations\201811011238350_PasswordResetVerificationCodeMigration.Designer.cs">
+      <DependentUpon>201811011238350_PasswordResetVerificationCodeMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
     <Compile Include="Models\Accounts\PasswordRecoveryQuestion.cs" />
+    <Compile Include="Models\Accounts\PasswordResetVerificationCode.cs" />
     <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categories\EntryCategory.cs" />
@@ -452,6 +458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810241237466_PasswordRecoveryQuestionsSeedMigration.resx">
       <DependentUpon>201810241237466_PasswordRecoveryQuestionsSeedMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811011238350_PasswordResetVerificationCodeMigration.resx">
+      <DependentUpon>201811011238350_PasswordResetVerificationCodeMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
