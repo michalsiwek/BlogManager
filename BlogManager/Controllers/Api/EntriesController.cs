@@ -21,7 +21,7 @@ namespace BlogManager.Controllers.Api
         }
 
         [HttpGet]
-        public IEnumerable<EntryDto> GetEntries(string query = null)
+        public IHttpActionResult GetEntries(string query = null)
         {
             var entriesQuery = _context.Entries
                 .Include(e => e.Account)
@@ -33,7 +33,7 @@ namespace BlogManager.Controllers.Api
                 entriesQuery = entriesQuery.Where(e => e.EntryCategory.Name
                                             .Replace(" ", "_").ToLower().Equals(query));
 
-            return entriesQuery.ToList().Select(Mapper.Map<Entry, EntryDto>);
+            return Ok(entriesQuery.ToList().Select(Mapper.Map<Entry, EntryDto>));
         }
 
         [HttpGet]
@@ -51,7 +51,7 @@ namespace BlogManager.Controllers.Api
             return Ok(Mapper.Map<Entry, EntryDto>(entry));
         }
 
-        [HttpDelete]
+        /*[HttpDelete]
         [Authorize]
         public IHttpActionResult DeleteEntry(int id)
         {
@@ -64,6 +64,6 @@ namespace BlogManager.Controllers.Api
             _context.SaveChanges();
 
             return Ok();
-        }
+        }*/
     }
 }

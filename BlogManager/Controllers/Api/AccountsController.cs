@@ -17,7 +17,7 @@ namespace BlogManager.Controllers.Api
             _context = new ApplicationDbContext();
         }
 
-        [HttpDelete]
+        /*[HttpDelete]
         [Authorize]
         public IHttpActionResult DeleteAccount(int id)
         {
@@ -30,6 +30,6 @@ namespace BlogManager.Controllers.Api
             _context.SaveChanges();
 
             return Ok();
-        }
+        }*/
     }
 }
