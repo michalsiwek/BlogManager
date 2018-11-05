@@ -196,8 +196,15 @@ namespace BlogManager.Controllers
             if (!_signedUser.CanManageAllContent() && !galleryToDelete.Account.Equals(_signedUser))
                 return RedirectToAction("Index", "Home");
 
+            var pictures = _context.Pictures.Where(p => p.GalleryId == galleryId).ToList();
+
+            _context.Pictures.RemoveRange(pictures);
             _context.Galleries.Remove(galleryToDelete);
             _context.SaveChanges();
+
+            var dirPath = Server.MapPath($"~/Pictures/{galleryId}");
+            if (Directory.Exists(dirPath))
+                Directory.Delete(dirPath, true);
 
             return RedirectToAction("Index", "Galleries");
         }
