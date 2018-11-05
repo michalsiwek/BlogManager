@@ -291,6 +291,10 @@
     <Compile Include="Migrations\201811011238350_PasswordResetVerificationCodeMigration.Designer.cs">
       <DependentUpon>201811011238350_PasswordResetVerificationCodeMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811051157336_PictureAbsoluteUrlMigration.cs" />
+    <Compile Include="Migrations\201811051157336_PictureAbsoluteUrlMigration.Designer.cs">
+      <DependentUpon>201811051157336_PictureAbsoluteUrlMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -465,6 +469,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811011238350_PasswordResetVerificationCodeMigration.resx">
       <DependentUpon>201811011238350_PasswordResetVerificationCodeMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811051157336_PictureAbsoluteUrlMigration.resx">
+      <DependentUpon>201811051157336_PictureAbsoluteUrlMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

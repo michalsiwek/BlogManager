@@ -129,7 +129,7 @@ namespace BlogManager.Controllers
                         var serverPath = Path.Combine(dirPath + "\\", fileName);
                         var dbPath = string.Format("/Pictures/{0}/{1}", galleryId, fileName);
                         file.SaveAs(serverPath);
-                        gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now));
+                        gallery.Pictures.Add(new Picture(file.FileName, dbPath, serverPath, DateTime.Now));
                     }
 
                     foreach (var p in gallery.Pictures)
@@ -241,7 +241,7 @@ namespace BlogManager.Controllers
                     }
 
                     file.SaveAs(serverPath);
-                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, DateTime.Now, dbGallery.Id));
+                    gallery.Pictures.Add(new Picture(file.FileName, dbPath, serverPath, DateTime.Now, dbGallery.Id));
                 }
 
                 foreach (var p in gallery.Pictures)
