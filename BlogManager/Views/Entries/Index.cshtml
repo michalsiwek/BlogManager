@@ -7,7 +7,7 @@
 <br />
 <h2>@ViewBag.Title.</h2>
 <br />
-<table class="table table-bordered table-hover">
+<table id="custom-data-table" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th class="col-md-5 text-center">Title</th>
@@ -65,25 +65,25 @@
                             {
                                 <li class="divider"></li>
                                 if (entry.IsVisible)
-                                 {
-                                     <li>
-                                         @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
-                                         {
-                                             @Html.AntiForgeryToken()
-                                             <input type="submit" value="Hide" class="btn-dropdown-item"/>
-                                         }
-                                     </li>
-                                 }
-                                 else
-                                 {
-                                     <li>
-                                         @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
-                                         {
-                                             @Html.AntiForgeryToken()
-                                             <input type="submit" value="Publish" class="btn-dropdown-item" />
-                                         }
-                                     </li>
-                                 }
+                                {
+                                    <li>
+                                        @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="submit" value="Hide" class="btn-dropdown-item" />
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        @using (Html.BeginForm("Validate", "Entries", new { entryId = entry.Id, isVisible = !entry.IsVisible }, FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="submit" value="Publish" class="btn-dropdown-item" />
+                                        }
+                                    </li>
+                                }
                             }
                         </ul>
                     </div>
@@ -97,4 +97,6 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/data_tables")
+    @Scripts.Render("~/bundles/custom")
 }
