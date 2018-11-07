@@ -7,7 +7,7 @@
 <br />
 <h2>@ViewBag.Title.</h2>
 <br />
-<table class="table table-bordered table-hover">
+<table id="custom-data-table" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th class="col-md-1 text-center">Date</th>
@@ -91,4 +91,6 @@
 @section Scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/data_tables")
+    @Scripts.Render("~/bundles/custom")
 }

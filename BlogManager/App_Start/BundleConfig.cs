@@ -15,6 +15,10 @@ namespace BlogManager
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/data_tables").Include(
+                        "~/Scripts/DataTables/jquery.datatables.js",
+                        "~/Scripts/DataTables/datatables.bootstrap.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -27,11 +31,13 @@ namespace BlogManager
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                         "~/Scripts/Custom/preview.js",
                         "~/Scripts/Custom/open-modal.js",
+                        "~/Scripts/Custom/custom-data-table.js",
                         "~/Scripts/Custom/pictures-upload.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-darkly.css",
                       "~/Content/site.css",
+                      "~/Content/DataTables/css/datatables.bootstrap.css",
                       "~/Content/my-styles.css"));
         }
     }
