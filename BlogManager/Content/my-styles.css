@@ -295,7 +295,7 @@ body {
 
 /* HOME PAGE */
 .home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
-    background-image: url('/Images/home-bcg.jpg');
+    background-image: url('/Images/home-bcg1.jpeg');
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -327,9 +327,11 @@ body {
     margin-top: 225px;
     line-height: 100px;
     font-size: 72px;
+    letter-spacing: 5px;
 }
 .bcg-box-text h4 {
     margin-top: -5px;
     margin-left: 5px;
     line-height: 40px;
+    letter-spacing: 25px;
 }
