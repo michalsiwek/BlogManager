@@ -294,11 +294,6 @@ body {
 }
 
 /* HOME PAGE */
-.home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
-    background-image: url('/Images/home-bcg1.jpeg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
 .home-bcg-box, .bcg-box-text-placeholder {
     position: relative;
     width: 100vw;
@@ -318,8 +313,23 @@ body {
     width: 60vw;
     left: calc(20%);
 }
+
+.home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
+    background-image: url('/Images/home-bcg1.jpeg');
+}
+.bcg-box-text h1, .bcg-box-text h4 {
+    color: #000;
+    font-weight: bold;
+    background: rgba(255,255,255,0);
+}
+
 /* Chrome 29+ */
 @supports (-webkit-appearance:none) and (not (overflow:-webkit-marquee)) and (not (-ms-ime-align:auto)) and (not (-moz-appearance:none)) {
+    .home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
+        background-image: url('/Images/home-bcg1.jpeg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
     .bcg-box-text h1, .bcg-box-text h4 {
         -webkit-text-fill-color: transparent;
         -webkit-background-clip: text;
@@ -328,6 +338,22 @@ body {
 }
  /* Firefox */
 @-moz-document url-prefix() {
+    .home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
+        background-image: url('/Images/home-bcg1.jpeg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .bcg-box-text h1, .bcg-box-text h4 {
+        color: #000;
+        font-weight: bold;
+        background: rgba(255,255,255,0);
+    }
+}
+/* Edge */
+@supports (-ms-ime-align:auto) {
+    .home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
+        background-image: url('/Images/home-bcg1.jpeg');
+    }
     .bcg-box-text h1, .bcg-box-text h4 {
         color: #000;
         font-weight: bold;
