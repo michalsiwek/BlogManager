@@ -647,6 +647,7 @@
     <Content Include="Views\Manage\_ChangePassword.cshtml" />
     <Content Include="Views\Account\_RemindViaEmail.cshtml" />
     <Content Include="Views\Account\_ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

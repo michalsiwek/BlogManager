@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Entries
+                                <span>&nbsp;&nbsp;</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu navbar-dropdown-menu">
+                                <li>
+                                    @using (Html.BeginForm("New", "Entries"))
+                                    {
+                                        <input type="submit" value="New" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                                <li>
+                                    @using (Html.BeginForm("Index", "Entries"))
+                                    {
+                                        <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Galleries
+                                <span>&nbsp;&nbsp;</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu navbar-dropdown-menu">
+                                <li>
+                                    @using (Html.BeginForm("New", "Galleries"))
+                                    {
+                                        <input type="submit" value="New" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                                <li>
+                                    @using (Html.BeginForm("Index", "Galleries"))
+                                    {
+                                        <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                    {
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Categories
+                                <span>&nbsp;&nbsp;</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu navbar-dropdown-menu">
+                                <li>
+                                    @using (Html.BeginForm("New", "EntryCategories"))
+                                    {
+                                        <input type="submit" value="New" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                                <li>
+                                    @using (Html.BeginForm("Index", "EntryCategories"))
+                                    {
+                                        <input type="submit" value="Manage" class="btn-dropdown-item" />
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Accounts", "Index", "Accounts")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer id="app-footer">
+            <p>&copy; @DateTime.Now.Year - BlogManager</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

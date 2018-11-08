@@ -1,14 +1,19 @@
 ﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <br />
-    <h1>BlogManager</h1>
-    <br/>
-    <hr/>
-    <br/>
-    <p class="lead">CMS application to manage blog content.</p>
+<div class="home-bcg-box col-md-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="bcg-box-text-placeholder">
+        <div class="bcg-box-text">
+            <h1>BlogManager</h1>
+        </div>
+    </div>
+    <div class="bcg-box-text-placeholder">
+        <div class="bcg-box-text">
+            <h4>Content Management System</h4>
+        </div>
+    </div>
 </div>
 
 <div class="row">
@@ -17,16 +22,12 @@
         <p>
             Write down and publish your thoughts, ideas or memories. Discover functionality of entries tab.
         </p>
-        <br />
-        <p><button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Entries")'">See more &raquo;</button></p>
     </div>
     <div class="col-md-6">
         <h2>Galleries</h2>
         <p>
-            Blog is not just a text. Add photos galleries to take cheer your blog up.
+            Blog is not just a text. Add photos galleries to cheer your blog up.
         </p>
-        <br />
-        <p><button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Galleries")'">See more &raquo;</button></p>
-        <br /><br /><br />
     </div>
 </div>
+<br /><br /><br />
