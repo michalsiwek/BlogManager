@@ -16,9 +16,9 @@ namespace BlogManager.Repositories
     {
         public int GetNewestGalleryId()
         {
-            using (var _context = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext())
             {
-                int output = _context.Database
+                int output = context.Database
                     .SqlQuery<int>(@"SELECT MAX(Id) FROM dbo.Galleries")
                     .ToList()
                     .First();
@@ -28,9 +28,9 @@ namespace BlogManager.Repositories
 
         public int GetRecentCreatedGalleryIdByAccount(Gallery gallery)
         {
-            using (var _context = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext())
             {
-                int output = _context.Database
+                int output = context.Database
                     .SqlQuery<int>(string.Format(@"SELECT MAX(Id) FROM dbo.Galleries 
                                         WHERE Account_Id = {0}
                                         AND Title = '{1}'", gallery.Account.Id, gallery.Title))

@@ -63,7 +63,7 @@
                                 @if (category.IsActive)
                                 {
                                     <li>
-                                        @using (Html.BeginForm("Activate", "EntryCategories", new { catId = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                        @using (Html.BeginForm("Activate", "EntryCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
                                             <input type="submit" value="Disable" class="btn-dropdown-item" />
@@ -73,7 +73,7 @@
                                 else
                                 {
                                     <li>
-                                        @using (Html.BeginForm("Activate", "EntryCategories", new { catId = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                        @using (Html.BeginForm("Activate", "EntryCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
                                             <input type="submit" value="Enable" class="btn-dropdown-item" />
