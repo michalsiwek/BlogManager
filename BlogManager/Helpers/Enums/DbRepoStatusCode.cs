@@ -8,6 +8,7 @@ namespace BlogManager.Helpers.Enums
     public enum DbRepoStatusCode
     {
         NotFound = 0,
-        Success = 1
+        Success = 1,
+        BadRequest = 2
     }
 }
