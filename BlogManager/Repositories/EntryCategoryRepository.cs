@@ -12,7 +12,8 @@ namespace BlogManager.Repositories
 {
     public interface IEntryCategoryRepository
     {
-        List<EntryCategory> GetEntryCategories();
+        IEnumerable<EntryCategory> GetEntryCategories();
+        IEnumerable<EntryCategory> GetActiveEntryCategories();
         EntryCategory GetEntryCategory(int categoryId);
         DbRepoStatusCode DeleteEntryCategory(int categoryId);
         DbRepoStatusCode ActivateEntryCategory(int categoryId, string isActive);
@@ -21,17 +22,23 @@ namespace BlogManager.Repositories
 
     public class EntryCategoryRepository : IEntryCategoryRepository
     {
-        private readonly EntryCategoryManageService _categoryManageService;
+        private readonly IEntryCategoryManageService _categoryManageService;
 
         public EntryCategoryRepository()
         {
             _categoryManageService = new EntryCategoryManageService();
         }
 
-        public List<EntryCategory> GetEntryCategories()
+        public IEnumerable<EntryCategory> GetEntryCategories()
         {
             using (var context = new ApplicationDbContext())
                 return context.EntryCategories.ToList();
+        }
+
+        public IEnumerable<EntryCategory> GetActiveEntryCategories()
+        {
+            using (var context = new ApplicationDbContext())
+                return context.EntryCategories.Where(c => c.IsActive).ToList();
         }
 
         public EntryCategory GetEntryCategory(int categoryId)
@@ -48,6 +55,15 @@ namespace BlogManager.Repositories
 
                 if (entryCategory == null)
                     return DbRepoStatusCode.NotFound;
+
+                var entries = context.Entries.Where(e => e.EntryCategory.Id == categoryId).ToList();
+
+                if (entries.Count > 0)
+                {
+                    var defaultCategory = context.EntryCategories.SingleOrDefault(c => c.Id == 1);
+                    foreach (var entry in entries)
+                        entry.EntryCategory = defaultCategory;
+                }
 
                 context.EntryCategories.Remove(entryCategory);
                 context.SaveChanges();
