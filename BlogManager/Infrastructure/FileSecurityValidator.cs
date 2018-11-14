@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BlogManager.Helpers
+namespace BlogManager.Infrastructure
 {
     public interface IFileSecurityValidator
     {
         bool FileSecurityValidation(HttpPostedFileBase file);
     }
+
     public class FileSecurityValidator : IFileSecurityValidator
     {
         public bool FileSecurityValidation(HttpPostedFileBase file)

@@ -17,29 +17,22 @@ namespace BlogManager.Controllers
 {
     public class GalleriesController : Controller
     {
-        private ApplicationDbContext _context;
-        private DbRepository _dbRepository;
+        private IAccountRepository _accountRepo;
+        private IDbRepository _dbRepository;  
+
         private Account _signedUser;
-        private IFileSecurityValidator _fileSecurityValidator;
 
         public GalleriesController()
         {
-            _context = new ApplicationDbContext();
+            _accountRepo = new AccountRepository();
             _dbRepository = new DbRepository();
-            _signedUser = new Account();
-            _fileSecurityValidator = new FileSecurityValidator();
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            _signedUser = new Account();
         }
 
         private void GetSignedUser()
         {
-            _signedUser = _context.Users
-                .Include(u => u.AccountType)
-                .SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            _signedUser = _accountRepo.GetAccountByEmail(User.Identity.Name);
         }
 
         public ActionResult Index()
