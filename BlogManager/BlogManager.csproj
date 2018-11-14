@@ -232,7 +232,7 @@
     </Compile>
     <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
     <Compile Include="Helpers\Enums\DbRepoStatusCode.cs" />
-    <Compile Include="Helpers\FileSecurityValidator.cs" />
+    <Compile Include="Infrastructure\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
     <Compile Include="Infrastructure\MailingService.cs" />
