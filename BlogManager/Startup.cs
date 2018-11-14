@@ -50,7 +50,7 @@ namespace BlogManager
             var accountLogin = "admin@bm.com";
             var accountPassword = "admin1";
             var accountNickname = "Admin";
-            var accountAnswer = "";
+            var accountAnswer = "Answer";
 
             var account = new Account
             {

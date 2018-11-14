@@ -5,15 +5,21 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 
-namespace BlogManager.Helpers
+namespace BlogManager.Infrastructure
 {
-    public class SendEmailHandler
+    public interface IMailingService
+    {
+        void SendEmail(string targetAddress, string subject, string emailBody, bool isBodyHtml);
+        void SendVerificationCode(string targetAddress, string code);
+    }
+
+    public class MailingService : IMailingService
     {
         private SmtpClient _smtpClient;
         private readonly string _emailAddress = "blog.manager.app@gmail.com";
         private readonly string _password = "blogmanager1";
 
-        public SendEmailHandler()
+        public MailingService()
         {
             _smtpClient = new SmtpClient("smtp.gmail.com", 587);
             _smtpClient.EnableSsl = true;

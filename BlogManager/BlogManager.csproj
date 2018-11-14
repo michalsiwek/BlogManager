@@ -235,7 +235,7 @@
     <Compile Include="Helpers\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
-    <Compile Include="Helpers\SendEmailHandler.cs" />
+    <Compile Include="Infrastructure\MailingService.cs" />
     <Compile Include="Infrastructure\AccountManageService.cs" />
     <Compile Include="Infrastructure\EntryCategoryManageService.cs" />
     <Compile Include="Infrastructure\EntryManageService.cs" />
