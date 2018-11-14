@@ -24,13 +24,11 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext _context;
 
         private IAccountRepository _accountRepo;
 
         public AccountController()
         {
-            _context = new ApplicationDbContext();
             _accountRepo = new AccountRepository();
         }
 
@@ -38,7 +36,7 @@ namespace BlogManager.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _context = new ApplicationDbContext();
+            _accountRepo = new AccountRepository();
         }
 
         public ApplicationSignInManager SignInManager
@@ -504,7 +502,7 @@ namespace BlogManager.Controllers
             var viewModel = new ManageAccountViewModel
             {
                 Account = dbAccount,
-                AccountTypes = _context.Roles.ToList()
+                AccountTypes = _accountRepo.GetAccountTypes()
             };
 
             return View(viewModel);

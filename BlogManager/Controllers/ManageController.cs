@@ -9,6 +9,8 @@ using Microsoft.Owin.Security;
 using BlogManager.Models;
 using BlogManager.Models.Accounts;
 using System.Data.Entity;
+using BlogManager.Repositories;
+using BlogManager.Helpers.Enums;
 
 namespace BlogManager.Controllers
 {
@@ -17,18 +19,19 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext _context;
-        private Account _account;
+
+        private IAccountRepository _accountRepo;
 
         public ManageController()
         {
-            _context = new ApplicationDbContext();
+            _accountRepo = new AccountRepository();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _accountRepo = new AccountRepository();
         }
 
         public ApplicationSignInManager SignInManager
@@ -58,9 +61,8 @@ namespace BlogManager.Controllers
         private Account GetLoggedInAccount()
         {
             var userId = int.Parse(User.Identity.GetUserId());
-            var dbAccount = _context.Users
-                .Include(a => a.AccountType)
-                .SingleOrDefault(a => a.Id == userId);
+            var dbAccount = _accountRepo.GetAccountById(userId);
+
             return dbAccount;
         }
 
@@ -68,15 +70,15 @@ namespace BlogManager.Controllers
         // GET: /Manage/Index
         public ActionResult Index(ManageMessageId? message)
         {
-            _account = GetLoggedInAccount();
+            var account = GetLoggedInAccount();
 
-            if (_account == null)
+            if (account == null)
                 return HttpNotFound();
 
             var model = new IndexViewModel
             {
-                Account = _account,
-                AccountTypeName = _account.AccountType.Name
+                Account = account,
+                AccountTypeName = account.AccountType.Name
             };
 
             return View(model);
@@ -84,14 +86,14 @@ namespace BlogManager.Controllers
 
         public ActionResult EditData()
         {
-            _account = GetLoggedInAccount();
+            var account = _accountRepo.GetAccountById(int.Parse(User.Identity.GetUserId()));
 
-            if (_account == null)
+            if (account == null)
                 return HttpNotFound();
 
             var model = new PersonalDataViewModel
             {
-                Account = _account
+                Account = account
             };
 
             return PartialView("_EditData", model);
@@ -100,16 +102,10 @@ namespace BlogManager.Controllers
         [HttpPost]
         public ActionResult SavePersonalData(Account account)
         {
-            _account = GetLoggedInAccount();
+            var result = _accountRepo.SavePersonalDataChanges(account);
 
-            if (_account == null)
+            if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
-
-            _account.Nickname = account.Nickname;
-            _account.FirstName = account.FirstName;
-            _account.LastName = account.LastName;
-
-            _context.SaveChanges();
 
             return RedirectToAction("Index", new { Message = ManageMessageId.EditDataSuccess });
         }
@@ -374,7 +370,7 @@ namespace BlogManager.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

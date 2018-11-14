@@ -27,6 +27,8 @@ namespace BlogManager.Repositories
         DbRepoStatusCode VerifyCode(int accountId, string code);
         DbRepoStatusCode SendVerificationCode(string email);
         DbRepoStatusCode SaveAccountChanges(Account account, ApplicationUserManager usermanager);
+        IEnumerable<AccountType> GetAccountTypes();
+        DbRepoStatusCode SavePersonalDataChanges(Account account);
     }
 
     public class AccountRepository : IAccountRepository
@@ -68,6 +70,7 @@ namespace BlogManager.Repositories
             {
                 var result = context.Users
                     .Include(u => u.AccountType)
+                    .Include(u => u.PasswordRecoveryQuestion)
                     .SingleOrDefault(u => u.Id == id);
                 return result;
             }
@@ -233,6 +236,37 @@ namespace BlogManager.Repositories
                 dbAccount.AccountType = context.Roles.SingleOrDefault(r => r.Id == account.AccountType.Id);
 
                 userManager.AddToRole(dbAccount.Id, dbAccount.AccountType.Name);
+
+                context.SaveChanges();
+
+                return DbRepoStatusCode.Success;
+            }
+        }
+
+        public IEnumerable<AccountType> GetAccountTypes()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var output = context.Roles.ToList();
+                return output;
+            }
+        }
+
+        public DbRepoStatusCode SavePersonalDataChanges(Account account)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var dbAccount = context.Users
+                    .Include(u => u.AccountType)
+                    .Include(u => u.PasswordRecoveryQuestion)
+                    .SingleOrDefault(u => u.Email.Equals(account.Email));
+
+                if (dbAccount == null)
+                    return DbRepoStatusCode.NotFound;
+
+                dbAccount.Nickname = account.Nickname;
+                dbAccount.FirstName = account.FirstName;
+                dbAccount.LastName = account.LastName;
 
                 context.SaveChanges();
 
