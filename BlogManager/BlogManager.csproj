@@ -235,6 +235,7 @@
     <Compile Include="Infrastructure\FileSecurityValidator.cs" />
     <Compile Include="Helpers\HelperMethods.cs" />
     <Compile Include="Helpers\PicturesUrlSet.cs" />
+    <Compile Include="Infrastructure\FileUploadService.cs" />
     <Compile Include="Infrastructure\MailingService.cs" />
     <Compile Include="Infrastructure\AccountManageService.cs" />
     <Compile Include="Infrastructure\EntryCategoryManageService.cs" />
@@ -325,7 +326,7 @@
     <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
-    <Compile Include="Repositories\DbRepository.cs" />
+    <Compile Include="Repositories\GalleryRepository.cs" />
     <Compile Include="Repositories\EntryCategoryRepository.cs" />
     <Compile Include="Repositories\EntryRepository.cs" />
     <Compile Include="Repositories\ParagraphRepository.cs" />

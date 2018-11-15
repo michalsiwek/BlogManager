@@ -10,6 +10,7 @@ namespace BlogManager.Helpers.Enums
         NotFound = 0,
         Success = 1,
         BadRequest = 2,
-        Failed = 3
+        Failed = 3,
+        PartialSuccess = 4
     }
 }
