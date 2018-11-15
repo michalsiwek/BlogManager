@@ -228,10 +228,10 @@ namespace BlogManager.Repositories
                     .Include(g => g.Pictures)
                     .SingleOrDefault(g => g.Id == gallery.Id);
 
-                gallery.Pictures = new List<Picture>();
-
                 if (dbGallery == null)
                     return DbRepoStatusCode.NotFound;
+
+                gallery.Pictures = new List<Picture>();
 
                 if (request.Files.Count > 0 && request.Files[0].ContentLength > 0)
                 {
@@ -250,7 +250,7 @@ namespace BlogManager.Repositories
                             continue;
                         }
 
-                        gallery.Pictures.Add(picture);
+                        dbGallery.Pictures.Add(picture);
                     }
 
                     foreach (var p in gallery.Pictures)

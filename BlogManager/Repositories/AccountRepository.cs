@@ -169,18 +169,14 @@ namespace BlogManager.Repositories
             using (var context = new ApplicationDbContext())
             {
                 var dbCode = context.PasswordResetVerificationCodes
-                .SingleOrDefault(c => c.Account.Id == accountId && c.IsActive && c.ExpirationDate > DateTime.Now);
+                    .Include(c => c.Account)
+                    .SingleOrDefault(c => c.Account.Id == accountId && c.IsActive && c.ExpirationDate > DateTime.Now);
 
                 if (dbCode == null)
                     return DbRepoStatusCode.NotFound;
 
                 if (code.Equals(dbCode.Code))
-                {
-                    dbCode.IsActive = false;
-                    context.SaveChanges();
-
                     return DbRepoStatusCode.Success;
-                }
 
                 return DbRepoStatusCode.Failed;                
             }
@@ -259,7 +255,7 @@ namespace BlogManager.Repositories
                 var dbAccount = context.Users
                     .Include(u => u.AccountType)
                     .Include(u => u.PasswordRecoveryQuestion)
-                    .SingleOrDefault(u => u.Email.Equals(account.Email));
+                    .SingleOrDefault(u => u.Id == account.Id);
 
                 if (dbAccount == null)
                     return DbRepoStatusCode.NotFound;

@@ -273,7 +273,7 @@ namespace BlogManager.Controllers
                 return View("ResetPassword", model);
             }
 
-            var validation = _accountRepo.VerifyCode(dbAccount.Id, model.Code);
+            var validation = _accountRepo.VerifyCode(dbAccount.Id, model.VerificationCode);
 
             if (validation == DbRepoStatusCode.NotFound)
             {
