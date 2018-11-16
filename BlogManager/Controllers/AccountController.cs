@@ -47,7 +47,7 @@ namespace BlogManager.Controllers
             }
             private set 
             { 
-                _signInManager = value; 
+                _signInManager = value;
             }
         }
 
