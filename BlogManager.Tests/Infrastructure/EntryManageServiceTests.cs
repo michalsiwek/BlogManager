@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using BlogManager.Infrastructure;
 using BlogManager.Models.Accounts;
 using BlogManager.Models.Categories;
