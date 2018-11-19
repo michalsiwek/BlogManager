@@ -75,12 +75,12 @@ namespace BlogManager.Repositories
 
                 if (dbEntry == null)
                 {
-                    _entryService.PreSavingDataProcessing(account, entry, entryCategory);
+                    _entryService.PreSavingNewDataProcessing(account, entry, entryCategory);
                     context.Entries.Add(entry);
                 }
                 else
                 {
-                    _entryService.PreSavingDataProcessing(account, dbEntry, entryCategory, entry);
+                    _entryService.PreSavingModifiedDataProcessing(account, dbEntry, entryCategory, entry);
 
                     foreach (var p in dbParagraphs)
                         context.Paragraphs.Remove(p);

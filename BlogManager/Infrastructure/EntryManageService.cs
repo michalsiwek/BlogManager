@@ -10,33 +10,36 @@ namespace BlogManager.Infrastructure
 {
     public interface IEntryManageService
     {
-        void PreSavingDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry = null);
+        void PreSavingNewDataProcessing(Account account, Entry entry, EntryCategory entryCategory);
+        void PreSavingModifiedDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry);
         void ValidateEntry(Entry entry, string isVisible, Account account);
     }
 
     public class EntryManageService : IEntryManageService
-    {
-        public void PreSavingDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry = null)
+    { 
+        public void PreSavingNewDataProcessing(Account account, Entry entry, EntryCategory entryCategory)
         {
             entry.NormalizeEntry();
 
             entry.EntryCategory = entryCategory;
+            entry.Account = account;
+            entry.CreateDate = DateTime.Now;
+            entry.IsVisible = false;
 
-            if (formEntry == null)
-            {
-                entry.Account = account;
-                entry.CreateDate = DateTime.Now;
-                entry.IsVisible = false;
-            }
-            else
-            {
-                entry.Title = formEntry.Title;
-                entry.Description = formEntry.Description;
-                entry.Content = formEntry.Content;
-                entry.ImageUrl = formEntry.ImageUrl;
-                entry.LastModifiedBy = account;
-                entry.LastModification = DateTime.Now;
-            }
+            entry.GetParagraphsFromContent();
+        }
+
+        public void PreSavingModifiedDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry)
+        {
+            entry.NormalizeEntry();
+
+            entry.EntryCategory = entryCategory;
+            entry.Title = formEntry.Title;
+            entry.Description = formEntry.Description;
+            entry.Content = formEntry.Content;
+            entry.ImageUrl = formEntry.ImageUrl;
+            entry.LastModifiedBy = account;
+            entry.LastModification = DateTime.Now;
 
             entry.GetParagraphsFromContent();
         }

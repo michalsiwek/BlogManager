@@ -50,10 +50,24 @@ namespace BlogManager.UnitTests.Infrastructure
         }
 
         [Test]
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PreSavingDataProcessing(bool isNew)
+        public void PreSavingNewDataProcessing()
         {
+            var entryCategory = new EntryCategory();
+
+            Thread.Sleep(1000);
+            _entryManageService.PreSavingNewDataProcessing(_account, _entry, entryCategory);
+
+            Assert.AreEqual(_entry.Account, _account);
+            Assert.Greater(_entry.CreateDate, _testDate);
+            Assert.IsNull(_entry.LastModification);
+            Assert.False(_entry.IsVisible);
+            Assert.IsNotEmpty(_entry.Paragraphs);
+        }
+
+        [Test]
+        public void PreSavingModifiedDataProcessing()
+        {
+            _entry.CreateDate = _testDate;
             var entryCategory = new EntryCategory();
             var existingEntry = new Entry
             {
@@ -64,34 +78,15 @@ namespace BlogManager.UnitTests.Infrastructure
             };
 
             Thread.Sleep(1000);
-            if(isNew)
-                _entryManageService.PreSavingDataProcessing(_account, _entry, entryCategory);
-            else
-            {
-                _entry.CreateDate = _testDate;
-                _entryManageService.PreSavingDataProcessing(_account, _entry, entryCategory, existingEntry);
-            }
+            _entryManageService.PreSavingModifiedDataProcessing(_account, _entry, entryCategory, existingEntry);
 
-            switch (isNew)
-            {
-                case true:
-                    Assert.AreEqual(_entry.Account, _account);
-                    Assert.Greater(_entry.CreateDate, _testDate);
-                    Assert.IsNull(_entry.LastModification);
-                    Assert.False(_entry.IsVisible);
-                    Assert.IsNotEmpty(_entry.Paragraphs);
-                    break;
-                case false:
-                    Assert.AreEqual(_entry.LastModifiedBy, _account);
-                    Assert.Greater(_entry.LastModification, _testDate);
-                    Assert.IsNotEmpty(_entry.Paragraphs);
-                    StringAssert.Contains(Resources.ModificationSuffix, _entry.Title);
-                    StringAssert.Contains(Resources.ModificationSuffix, _entry.Description);
-                    StringAssert.Contains(Resources.ModificationSuffix, _entry.Content);
-                    StringAssert.Contains(Resources.ModificationSuffix, _entry.ImageUrl);
-                    break;
-            }
-
+            Assert.AreEqual(_entry.LastModifiedBy, _account);
+            Assert.Greater(_entry.LastModification, _testDate);
+            Assert.IsNotEmpty(_entry.Paragraphs);
+            StringAssert.Contains(Resources.ModificationSuffix, _entry.Title);
+            StringAssert.Contains(Resources.ModificationSuffix, _entry.Description);
+            StringAssert.Contains(Resources.ModificationSuffix, _entry.Content);
+            StringAssert.Contains(Resources.ModificationSuffix, _entry.ImageUrl);
         }
     }
 }
