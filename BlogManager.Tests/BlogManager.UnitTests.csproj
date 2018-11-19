@@ -111,6 +111,7 @@
     <Compile Include="Infrastructure\EntryCategoryManageServiceTests.cs" />
     <Compile Include="Infrastructure\EntryManageServiceTests.cs" />
     <Compile Include="Infrastructure\FileSecurityValidatorTests.cs" />
+    <Compile Include="Models\EntryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resources.cs" />
   </ItemGroup>
