@@ -40,8 +40,6 @@ namespace BlogManager.UnitTests.Infrastructure
             _entryManageService.ValidateEntry(_entry, request, _account);
 
             Assert.AreEqual(_entry.IsVisible, isActive);
-            Assert.AreEqual(_entry.LastModifiedBy, _account);
-            Assert.GreaterOrEqual(_entry.LastModification, _testDate);
         }
 
         [Test]
