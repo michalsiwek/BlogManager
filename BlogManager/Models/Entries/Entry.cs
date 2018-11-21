@@ -22,11 +22,12 @@ namespace BlogManager.Models.Entries
 
         [Required]
         [Display(Name = "Title")]
-        [StringLength(255)]
+        [StringLength(100)]
         public string Title { get; set; }
 
         [Required]
         [Display(Name = "Description")]
+        [StringLength(255)]
         public string Description { get; set; }
 
         [Required]
