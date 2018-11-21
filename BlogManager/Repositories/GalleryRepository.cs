@@ -179,15 +179,15 @@ namespace BlogManager.Repositories
                 {
                     case "true":
                         galleryToValidate.IsVisible = true;
-                        context.SaveChanges();
                         break;
                     case "false":
                         galleryToValidate.IsVisible = false;
-                        context.SaveChanges();
                         break;
                     default:
                         break;
                 }
+
+                context.SaveChanges();
 
                 return DbRepoStatusCode.Success;
             }

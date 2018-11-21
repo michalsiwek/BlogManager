@@ -46,9 +46,6 @@ namespace BlogManager.Infrastructure
 
         public void ValidateEntry(Entry entry, string isVisible, Account account)
         {
-            entry.LastModifiedBy = account;
-            entry.LastModification = DateTime.Now;
-
             switch (isVisible.ToLower())
             {
                 case "true":
