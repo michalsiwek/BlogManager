@@ -6,29 +6,26 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BlogManager.Helpers.Enums;
+using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
 {
     [Authorize(Roles = AccountTypeName.Admin + "," + AccountTypeName.Editor)]
     public class EntryCategoriesController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly EntryCategoryRepository _repo;
 
         public EntryCategoriesController()
         {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            _repo = new EntryCategoryRepository();
         }
 
         public ActionResult Index()
         {
             var viewModel = new EntryCategoriesViewModel
             {
-                EntryCategories = _context.EntryCategories.ToList()
+                EntryCategories = _repo.GetEntryCategories()
             };
             return View(viewModel);
         }
@@ -44,7 +41,7 @@ namespace BlogManager.Controllers
 
         public ActionResult Edit(int id)
         {
-            var dbEntryCat = _context.EntryCategories.SingleOrDefault(c => c.Id == id);
+            var dbEntryCat = _repo.GetEntryCategory(id);
 
             if (dbEntryCat == null)
                 return HttpNotFound();
@@ -64,61 +61,31 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(EntryCategory entryCategory)
         {
-            var dbEntryCat = _context.EntryCategories.SingleOrDefault(c => c.Id == entryCategory.Id);
-
-            if (dbEntryCat == null)
-            {
-                entryCategory.CreateDate = DateTime.Now;
-                _context.EntryCategories.Add(entryCategory);
-            }
-            else
-            {
-                dbEntryCat.LastModification = DateTime.Now;
-                dbEntryCat.Name = entryCategory.Name;
-                dbEntryCat.Description = entryCategory.Description;
-                dbEntryCat.IsActive = entryCategory.IsActive;
-            }
-
-            _context.SaveChanges();
+            _repo.SaveEntryCategory(entryCategory);
 
             return RedirectToAction("Index", "EntryCategories");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Activate(int catId, string isActive)
+        public ActionResult Activate(int id, string isActive)
         {
-            var categoryToActivate = _context.EntryCategories.SingleOrDefault(c => c.Id == catId);
-            if (categoryToActivate == null)
-                return HttpNotFound();
+            var result =_repo.ActivateEntryCategory(id, isActive);
 
-            switch (isActive.ToLower())
-            {
-                case "true":
-                    categoryToActivate.IsActive = true;
-                    _context.SaveChanges();
-                    break;
-                case "false":
-                    categoryToActivate.IsActive = false;
-                    _context.SaveChanges();
-                    break;
-                default:
-                    break;
-            }
+            if (result == DbRepoStatusCode.NotFound)
+                return HttpNotFound();
 
             return RedirectToAction("Index", "EntryCategories");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int catId)
+        public ActionResult Delete(int id)
         {
-            var categoryToDelete = _context.EntryCategories.SingleOrDefault(e => e.Id == catId);
-            if (categoryToDelete == null)
-                return HttpNotFound();
+            var result = _repo.DeleteEntryCategory(id);
 
-            _context.EntryCategories.Remove(categoryToDelete);
-            _context.SaveChanges();
+            if (result == DbRepoStatusCode.NotFound)
+                return HttpNotFound();
 
             return RedirectToAction("Index", "EntryCategories");
         }

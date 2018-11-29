@@ -9,30 +9,33 @@ using System.Net;
 using BlogManager.Models.Entries;
 using BlogManager.Helpers;
 using BlogManager.Models.Accounts;
+using BlogManager.Repositories;
+using BlogManager.Infrastructure;
+using BlogManager.Helpers.Enums;
 
 namespace BlogManager.Controllers
 {
     public class EntriesController : Controller
     {
-        private ApplicationDbContext _context;
         private Account _signedUser;
+        private IAccountRepository _accountRepo;
+        private IEntryRepository _entryRepo;
+        private IEntryCategoryRepository _entryCategoryRepo;
+        private IParagraphRepository _paragraphRepo;
+
 
         public EntriesController()
         {
-            _context = new ApplicationDbContext();
             _signedUser = new Account();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            _accountRepo = new AccountRepository();
+            _entryRepo = new EntryRepository();
+            _entryCategoryRepo = new EntryCategoryRepository();
+            _paragraphRepo = new ParagraphRepository();
         }
 
         private void GetSignedUser()
         {
-            _signedUser = _context.Users
-                .Include(u => u.AccountType)
-                .SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
+            _signedUser = _accountRepo.GetSignedUser(User.Identity.Name);
         }
 
         public ActionResult Index()
@@ -42,15 +45,12 @@ namespace BlogManager.Controllers
 
             var viewModel = new EntriesViewModel
             {
-                Entries = _context.Entries
-                    .Include(e => e.Account)
-                    .Include(e => e.EntryCategory)
-                    .ToList()
+                Entries = _entryRepo.GetEntries()
             };
 
             GetSignedUser();
             if (!_signedUser.CanManageAllContent())
-                viewModel.Entries = viewModel.Entries.Where(e => e.Account.Equals(_signedUser)).ToList();       
+                viewModel.Entries = viewModel.Entries.Where(e => e.Account.Equals(_signedUser)).ToList();
 
             return View(viewModel);
         }
@@ -60,7 +60,7 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = new Entry(),
-                EntryCategories = _context.EntryCategories.Where(c => c.IsActive == true).ToList()
+                EntryCategories = _entryCategoryRepo.GetActiveEntryCategories()
             };
 
             return View(viewModel);
@@ -68,10 +68,7 @@ namespace BlogManager.Controllers
 
         public ActionResult Edit(int id)
         {
-            var dbEntry = _context.Entries
-                .Include(e => e.EntryCategory)
-                .Include(e => e.Account)
-                .SingleOrDefault(e => e.Id == id);
+            var dbEntry = _entryRepo.GetEntry(id);
 
             if (dbEntry == null)
                 return HttpNotFound();
@@ -83,7 +80,7 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = dbEntry,
-                EntryCategories = _context.EntryCategories.Where(c => c.IsActive).ToList()
+                EntryCategories = _entryCategoryRepo.GetActiveEntryCategories()
             };
 
             return View(viewModel);
@@ -91,10 +88,7 @@ namespace BlogManager.Controllers
 
         public ActionResult Preview(Entry entry)
         {
-            var dbEntry = _context.Entries
-                .Include(e => e.Account)
-                .Include(e => e.EntryCategory)
-                .SingleOrDefault(e => e.Id == entry.Id);
+            var dbEntry = _entryRepo.GetEntry(entry.Id);
 
             if (dbEntry == null)
                 return HttpNotFound();
@@ -103,7 +97,7 @@ namespace BlogManager.Controllers
             if (!_signedUser.CanManageAllContent() && !dbEntry.Account.Equals(_signedUser))
                 return RedirectToAction("Index", "Home");
 
-            dbEntry.Paragraphs = _context.Paragraphs.Where(p => p.EntryId == dbEntry.Id).ToList();
+            dbEntry.Paragraphs = _paragraphRepo.GetParagraphsByEntryId(entry.Id);
 
             var viewModel = new EntryPreviewViewModel
             {
@@ -117,57 +111,9 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(Entry entry)
         {
-            var dbEntry = _context.Entries
-                .Include(e => e.EntryCategory)
-                .SingleOrDefault(e => e.Id == entry.Id);
+            GetSignedUser();
 
-            if (dbEntry == null)
-            {
-                entry.NormalizeEntry();
-                entry.CreateDate = DateTime.Now;
-                entry.Account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-                entry.Title = entry.Title;
-                entry.Description = entry.Description;
-                entry.Content = entry.Content;
-                entry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
-                entry.IsVisible = false;
-
-                entry.GetParagraphsFromContent();
-
-                _context.Entries.Add(entry);
-
-                foreach (var p in entry.Paragraphs)
-                    _context.Paragraphs.Add(p);
-            }
-            else
-            {
-                GetSignedUser();
-                if (!_signedUser.CanManageAllContent() && !dbEntry.Account.Equals(_signedUser))
-                    return RedirectToAction("Index", "Home");
-
-                entry.NormalizeEntry();
-
-                if (!dbEntry.Equals(entry))
-                    dbEntry.IsVisible = false;
-
-                dbEntry.Title = entry.Title;
-                dbEntry.Description = entry.Description;
-                dbEntry.Content = entry.Content;
-                dbEntry.ImageUrl = entry.ImageUrl;
-                dbEntry.EntryCategory = _context.EntryCategories.SingleOrDefault(c => c.Id == entry.EntryCategory.Id);
-                dbEntry.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-                dbEntry.LastModification = DateTime.Now;
-
-                dbEntry.GetParagraphsFromContent();
-
-                var dbParagraphs = _context.Paragraphs.Where(p => p.EntryId == entry.Id).ToList();
-                foreach (var p in dbParagraphs)
-                    _context.Paragraphs.Remove(p);
-                dbParagraphs.Clear();
-                dbParagraphs = dbEntry.Paragraphs;
-            }
-
-            _context.SaveChanges();
+            _entryRepo.SaveEntry(entry, User.Identity.Name);
 
             return RedirectToAction("Index", "Entries");
         }
@@ -177,30 +123,17 @@ namespace BlogManager.Controllers
         public ActionResult Validate(int entryId, string isVisible)
         {
             GetSignedUser();
+
+            if(_signedUser == null)
+                return HttpNotFound();
+
             if (!_signedUser.CanManageAllContent())
                 return RedirectToAction("Index", "Home");
 
-            var entryToValidate = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+            var result = _entryRepo.PublishEntry(entryId, isVisible, User.Identity.Name);
 
-            if (entryToValidate == null)
+            if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
- 
-            entryToValidate.LastModifiedBy = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            entryToValidate.LastModification = DateTime.Now;
-
-            switch (isVisible.ToLower())
-            {
-                case "true":
-                    entryToValidate.IsVisible = true;
-                    _context.SaveChanges();
-                    break;
-                case "false":
-                    entryToValidate.IsVisible = false;
-                    _context.SaveChanges();
-                    break;
-                default:
-                    break;
-            }        
 
             return RedirectToAction("Index", "Entries");
         }
@@ -209,17 +142,16 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int entryId)
         {
-            var entryToDelete = _context.Entries.SingleOrDefault(e => e.Id == entryId);
+            var entry = _entryRepo.GetEntry(entryId);
 
-            if (entryToDelete == null)
+            if (entry == null)
                 return HttpNotFound();
 
             GetSignedUser();
-            if (!_signedUser.CanManageAllContent() && !entryToDelete.Account.Equals(_signedUser))
+            if (!_signedUser.CanManageAllContent() && !entry.Account.Equals(_signedUser))
                 return RedirectToAction("Index", "Home");
 
-            _context.Entries.Remove(entryToDelete);
-            _context.SaveChanges();
+            _entryRepo.DeleteEntry(entryId);
 
             return RedirectToAction("Index", "Entries");
         }

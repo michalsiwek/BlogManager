@@ -6,29 +6,26 @@ using System.Data.Entity;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BlogManager.Helpers.Enums;
+using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
 {
     [Authorize(Roles = AccountTypeName.Admin)]
     public class AccountsController : Controller
     {
-        private ApplicationDbContext _context;
+        private IAccountRepository _accountRepo;
 
         public AccountsController()
         {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            _accountRepo = new AccountRepository();
         }
 
         public ActionResult Index()
         {
             var viewModel = new AccountsViewModel
             {
-                Accounts = _context.Users.Include(u => u.AccountType).Where(u => u.Id != 1).ToList()
+                Accounts = _accountRepo.GetAllAccountsButAdmin()
             };
             return View(viewModel);
         }
@@ -38,36 +35,15 @@ namespace BlogManager.Controllers
         public ActionResult Validate(int accountId, string isActive, AccountsViewModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+                return View("Index", model);
 
-            var accountToValidate = _context.Users.Include(u => u.AccountType).SingleOrDefault(u => u.Id == accountId);
-            if (accountToValidate == null)
+            var result = _accountRepo.ValidateAccount(accountId, isActive);
+
+            if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
 
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if(account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
-            if (accountToValidate.AccountType == null)
+            if (result == DbRepoStatusCode.BadRequest)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Forbidden action");
-
-            accountToValidate.LastModification = DateTime.Now;
-
-            switch (isActive.ToLower())
-            {
-                case "true":
-                    accountToValidate.IsActive = true;
-                    _context.SaveChanges();
-                    break;
-                case "false":
-                    accountToValidate.IsActive = false;
-                    _context.SaveChanges();
-                    break;
-                default:
-                    break;
-            }
 
             return RedirectToAction("Index", "Accounts");
         }
@@ -76,16 +52,10 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var accountToValidate = _context.Users.SingleOrDefault(u => u.Id == id);
-            if (accountToValidate == null)
+            var result = _accountRepo.DeleteAccount(id);
+
+            if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
-
-            var account = _context.Users.SingleOrDefault(u => u.Email.Equals(User.Identity.Name));
-            /*if (account == null)
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "You have no permission to perform this action");*/
-
-            _context.Users.Remove(accountToValidate);
-            _context.SaveChanges();
 
             return RedirectToAction("Index", "Accounts");
         }

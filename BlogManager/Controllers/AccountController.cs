@@ -15,6 +15,7 @@ using BlogManager.Models.Accounts;
 using BlogManager.Helpers.Enums;
 using System.Net;
 using BlogManager.Helpers;
+using BlogManager.Repositories;
 
 namespace BlogManager.Controllers
 {
@@ -23,18 +24,19 @@ namespace BlogManager.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private ApplicationDbContext _context;
+
+        private IAccountRepository _accountRepo;
 
         public AccountController()
         {
-            _context = new ApplicationDbContext();
+            _accountRepo = new AccountRepository();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _context = new ApplicationDbContext();
+            _accountRepo = new AccountRepository();
         }
 
         public ApplicationSignInManager SignInManager
@@ -45,7 +47,7 @@ namespace BlogManager.Controllers
             }
             private set 
             { 
-                _signInManager = value; 
+                _signInManager = value;
             }
         }
 
@@ -162,7 +164,7 @@ namespace BlogManager.Controllers
             var viewModel = new RegisterViewModel
             {
                 Account = new Account(),
-                PasswordRecoveryQuestions = _context.PasswordRecoveryQuestions.ToList()
+                PasswordRecoveryQuestions = _accountRepo.GetPasswordRecoveryQuestions()
             };
             return View(viewModel);
         }
@@ -191,17 +193,10 @@ namespace BlogManager.Controllers
                 var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(user.Email));
-                    if (dbAccount == null)
-                        return HttpNotFound();
+                    var passAssignment = _accountRepo.AssignPasswordRecoveryQuestion(user.Email, model.Account.PasswordRecoveryQuestion.Id);
 
-                    var dbPasswordRecoveryQuestion = _context.PasswordRecoveryQuestions
-                        .SingleOrDefault(p => p.Id == model.Account.PasswordRecoveryQuestion.Id);
-                    if (dbPasswordRecoveryQuestion == null)
+                    if (passAssignment == DbRepoStatusCode.NotFound)
                         return HttpNotFound();
-
-                    dbAccount.PasswordRecoveryQuestion = dbPasswordRecoveryQuestion;
-                    _context.SaveChanges();
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -244,9 +239,7 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string email)
         {
-            var dbAccount = _context.Users
-                .Include(a => a.PasswordRecoveryQuestion)
-                .SingleOrDefault(a => a.Email.Equals(email));
+            var dbAccount = _accountRepo.GetAccountByEmail(email);
 
             if (dbAccount == null)
                 return HttpNotFound();
@@ -268,7 +261,7 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PassReset(ResetPasswordViewModel model)
         {
-            var dbAccount = _context.Users.SingleOrDefault(a => a.Email.Equals(model.Email));
+            var dbAccount = _accountRepo.GetAccountByEmail(model.Email);
             if (dbAccount == null)
                 return HttpNotFound();
 
@@ -280,23 +273,19 @@ namespace BlogManager.Controllers
                 return View("ResetPassword", model);
             }
 
-            var code = _context.PasswordResetVerificationCodes
-                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
+            var validation = _accountRepo.VerifyCode(dbAccount.Id, model.VerificationCode);
 
-            if (code == null)
+            if (validation == DbRepoStatusCode.NotFound)
             {
                 ModelState.AddModelError("", "Verification code expired");
                 return View("ResetPassword", model);
             }
 
-            if(!model.VerificationCode.Equals(code.Code))
+            if (validation == DbRepoStatusCode.Failed)
             {
                 ModelState.AddModelError("", "Invalid verification code");
                 return View("ResetPassword", model);
             }
-
-            code.IsActive = false;
-            _context.SaveChanges();
 
             var result = await UserManager.ResetPasswordAsync(dbAccount.Id, model.Code, model.Password);
             if (result.Succeeded)
@@ -310,47 +299,30 @@ namespace BlogManager.Controllers
         [AllowAnonymous]
         public ActionResult ProceedPasswordReset(string email)
         {
-            var dbAccount = _context.Users
-                .Include(a => a.PasswordRecoveryQuestion)
-                .SingleOrDefault(a => a.Email.Equals(email));
+            var result = _accountRepo.SendVerificationCode(email);
 
-            if (dbAccount == null)
+            if (result == DbRepoStatusCode.NotFound)
             {
                 ModelState.AddModelError("", "Email is invalid");
                 return View("ForgotPassword");
             }                
 
-            var verificationCode = _context.PasswordResetVerificationCodes
-                .Include(c => c.Account)
-                .SingleOrDefault(c => c.Account.Id == dbAccount.Id && c.IsActive && c.ExpirationDate > DateTime.Now);
-
-            if (verificationCode == null)
+            if (result == DbRepoStatusCode.Success)
             {
-                verificationCode = new PasswordResetVerificationCode
+                if (ModelState.IsValid)
                 {
-                    Account = dbAccount,
-                    Code = new Random().Next(10000, 99999).ToString(),
-                    ExpirationDate = DateTime.Now.AddMinutes(15),
-                    IsActive = true
-                };
 
-                _context.PasswordResetVerificationCodes.Add(verificationCode);
-                _context.SaveChanges();
+                    var account = _accountRepo.GetAccountByEmail(email);
 
-                var sendEmailHandler = new SendEmailHandler();
-                sendEmailHandler.SendVerificationCode(email, verificationCode.Code);
-            }
+                    var model = new ResetPasswordViewModel
+                    {
+                        Email = account.Email,
+                        RecoveryQuestion = account.PasswordRecoveryQuestion.Question,
+                        Code = UserManager.GeneratePasswordResetToken(account.Id)
+                    };
 
-            if (ModelState.IsValid)
-            {
-                var model = new ResetPasswordViewModel
-                {
-                    Email = dbAccount.Email,
-                    RecoveryQuestion = dbAccount.PasswordRecoveryQuestion.Question,
-                    Code = UserManager.GeneratePasswordResetToken(dbAccount.Id)
-                };
-
-                return View("ResetPassword", model);
+                    return View("ResetPassword", model);
+                }
             }
 
             return View("ForgotPassword");
@@ -519,9 +491,9 @@ namespace BlogManager.Controllers
         [Authorize]
         public ActionResult Manage(int id)
         {
-            var dbAccount = _context.Users.SingleOrDefault(u => u.Id == id);
+            var dbAccount = _accountRepo.GetAccountById(id);
 
-            if(dbAccount == null)
+            if (dbAccount == null)
                 return HttpNotFound();
 
             if (dbAccount.Id == 1)
@@ -530,7 +502,7 @@ namespace BlogManager.Controllers
             var viewModel = new ManageAccountViewModel
             {
                 Account = dbAccount,
-                AccountTypes = _context.Roles.ToList()
+                AccountTypes = _accountRepo.GetAccountTypes()
             };
 
             return View(viewModel);
@@ -540,18 +512,10 @@ namespace BlogManager.Controllers
         [Authorize]
         public ActionResult SaveChanges(Account account)
         {
-            var dbAccount = _context.Users.SingleOrDefault(u => u.Id == account.Id);
+            var result = _accountRepo.SaveAccountChanges(account, UserManager);
 
-            if (dbAccount == null)
+            if (result == DbRepoStatusCode.Failed)
                 return HttpNotFound();
-
-
-            dbAccount.IsActive = account.IsActive;
-            dbAccount.AccountType = _context.Roles.SingleOrDefault(r => r.Id == account.AccountType.Id);
-
-            UserManager.AddToRole(dbAccount.Id, dbAccount.AccountType.Name);
-
-            _context.SaveChanges();
 
             return RedirectToAction("Index", "Accounts");
         }

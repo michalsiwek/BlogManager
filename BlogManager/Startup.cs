@@ -49,16 +49,18 @@ namespace BlogManager
             var accountTypeName = "Admin";
             var accountLogin = "admin@bm.com";
             var accountPassword = "admin1";
-            var acconuntNickname = "Admin";
+            var accountNickname = "Admin";
+            var accountAnswer = "Answer";
 
             var account = new Account
             {
                 Email = accountLogin,
                 UserName = accountLogin,
-                Nickname = acconuntNickname,
+                Nickname = accountNickname,
                 CreateDate = DateTime.Now,
                 LockoutEnabled = false,
                 IsActive = true,
+                PasswordRecoveryAnswer = accountAnswer,
                 AccountType = roleManager.FindByName(accountTypeName)
             };
 

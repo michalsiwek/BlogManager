@@ -10,7 +10,9 @@ namespace BlogManager.Models.Galleries
     {
         public Guid Id { get; set; }
         public string FileName { get; set; }
+        [StringLength(255)]
         public string Descripton { get; set; }
+        [StringLength(50)]
         public string Author { get; set; }
         public string Url { get; set; }
         public string AbsoluteUrl { get; set; }
