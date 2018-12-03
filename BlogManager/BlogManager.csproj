@@ -506,6 +506,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\home-bcg.jpg" />
+    <Content Include="Images\home-bcg1.jpeg" />
+    <Content Include="Images\home-bcg2.jpeg" />
+    <Content Include="Images\home-bcg3.jpeg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -516,6 +520,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <None Include="Properties\PublishProfiles\BlogManager - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Custom\custom-data-table.js" />
     <Content Include="Scripts\Custom\open-modal.js" />

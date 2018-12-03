@@ -316,11 +316,13 @@ body {
 
 .home-bcg-box, .bcg-box-text h1, .bcg-box-text h4 {
     background-image: url('/Images/home-bcg1.jpeg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 .bcg-box-text h1, .bcg-box-text h4 {
-    color: #000;
     font-weight: bold;
-    background: rgba(255,255,255,0);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
 }
 
 /* Chrome 29+ */
