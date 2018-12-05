@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BlogManager.Helpers.Enums;
 using BlogManager.Repositories;
+using BlogManager.Infrastructure;
 
 namespace BlogManager.Controllers
 {
@@ -18,7 +19,7 @@ namespace BlogManager.Controllers
 
         public AccountsController()
         {
-            _accountRepo = new AccountRepository();
+            _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
         }
 
         public ActionResult Index()
