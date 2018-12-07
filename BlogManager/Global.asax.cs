@@ -31,7 +31,8 @@ namespace BlogManager
                 .ForMember(g => g.LastModifiedBy, a => a.MapFrom(b => b.LastModifiedBy.Nickname))
                 .ForMember(g => g.Pictures, a => a.MapFrom(b => b.Pictures));
 
-                cfg.CreateMap<Picture, PictureDto>();
+                cfg.CreateMap<Picture, PictureDto>()
+                .ForMember(p => p.Url, a => a.MapFrom(b => b.AbsoluteUrl));
             });
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
