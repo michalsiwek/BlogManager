@@ -27,7 +27,7 @@ namespace BlogManager.Controllers
 
         public GalleriesController()
         {
-            _accountRepo = new AccountRepository();
+            _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
             _galleryRepo = new GalleryRepository();
             _fileUploadService = new FileUploadService();
 

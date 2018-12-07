@@ -16,6 +16,7 @@ using BlogManager.Helpers.Enums;
 using System.Net;
 using BlogManager.Helpers;
 using BlogManager.Repositories;
+using BlogManager.Infrastructure;
 
 namespace BlogManager.Controllers
 {
@@ -29,14 +30,14 @@ namespace BlogManager.Controllers
 
         public AccountController()
         {
-            _accountRepo = new AccountRepository();
+            _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
-            _accountRepo = new AccountRepository();
+            _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
         }
 
         public ApplicationSignInManager SignInManager

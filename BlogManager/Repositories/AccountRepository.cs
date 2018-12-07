@@ -36,10 +36,10 @@ namespace BlogManager.Repositories
         private IAccountManageService _accountService;
         private IMailingService _emailService;
 
-        public AccountRepository()
+        public AccountRepository(IAccountManageService accountService, IMailingService emailService)
         {
-            _accountService = new AccountManageService();
-            _emailService = new MailingService();
+            _accountService = accountService;
+            _emailService = emailService;
         }
 
         public Account GetSignedUser(string userIdentityName)

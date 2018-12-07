@@ -27,7 +27,7 @@ namespace BlogManager.Controllers
         public EntriesController()
         {
             _signedUser = new Account();
-            _accountRepo = new AccountRepository();
+            _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
             _entryRepo = new EntryRepository();
             _entryCategoryRepo = new EntryCategoryRepository();
             _paragraphRepo = new ParagraphRepository();
