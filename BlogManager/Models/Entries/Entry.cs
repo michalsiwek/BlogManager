@@ -108,6 +108,24 @@ namespace BlogManager.Models.Entries
             return false;
         }
 
+        public override int GetHashCode()
+        {
+            var hashCode = -1294847358;
+            hashCode = hashCode * -1521134295 + Id.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<Account>.Default.GetHashCode(Account);
+            hashCode = hashCode * -1521134295 + CreateDate.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<DateTime?>.Default.GetHashCode(LastModification);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Title);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Description);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Content);
+            hashCode = hashCode * -1521134295 + EqualityComparer<List<Paragraph>>.Default.GetHashCode(Paragraphs);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ImageUrl);
+            hashCode = hashCode * -1521134295 + IsVisible.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<EntryCategory>.Default.GetHashCode(EntryCategory);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Account>.Default.GetHashCode(LastModifiedBy);
+            return hashCode;
+        }
+
         #endregion
     }
 }
