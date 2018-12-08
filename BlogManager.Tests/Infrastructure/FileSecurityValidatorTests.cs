@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using BlogManager.Infrastructure;
+using Moq;
 using NUnit.Framework;
 
 namespace BlogManager.UnitTests.Infrastructure
@@ -13,7 +14,7 @@ namespace BlogManager.UnitTests.Infrastructure
     [TestFixture]
     public class FileSecurityValidatorTests
     {
-        /*private Mock<HttpPostedFileBase> _file;
+        private Mock<HttpPostedFileBase> _file;
         private IFileSecurityValidator _fileSecurityValidator;
 
         [SetUp]
@@ -41,6 +42,6 @@ namespace BlogManager.UnitTests.Infrastructure
             var result = _fileSecurityValidator.FileSecurityValidation(_file.Object);
 
             Assert.AreEqual(validationResult, result);
-        }*/
+        }
     }
 }
