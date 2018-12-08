@@ -286,7 +286,9 @@ namespace BlogManager.Repositories
                 if (dbPicture == null || dbGallery == null)
                     return DbRepoStatusCode.NotFound;
 
-                var account = context.Users.SingleOrDefault(a => a.Email.Equals(email));
+                var account = context.Users
+                    .Include(c => c.AccountType)
+                    .SingleOrDefault(a => a.Email.Equals(email));
 
                 if (!account.CanManageAllContent() && !dbGallery.Account.Equals(account))
                     return DbRepoStatusCode.BadRequest;
