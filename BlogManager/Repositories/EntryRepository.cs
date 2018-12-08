@@ -24,9 +24,9 @@ namespace BlogManager.Repositories
     {
         private IEntryManageService _entryService;
 
-        public EntryRepository()
+        public EntryRepository(IEntryManageService entryService)
         {
-            _entryService = new EntryManageService();
+            _entryService = entryService;
         }
 
         public Entry GetEntry(int id)

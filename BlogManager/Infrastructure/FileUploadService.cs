@@ -16,11 +16,11 @@ namespace BlogManager.Infrastructure
 
     public class FileUploadService : IFileUploadService
     {
-        private IFileSecurityValidator _fileSecurityValidator;
+        private readonly IFileSecurityValidator _fileSecurityValidator;
 
-        public FileUploadService()
+        public FileUploadService(IFileSecurityValidator fileSecurityValidator)
         {
-            _fileSecurityValidator = new FileSecurityValidator();
+            _fileSecurityValidator = fileSecurityValidator;
         }
 
         public Picture SaveFile(HttpPostedFileBase file, HttpServerUtilityBase server, int galleryId)

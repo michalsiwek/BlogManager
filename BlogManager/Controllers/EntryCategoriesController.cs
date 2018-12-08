@@ -8,17 +8,18 @@ using System.Web;
 using System.Web.Mvc;
 using BlogManager.Helpers.Enums;
 using BlogManager.Repositories;
+using BlogManager.Infrastructure;
 
 namespace BlogManager.Controllers
 {
     [Authorize(Roles = AccountTypeName.Admin + "," + AccountTypeName.Editor)]
     public class EntryCategoriesController : Controller
     {
-        private readonly EntryCategoryRepository _repo;
+        private readonly IEntryCategoryRepository _repo;
 
         public EntryCategoriesController()
         {
-            _repo = new EntryCategoryRepository();
+            _repo = new EntryCategoryRepository(new EntryCategoryManageService());
         }
 
         public ActionResult Index()

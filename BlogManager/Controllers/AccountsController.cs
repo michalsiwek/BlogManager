@@ -15,7 +15,7 @@ namespace BlogManager.Controllers
     [Authorize(Roles = AccountTypeName.Admin)]
     public class AccountsController : Controller
     {
-        private IAccountRepository _accountRepo;
+        private readonly IAccountRepository _accountRepo;
 
         public AccountsController()
         {

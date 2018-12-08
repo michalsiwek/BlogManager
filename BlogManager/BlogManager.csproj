@@ -227,9 +227,7 @@
     <Compile Include="Dtos\EntryDto.cs" />
     <Compile Include="Dtos\GalleryDto.cs" />
     <Compile Include="Dtos\PictureDto.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
+    <Compile Include="Global.asax.cs" />
     <Compile Include="Helpers\Enums\CustomSignInStatus.cs" />
     <Compile Include="Helpers\Enums\DbRepoStatusCode.cs" />
     <Compile Include="Infrastructure\FileSecurityValidator.cs" />
@@ -328,7 +326,6 @@
     <Compile Include="Models\Accounts\AccountType.cs" />
     <Compile Include="Models\PersonalDataViewModel.cs" />
     <Compile Include="Models\PictureViewModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\GalleryRepository.cs" />
     <Compile Include="Repositories\EntryCategoryRepository.cs" />
