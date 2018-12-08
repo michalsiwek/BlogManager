@@ -24,9 +24,9 @@ namespace BlogManager.Repositories
     {
         private readonly IEntryCategoryManageService _categoryManageService;
 
-        public EntryCategoryRepository()
+        public EntryCategoryRepository(IEntryCategoryManageService categoryManageService)
         {
-            _categoryManageService = new EntryCategoryManageService();
+            _categoryManageService = categoryManageService;
         }
 
         public IEnumerable<EntryCategory> GetEntryCategories()

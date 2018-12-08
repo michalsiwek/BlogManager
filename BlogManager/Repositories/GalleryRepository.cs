@@ -32,10 +32,10 @@ namespace BlogManager.Repositories
         private IFileSecurityValidator _fileSecurityValidator;
         private IFileUploadService _fileUploadService;
 
-        public GalleryRepository()
+        public GalleryRepository(IFileSecurityValidator fileSecurityValidator, IFileUploadService fileUploadService)
         {
-            _fileSecurityValidator = new FileSecurityValidator();
-            _fileUploadService = new FileUploadService();
+            _fileSecurityValidator = fileSecurityValidator;
+            _fileUploadService = fileUploadService;
         }
 
         public int GetNewestGalleryId()

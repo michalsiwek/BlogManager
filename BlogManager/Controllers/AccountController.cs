@@ -26,7 +26,7 @@ namespace BlogManager.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        private IAccountRepository _accountRepo;
+        private readonly IAccountRepository _accountRepo;
 
         public AccountController()
         {

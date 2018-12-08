@@ -19,18 +19,17 @@ namespace BlogManager.Controllers
 {
     public class GalleriesController : Controller
     {
-        private IAccountRepository _accountRepo;
-        private IGalleryRepository _galleryRepo;
-        private IFileUploadService _fileUploadService;
+        private readonly IAccountRepository _accountRepo;
+        private readonly IGalleryRepository _galleryRepo;
+        private readonly IFileUploadService _fileUploadService;
 
         private Account _signedUser;
 
         public GalleriesController()
         {
             _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
-            _galleryRepo = new GalleryRepository();
-            _fileUploadService = new FileUploadService();
-
+            _fileUploadService = new FileUploadService(new FileSecurityValidator());
+            _galleryRepo = new GalleryRepository(new FileSecurityValidator(), _fileUploadService);         
             _signedUser = new Account();
         }
 

@@ -18,18 +18,18 @@ namespace BlogManager.Controllers
     public class EntriesController : Controller
     {
         private Account _signedUser;
-        private IAccountRepository _accountRepo;
-        private IEntryRepository _entryRepo;
-        private IEntryCategoryRepository _entryCategoryRepo;
-        private IParagraphRepository _paragraphRepo;
+        private readonly IAccountRepository _accountRepo;
+        private readonly IEntryRepository _entryRepo;
+        private readonly IEntryCategoryRepository _entryCategoryRepo;
+        private readonly IParagraphRepository _paragraphRepo;
 
 
         public EntriesController()
         {
             _signedUser = new Account();
             _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
-            _entryRepo = new EntryRepository();
-            _entryCategoryRepo = new EntryCategoryRepository();
+            _entryRepo = new EntryRepository(new EntryManageService());
+            _entryCategoryRepo = new EntryCategoryRepository(new EntryCategoryManageService());
             _paragraphRepo = new ParagraphRepository();
         }
 
