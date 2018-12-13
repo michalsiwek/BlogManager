@@ -7,12 +7,12 @@ namespace BlogManager.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.EntryCategories", "IsActive", c => c.Boolean(nullable: false));
+            AddColumn("dbo.ContentCategories", "IsActive", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.EntryCategories", "IsActive");
+            DropColumn("dbo.ContentCategories", "IsActive");
         }
     }
 }

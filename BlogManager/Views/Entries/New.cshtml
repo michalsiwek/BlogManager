@@ -45,10 +45,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.EntryCategories, new { @class = "col-md-12 control-label entry-form-label" })
+                    @Html.LabelFor(m => m.ContentCategories, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.DropDownListFor(m => m.Entry.EntryCategory.Id, new SelectList(Model.EntryCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
-                        @Html.ValidationMessageFor(m => m.Entry.EntryCategory.Id, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => m.Entry.ContentCategory.Id, new SelectList(Model.ContentCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
+                        @Html.ValidationMessageFor(m => m.Entry.ContentCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <br />

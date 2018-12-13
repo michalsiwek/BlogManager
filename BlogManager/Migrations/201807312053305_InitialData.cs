@@ -20,13 +20,13 @@ namespace BlogManager.Migrations
                         ImageUrl = c.String(),
                         IsVisible = c.Boolean(nullable: false),
                         Account_Id = c.Int(nullable: false),
-                        EntryCategory_Id = c.Int(),
+                        ContentCategory_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.Account_Id, cascadeDelete: true)
-                .ForeignKey("dbo.EntryCategories", t => t.EntryCategory_Id)
+                .ForeignKey("dbo.ContentCategories", t => t.ContentCategory_Id)
                 .Index(t => t.Account_Id)
-                .Index(t => t.EntryCategory_Id);
+                .Index(t => t.ContentCategory_Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -108,7 +108,7 @@ namespace BlogManager.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.EntryCategories",
+                "dbo.ContentCategories",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -123,7 +123,7 @@ namespace BlogManager.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Entries", "EntryCategory_Id", "dbo.EntryCategories");
+            DropForeignKey("dbo.Entries", "ContentCategory_Id", "dbo.ContentCategories");
             DropForeignKey("dbo.Entries", "Account_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
@@ -137,9 +137,9 @@ namespace BlogManager.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUsers", new[] { "AccountType_Id" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.Entries", new[] { "EntryCategory_Id" });
+            DropIndex("dbo.Entries", new[] { "ContentCategory_Id" });
             DropIndex("dbo.Entries", new[] { "Account_Id" });
-            DropTable("dbo.EntryCategories");
+            DropTable("dbo.ContentCategories");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUserRoles");

@@ -23,8 +23,8 @@ namespace BlogManager
                 .ForMember(e => e.Author, a => a.MapFrom(b => b.Account.Nickname))
                 .ForMember(e => e.LastEditor, a => a.MapFrom(b => b.LastModifiedBy.Nickname))
                 .ForMember(e => e.Content, a => a.MapFrom(b => b.Paragraphs.Select(p => p.Body)))
-                .ForMember(e => e.CategoryId, c => c.MapFrom(b => b.EntryCategory.Id))
-                .ForMember(e => e.CategoryName, c => c.MapFrom(b => b.EntryCategory.Name));
+                .ForMember(e => e.CategoryId, c => c.MapFrom(b => b.ContentCategory.Id))
+                .ForMember(e => e.CategoryName, c => c.MapFrom(b => b.ContentCategory.Name));
 
                 cfg.CreateMap<Gallery, GalleryDto>()
                 .ForMember(g => g.CreatedBy, a => a.MapFrom(b => b.Account.Nickname))

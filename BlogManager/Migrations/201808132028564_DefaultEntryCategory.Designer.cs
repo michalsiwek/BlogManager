@@ -7,13 +7,13 @@ namespace BlogManager.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class DefaultEntryCategory : IMigrationMetadata
+    public sealed partial class DefaultContentCategory : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DefaultEntryCategory));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DefaultContentCategory));
         
         string IMigrationMetadata.Id
         {
-            get { return "201808132028564_DefaultEntryCategory"; }
+            get { return "201808132028564_DefaultContentCategory"; }
         }
         
         string IMigrationMetadata.Source

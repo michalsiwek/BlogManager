@@ -6,8 +6,8 @@ using System.Web;
 
 namespace BlogManager.Models
 {
-    public class EntryCategoriesViewModel
+    public class ContentCategoriesViewModel
     {
-        public IEnumerable<EntryCategory> EntryCategories { get; set; }
+        public IEnumerable<ContentCategory> ContentCategories { get; set; }
     }
 }

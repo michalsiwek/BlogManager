@@ -8,11 +8,11 @@ using System.Web.Http;
 
 namespace BlogManager.Controllers.Api
 {
-    public class EntryCategoriesController : ApiController
+    public class ContentCategoriesController : ApiController
     {
         private ApplicationDbContext _context;
 
-        public EntryCategoriesController()
+        public ContentCategoriesController()
         {
             _context = new ApplicationDbContext();
         }
@@ -21,12 +21,12 @@ namespace BlogManager.Controllers.Api
         [Authorize]
         public IHttpActionResult DeleteCategory(int id)
         {
-            var catFromDb = _context.EntryCategories.SingleOrDefault(c => c.Id == id && c.Id != 1);
+            var catFromDb = _context.ContentCategories.SingleOrDefault(c => c.Id == id && c.Id != 1);
 
             if (catFromDb == null)
                 return NotFound();
 
-            _context.EntryCategories.Remove(catFromDb);
+            _context.ContentCategories.Remove(catFromDb);
             _context.SaveChanges();
 
             return Ok();

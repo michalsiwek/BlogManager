@@ -13,36 +13,36 @@ using BlogManager.Infrastructure;
 namespace BlogManager.Controllers
 {
     [Authorize(Roles = AccountTypeName.Admin + "," + AccountTypeName.Editor)]
-    public class EntryCategoriesController : Controller
+    public class ContentCategoriesController : Controller
     {
-        private readonly IEntryCategoryRepository _repo;
+        private readonly IContentCategoryRepository _repo;
 
-        public EntryCategoriesController()
+        public ContentCategoriesController()
         {
-            _repo = new EntryCategoryRepository(new EntryCategoryManageService());
+            _repo = new ContentCategoryRepository(new ContentCategoryManageService());
         }
 
         public ActionResult Index()
         {
-            var viewModel = new EntryCategoriesViewModel
+            var viewModel = new ContentCategoriesViewModel
             {
-                EntryCategories = _repo.GetEntryCategories()
+                ContentCategories = _repo.GetContentCategories()
             };
             return View(viewModel);
         }
 
         public ActionResult New()
         {
-            EntryCategoryViewModel viewModel = new EntryCategoryViewModel
+            ContentCategoryViewModel viewModel = new ContentCategoryViewModel
             {
-                EntryCategory = new EntryCategory()
+                ContentCategory = new ContentCategory()
             };
             return View(viewModel);
         }
 
         public ActionResult Edit(int id)
         {
-            var dbEntryCat = _repo.GetEntryCategory(id);
+            var dbEntryCat = _repo.GetContentCategory(id);
 
             if (dbEntryCat == null)
                 return HttpNotFound();
@@ -50,9 +50,9 @@ namespace BlogManager.Controllers
             if (dbEntryCat.Id == 1)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Forbidden action");
 
-            var viewModel = new EntryCategoryViewModel
+            var viewModel = new ContentCategoryViewModel
             {
-                EntryCategory = dbEntryCat
+                ContentCategory = dbEntryCat
             };
 
             return View(viewModel);
@@ -60,35 +60,35 @@ namespace BlogManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(EntryCategory entryCategory)
+        public ActionResult Save(ContentCategory contentCategory)
         {
-            _repo.SaveEntryCategory(entryCategory);
+            _repo.SaveContentCategory(contentCategory);
 
-            return RedirectToAction("Index", "EntryCategories");
+            return RedirectToAction("Index", "ContentCategories");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Activate(int id, string isActive)
         {
-            var result =_repo.ActivateEntryCategory(id, isActive);
+            var result =_repo.ActivateContentCategory(id, isActive);
 
             if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
 
-            return RedirectToAction("Index", "EntryCategories");
+            return RedirectToAction("Index", "ContentCategories");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var result = _repo.DeleteEntryCategory(id);
+            var result = _repo.DeleteContentCategory(id);
 
             if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
 
-            return RedirectToAction("Index", "EntryCategories");
+            return RedirectToAction("Index", "ContentCategories");
         }
     }
 }

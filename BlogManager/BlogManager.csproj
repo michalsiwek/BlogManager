@@ -309,7 +309,8 @@
     <Compile Include="Models\Accounts\PasswordResetVerificationCode.cs" />
     <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Categories\EntryCategory.cs" />
+    <Compile Include="Models\Categories\ContentCategory.cs" />
+    <Compile Include="Models\Categories\ContentSubcategory.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
     <Compile Include="Models\Entries\Paragraph.cs" />

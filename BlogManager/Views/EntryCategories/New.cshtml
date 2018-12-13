@@ -1,5 +1,5 @@
 ﻿@using BlogManager.Models
-@model EntryCategoryViewModel
+@model ContentCategoryViewModel
 @{
     ViewBag.Title = "New Entry Category";
 }
@@ -10,32 +10,32 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <section>
-            @using (Html.BeginForm("Save", "EntryCategories", FormMethod.Post))
+            @using (Html.BeginForm("Save", "ContentCategories", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 <h4 class="text-center">Add new category</h4>
                 <hr />
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.EntryCategory.Name, new { @class = "col-md-12 control-label entry-form-label" })
+                    @Html.LabelFor(m => m.ContentCategory.Name, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextBoxFor(m => m.EntryCategory.Name, new { @class = "form-control center-block entry-form-control" })
-                        @Html.ValidationMessageFor(m => m.EntryCategory.Name, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.ContentCategory.Name, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.ContentCategory.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.EntryCategory.Description, new { @class = "col-md-12 control-label entry-form-label" })
+                    @Html.LabelFor(m => m.ContentCategory.Description, new { @class = "col-md-12 control-label entry-form-label" })
                     <div>
-                        @Html.TextBoxFor(m => m.EntryCategory.Description, new { @class = "form-control center-block entry-form-control" })
-                        @Html.ValidationMessageFor(m => m.EntryCategory.Description, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.ContentCategory.Description, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.ContentCategory.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <br />
                 <br />
                 <div class="form-group row">
-                    @Html.LabelFor(m => m.EntryCategory.IsActive, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    @Html.LabelFor(m => m.ContentCategory.IsActive, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
                     <span class="col-md-6 col-sm-6 col-xs-6">
                         <label class="switch">
-                            @Html.CheckBoxFor(m => m.EntryCategory.IsActive)
+                            @Html.CheckBoxFor(m => m.ContentCategory.IsActive)
                             <div class="slider round"></div>
                         </label>
                     </span>
@@ -43,7 +43,7 @@
                 <hr />
                 <div class="form-group">
                     <div class="text-center">
-                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "EntryCategories")'" />
+                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "ContentCategories")'" />
                         <input type="submit" value="Save" class="btn btn-success" />
                     </div>
                 </div>

@@ -7,12 +7,12 @@ namespace BlogManager.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.EntryCategories", "Description", c => c.String(maxLength: 255));
+            AlterColumn("dbo.ContentCategories", "Description", c => c.String(maxLength: 255));
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.EntryCategories", "Description", c => c.String());
+            AlterColumn("dbo.ContentCategories", "Description", c => c.String());
         }
     }
 }

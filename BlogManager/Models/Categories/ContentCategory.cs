@@ -6,9 +6,9 @@ using System.Web;
 
 namespace BlogManager.Models.Categories
 {
-    public class EntryCategory
+    public class ContentCategory
     {
-        [Required(ErrorMessage = "Entry category is not selected")]
+        [Required(ErrorMessage = "Category is not selected")]
         public int Id { get; set; }
 
         [Required]
@@ -25,5 +25,7 @@ namespace BlogManager.Models.Categories
         [Required]
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
+
+        public IEnumerable<ContentSubcategory> Subcategories { get; set; }
     }
 }

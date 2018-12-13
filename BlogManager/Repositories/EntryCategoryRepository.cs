@@ -10,78 +10,78 @@ using BlogManager.Models.Categories;
 
 namespace BlogManager.Repositories
 {
-    public interface IEntryCategoryRepository
+    public interface IContentCategoryRepository
     {
-        IEnumerable<EntryCategory> GetEntryCategories();
-        IEnumerable<EntryCategory> GetActiveEntryCategories();
-        EntryCategory GetEntryCategory(int categoryId);
-        DbRepoStatusCode DeleteEntryCategory(int categoryId);
-        DbRepoStatusCode ActivateEntryCategory(int categoryId, string isActive);
-        void SaveEntryCategory(EntryCategory entryCategory);
+        IEnumerable<ContentCategory> GetContentCategories();
+        IEnumerable<ContentCategory> GetActiveContentCategories();
+        ContentCategory GetContentCategory(int categoryId);
+        DbRepoStatusCode DeleteContentCategory(int categoryId);
+        DbRepoStatusCode ActivateContentCategory(int categoryId, string isActive);
+        void SaveContentCategory(ContentCategory contentCategory);
     }
 
-    public class EntryCategoryRepository : IEntryCategoryRepository
+    public class ContentCategoryRepository : IContentCategoryRepository
     {
-        private readonly IEntryCategoryManageService _categoryManageService;
+        private readonly IContentCategoryManageService _categoryManageService;
 
-        public EntryCategoryRepository(IEntryCategoryManageService categoryManageService)
+        public ContentCategoryRepository(IContentCategoryManageService categoryManageService)
         {
             _categoryManageService = categoryManageService;
         }
 
-        public IEnumerable<EntryCategory> GetEntryCategories()
+        public IEnumerable<ContentCategory> GetContentCategories()
         {
             using (var context = new ApplicationDbContext())
-                return context.EntryCategories.ToList();
+                return context.ContentCategories.ToList();
         }
 
-        public IEnumerable<EntryCategory> GetActiveEntryCategories()
+        public IEnumerable<ContentCategory> GetActiveContentCategories()
         {
             using (var context = new ApplicationDbContext())
-                return context.EntryCategories.Where(c => c.IsActive).ToList();
+                return context.ContentCategories.Where(c => c.IsActive).ToList();
         }
 
-        public EntryCategory GetEntryCategory(int categoryId)
+        public ContentCategory GetContentCategory(int categoryId)
         {
             using (var context = new ApplicationDbContext())
-                return context.EntryCategories.SingleOrDefault(c => c.Id == categoryId);
+                return context.ContentCategories.SingleOrDefault(c => c.Id == categoryId);
         }
 
-        public DbRepoStatusCode DeleteEntryCategory(int categoryId)
+        public DbRepoStatusCode DeleteContentCategory(int categoryId)
         {
             using (var context = new ApplicationDbContext())
             {
-                var entryCategory = context.EntryCategories.SingleOrDefault(c => c.Id == categoryId);
+                var contentCategory = context.ContentCategories.SingleOrDefault(c => c.Id == categoryId);
 
-                if (entryCategory == null)
+                if (contentCategory == null)
                     return DbRepoStatusCode.NotFound;
 
-                var entries = context.Entries.Where(e => e.EntryCategory.Id == categoryId).ToList();
+                var entries = context.Entries.Where(e => e.ContentCategory.Id == categoryId).ToList();
 
                 if (entries.Count > 0)
                 {
-                    var defaultCategory = context.EntryCategories.SingleOrDefault(c => c.Id == 1);
+                    var defaultCategory = context.ContentCategories.SingleOrDefault(c => c.Id == 1);
                     foreach (var entry in entries)
-                        entry.EntryCategory = defaultCategory;
+                        entry.ContentCategory = defaultCategory;
                 }
 
-                context.EntryCategories.Remove(entryCategory);
+                context.ContentCategories.Remove(contentCategory);
                 context.SaveChanges();
 
                 return DbRepoStatusCode.Success;
             }
         }
 
-        public DbRepoStatusCode ActivateEntryCategory(int categoryId, string isActive)
+        public DbRepoStatusCode ActivateContentCategory(int categoryId, string isActive)
         {
             using (var context = new ApplicationDbContext())
             {
-                var entryCategory = context.EntryCategories.SingleOrDefault(c => c.Id == categoryId);
+                var contentCategory = context.ContentCategories.SingleOrDefault(c => c.Id == categoryId);
 
-                if (entryCategory == null)
+                if (contentCategory == null)
                     return DbRepoStatusCode.NotFound;
 
-                _categoryManageService.ActivateEntryCategory(entryCategory, isActive);
+                _categoryManageService.ActivateContentCategory(contentCategory, isActive);
 
                 context.SaveChanges();
 
@@ -89,13 +89,13 @@ namespace BlogManager.Repositories
             }
         }
 
-        public void SaveEntryCategory(EntryCategory entryCategory)
+        public void SaveContentCategory(ContentCategory contentCategory)
         {
             using (var context = new ApplicationDbContext())
             {
-                _categoryManageService.PreSavingDataProcessing(entryCategory);
+                _categoryManageService.PreSavingDataProcessing(contentCategory);
 
-                context.EntryCategories.AddOrUpdate(entryCategory);
+                context.ContentCategories.AddOrUpdate(contentCategory);
 
                 context.SaveChanges();
             }

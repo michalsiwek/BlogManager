@@ -1,5 +1,5 @@
 ﻿@using BlogManager.Models
-@model EntryCategoriesViewModel
+@model ContentCategoriesViewModel
 @{
     ViewBag.Title = "Entry Categories";
 }
@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var category in Model.EntryCategories)
+        @foreach (var category in Model.ContentCategories)
         {
             <tr>
                 <td class="text-center">@category.Id</td>
@@ -47,13 +47,13 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    @using (Html.BeginForm("Edit", "EntryCategories", new { id = category.Id }))
+                                    @using (Html.BeginForm("Edit", "ContentCategories", new { id = category.Id }))
                                     {
                                         <input type="submit" value="Edit" class="btn-dropdown-item" />
                                     }
                                 </li>
                                 <li>
-                                    @using (Html.BeginForm("Delete", "EntryCategories", new { id = category.Id }, FormMethod.Post))
+                                    @using (Html.BeginForm("Delete", "ContentCategories", new { id = category.Id }, FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
                                         <input type="submit" value="Delete" class="btn-dropdown-item" onclick="return confirm('Are you sure?')" />
@@ -63,7 +63,7 @@
                                 @if (category.IsActive)
                                 {
                                     <li>
-                                        @using (Html.BeginForm("Activate", "EntryCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                        @using (Html.BeginForm("Activate", "ContentCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
                                             <input type="submit" value="Disable" class="btn-dropdown-item" />
@@ -73,7 +73,7 @@
                                 else
                                 {
                                     <li>
-                                        @using (Html.BeginForm("Activate", "EntryCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
+                                        @using (Html.BeginForm("Activate", "ContentCategories", new { id = category.Id, isActive = !category.IsActive }, FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
                                             <input type="submit" value="Enable" class="btn-dropdown-item" />

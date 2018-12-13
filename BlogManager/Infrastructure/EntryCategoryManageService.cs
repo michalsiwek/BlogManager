@@ -6,38 +6,38 @@ using BlogManager.Models.Categories;
 
 namespace BlogManager.Infrastructure
 {
-    public interface IEntryCategoryManageService
+    public interface IContentCategoryManageService
     {
-        void ActivateEntryCategory(EntryCategory entryCategory, string isActive);
-        void PreSavingDataProcessing(EntryCategory entryCategory);
+        void ActivateContentCategory(ContentCategory contentCategory, string isActive);
+        void PreSavingDataProcessing(ContentCategory contentCategory);
     }
 
-    public class EntryCategoryManageService : IEntryCategoryManageService
+    public class ContentCategoryManageService : IContentCategoryManageService
     {
-        public void ActivateEntryCategory(EntryCategory entryCategory, string isActive)
+        public void ActivateContentCategory(ContentCategory contentCategory, string isActive)
         {
             switch (isActive.ToLower())
             {
                 case "true":
-                    entryCategory.IsActive = true;
+                    contentCategory.IsActive = true;
                     break;
                 case "false":
-                    entryCategory.IsActive = false;
+                    contentCategory.IsActive = false;
                     break;
                 default: break;
             }
         }
 
-        public void PreSavingDataProcessing(EntryCategory entryCategory)
+        public void PreSavingDataProcessing(ContentCategory contentCategory)
         {
-            if (entryCategory.CreateDate == DateTime.MinValue)
-                entryCategory.CreateDate = DateTime.Now;
+            if (contentCategory.CreateDate == DateTime.MinValue)
+                contentCategory.CreateDate = DateTime.Now;
             else
             {
-                entryCategory.LastModification = DateTime.Now;
-                entryCategory.Name = entryCategory.Name;
-                entryCategory.Description = entryCategory.Description;
-                entryCategory.IsActive = entryCategory.IsActive;
+                contentCategory.LastModification = DateTime.Now;
+                contentCategory.Name = contentCategory.Name;
+                contentCategory.Description = contentCategory.Description;
+                contentCategory.IsActive = contentCategory.IsActive;
             }
         }
     }
