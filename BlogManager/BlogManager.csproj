@@ -220,7 +220,7 @@
     <Compile Include="Controllers\Api\GalleriesController.cs" />
     <Compile Include="Controllers\Api\PicturesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
-    <Compile Include="Controllers\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\ContentCategoriesController.cs" />
     <Compile Include="Controllers\GalleriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -236,7 +236,7 @@
     <Compile Include="Infrastructure\FileUploadService.cs" />
     <Compile Include="Infrastructure\MailingService.cs" />
     <Compile Include="Infrastructure\AccountManageService.cs" />
-    <Compile Include="Infrastructure\EntryCategoryManageService.cs" />
+    <Compile Include="Infrastructure\ContentCategoryManageService.cs" />
     <Compile Include="Infrastructure\EntryManageService.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
@@ -318,7 +318,7 @@
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
     <Compile Include="Models\Entries\Paragraph.cs" />
-    <Compile Include="Models\EntryCategoriesViewModel.cs" />
+    <Compile Include="Models\ContentCategoriesViewModel.cs" />
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
@@ -333,7 +333,7 @@
     <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\GalleryRepository.cs" />
-    <Compile Include="Repositories\EntryCategoryRepository.cs" />
+    <Compile Include="Repositories\ContentCategoryRepository.cs" />
     <Compile Include="Repositories\EntryRepository.cs" />
     <Compile Include="Repositories\ParagraphRepository.cs" />
     <Compile Include="Startup.cs" />
@@ -653,9 +653,9 @@
     <Content Include="Views\Entries\New.cshtml" />
     <Content Include="Views\Entries\Index.cshtml" />
     <Content Include="Views\Entries\Edit.cshtml" />
-    <Content Include="Views\EntryCategories\Edit.cshtml" />
-    <Content Include="Views\EntryCategories\New.cshtml" />
-    <Content Include="Views\EntryCategories\Index.cshtml" />
+    <Content Include="Views\ContentCategories\Edit.cshtml" />
+    <Content Include="Views\ContentCategories\New.cshtml" />
+    <Content Include="Views\ContentCategories\Index.cshtml" />
     <Content Include="Views\Entries\Preview.cshtml" />
     <Content Include="Views\Accounts\Index.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
@@ -668,6 +668,7 @@
     <Content Include="Views\Account\_RemindViaEmail.cshtml" />
     <Content Include="Views\Account\_ResetPassword.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\ContentCategories\_SubcategoryForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

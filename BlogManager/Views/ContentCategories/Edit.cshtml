@@ -1,7 +1,8 @@
 ﻿@using BlogManager.Models
+@using Microsoft.Ajax.Utilities
 @model ContentCategoryViewModel
 @{
-    ViewBag.Title = "Entry Category Edit";
+    ViewBag.Title = "Content Category Edit";
 }
 
 <br />
@@ -29,6 +30,31 @@
                         @Html.ValidationMessageFor(m => m.ContentCategory.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ContentCategory.Subcategories, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @if (Model.ContentCategory.Subcategories.Count == 0)
+                        {
+                            @Html.ListBoxFor(m => m.ContentCategory.Subcategories,
+                                new SelectList(new[] {""}),
+                                new {@class = "form-control center-block entry-dropdown"})
+                        }
+                        else
+                        {
+                            @Html.ListBoxFor(m => m.ContentCategory.Subcategories,
+                                new SelectList(Model.ContentCategory.Subcategories, "Id", "Name"),
+                                new {@class = "form-control center-block entry-dropdown"})
+                        }
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" />
+                        <input id="edit-subcat-btn" type="button" class="btn btn-sm btn-primary" value="Edit" />
+                        <input id="new-subcat-btn" type="button" class="btn btn-sm btn-success" value="Add new" />
+                    </div>
+                </div>
                 <br />
                 <br />
                 <div class="form-group row">
@@ -51,6 +77,26 @@
                 </div>
             }
         </section>
+    </div>
+</div>
+
+<div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                    
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

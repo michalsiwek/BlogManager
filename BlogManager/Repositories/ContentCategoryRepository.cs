@@ -7,6 +7,7 @@ using BlogManager.Helpers.Enums;
 using BlogManager.Infrastructure;
 using BlogManager.Models;
 using BlogManager.Models.Categories;
+using System.Data.Entity;
 
 namespace BlogManager.Repositories
 {
@@ -32,26 +33,34 @@ namespace BlogManager.Repositories
         public IEnumerable<ContentCategory> GetContentCategories()
         {
             using (var context = new ApplicationDbContext())
-                return context.ContentCategories.ToList();
+                return context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .ToList();
         }
 
         public IEnumerable<ContentCategory> GetActiveContentCategories()
         {
             using (var context = new ApplicationDbContext())
-                return context.ContentCategories.Where(c => c.IsActive).ToList();
+                return context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .Where(c => c.IsActive).ToList();
         }
 
         public ContentCategory GetContentCategory(int categoryId)
         {
             using (var context = new ApplicationDbContext())
-                return context.ContentCategories.SingleOrDefault(c => c.Id == categoryId);
+                return context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .SingleOrDefault(c => c.Id == categoryId);
         }
 
         public DbRepoStatusCode DeleteContentCategory(int categoryId)
         {
             using (var context = new ApplicationDbContext())
             {
-                var contentCategory = context.ContentCategories.SingleOrDefault(c => c.Id == categoryId);
+                var contentCategory = context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .SingleOrDefault(c => c.Id == categoryId);
 
                 if (contentCategory == null)
                     return DbRepoStatusCode.NotFound;
