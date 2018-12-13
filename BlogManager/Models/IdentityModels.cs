@@ -47,7 +47,7 @@ namespace BlogManager.Models
     {
         public DbSet<Entry> Entries { get; set; }
         public DbSet<ContentCategory> ContentCategories { get; set; }
-        //public DbSet<ContentSubcategory> ContentSubcategories { get; set; }
+        public DbSet<ContentSubcategory> ContentSubcategories { get; set; }
         public DbSet<Paragraph> Paragraphs { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Gallery> Galleries { get; set; }

@@ -26,6 +26,6 @@ namespace BlogManager.Models.Categories
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
 
-        public IEnumerable<ContentSubcategory> Subcategories { get; set; }
+        public List<ContentSubcategory> Subcategories { get; set; }
     }
 }
