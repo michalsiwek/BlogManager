@@ -13,3 +13,8 @@ $('#change-password-btn').click(function (event) {
     var modalId = "#change-password-modal";
     $(modalId).modal();
 });
+
+$('#new-subcat-btn').click(function (event) {
+    var modalId = "#add-new-subcat-modal";
+    $(modalId).modal();
+});

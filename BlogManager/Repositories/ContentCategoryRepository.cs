@@ -19,6 +19,7 @@ namespace BlogManager.Repositories
         DbRepoStatusCode DeleteContentCategory(int categoryId);
         DbRepoStatusCode ActivateContentCategory(int categoryId, string isActive);
         void SaveContentCategory(ContentCategory contentCategory);
+        void SaveContentSubcategory(ContentSubcategoryViewModel model);
     }
 
     public class ContentCategoryRepository : IContentCategoryRepository
@@ -110,5 +111,20 @@ namespace BlogManager.Repositories
             }
         }
 
+        public void SaveContentSubcategory(ContentSubcategoryViewModel model)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var cat = context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .Single(c => c.Id == model.ContentCategoryId);
+
+                model.ContentSubcategory.CreateDate = DateTime.Now;
+
+                cat.Subcategories.Add(model.ContentSubcategory);
+                
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -42,16 +42,14 @@
                         else
                         {
                             @Html.ListBoxFor(m => m.ContentCategory.Subcategories,
-                                new SelectList(Model.ContentCategory.Subcategories, "Id", "Name"),
+                                new SelectList(Model.ContentCategory.Subcategories.OrderBy(c => c.Name), "Id", "Name"),
                                 new {@class = "form-control center-block entry-dropdown"})
-                        }
-                        
+                        } 
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="text-center">
                         <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" />
-                        <input id="edit-subcat-btn" type="button" class="btn btn-sm btn-primary" value="Edit" />
                         <input id="new-subcat-btn" type="button" class="btn btn-sm btn-success" value="Add new" />
                     </div>
                 </div>
@@ -80,7 +78,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog"
+<div class="modal fade" id="add-new-subcat-modal" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -93,7 +91,7 @@
             </div>
             <div class="modal-body">
                 <div id="form-content">
-                    
+                    @Html.Action("NewSubcategory", "ContentCategories", new { contentCategoryId = @Model.ContentCategory.Id })
                 </div>
             </div>
         </div>
@@ -102,4 +100,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
 }

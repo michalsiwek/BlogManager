@@ -90,5 +90,25 @@ namespace BlogManager.Controllers
 
             return RedirectToAction("Index", "ContentCategories");
         }
+
+        public ActionResult NewSubcategory(int contentCategoryId)
+        {
+            ContentSubcategoryViewModel viewModel = new ContentSubcategoryViewModel()
+            {
+                ContentCategoryId = contentCategoryId,
+                ContentSubcategory = new ContentSubcategory()
+            };
+
+            return PartialView("_SubcategoryForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveNewSubcategory(ContentSubcategoryViewModel model)
+        {
+            _repo.SaveContentSubcategory(model);
+
+            return RedirectToAction("Edit", "ContentCategories", new { id = model.ContentCategoryId });
+        }
     }
 }

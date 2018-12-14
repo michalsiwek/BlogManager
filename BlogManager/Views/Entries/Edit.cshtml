@@ -51,6 +51,17 @@
                         @Html.ValidationMessageFor(m => m.Entry.ContentCategory.Id, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                if (Model.Entry.ContentCategory.Subcategories.Count > 0)
+                {
+                     <div class="form-group row">
+                         @Html.LabelFor(m => m.Entry.ContentCategory.Subcategories, new { @class = "col-md-12 control-label entry-form-label" })
+                         <div>
+                             @Html.ListBoxFor(m => m.Entry.ContentCategory.Subcategories,
+                                 new SelectList(Model.Entry.ContentCategory.Subcategories.OrderBy(c => c.Name), "Id", "Name"),
+                                 new {@class = "form-control center-block entry-dropdown"})
+                         </div>
+                     </div>
+                }
                 @Html.HiddenFor(e => e.Entry.Id)
                 <br />
                 <hr />

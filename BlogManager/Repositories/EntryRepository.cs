@@ -35,6 +35,7 @@ namespace BlogManager.Repositories
             {
                 var entry = context.Entries
                     .Include(e => e.ContentCategory)
+                    .Include(e => e.ContentCategory.Subcategories)
                     .Include(e => e.Account)
                     .Include(e => e.Paragraphs)
                     .SingleOrDefault(e => e.Id == id);
