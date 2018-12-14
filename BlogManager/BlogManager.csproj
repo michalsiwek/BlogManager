@@ -310,6 +310,10 @@
     <Compile Include="Migrations\201812140641012_ContentSubcategoryStringLenghtMigration.Designer.cs">
       <DependentUpon>201812140641012_ContentSubcategoryStringLenghtMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.cs" />
+    <Compile Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.Designer.cs">
+      <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -745,6 +749,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812140641012_ContentSubcategoryStringLenghtMigration.resx">
       <DependentUpon>201812140641012_ContentSubcategoryStringLenghtMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.resx">
+      <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
