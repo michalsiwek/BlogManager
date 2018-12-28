@@ -46,9 +46,10 @@ namespace BlogManager.UnitTests.Infrastructure
         public void PreSavingNewDataProcessing()
         {
             var contentCategory = new ContentCategory();
+            var subContentCategory = new ContentSubcategory();
 
             Thread.Sleep(1000);
-            _entryManageService.PreSavingNewDataProcessing(_account, _entry, contentCategory);
+            _entryManageService.PreSavingNewDataProcessing(_account, _entry, contentCategory, subContentCategory);
 
             Assert.AreEqual(_entry.Account, _account);
             Assert.Greater(_entry.CreateDate, _testDate);
@@ -62,6 +63,8 @@ namespace BlogManager.UnitTests.Infrastructure
         {
             _entry.CreateDate = _testDate;
             var contentCategory = new ContentCategory();
+            var subContentCategory = new ContentSubcategory();
+
             var existingEntry = new Entry
             {
                 Title = Resources.ModifiedEntryTitle,
@@ -71,7 +74,7 @@ namespace BlogManager.UnitTests.Infrastructure
             };
 
             Thread.Sleep(1000);
-            _entryManageService.PreSavingModifiedDataProcessing(_account, _entry, contentCategory, existingEntry);
+            _entryManageService.PreSavingModifiedDataProcessing(_account, _entry, contentCategory, subContentCategory, existingEntry);
 
             Assert.AreEqual(_entry.LastModifiedBy, _account);
             Assert.Greater(_entry.LastModification, _testDate);

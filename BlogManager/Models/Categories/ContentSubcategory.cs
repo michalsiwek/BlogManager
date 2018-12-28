@@ -8,7 +8,7 @@ namespace BlogManager.Models.Categories
 {
     public class ContentSubcategory
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [StringLength(25)]

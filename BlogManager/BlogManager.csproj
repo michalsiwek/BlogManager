@@ -314,6 +314,14 @@
     <Compile Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.Designer.cs">
       <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.cs" />
+    <Compile Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.Designer.cs">
+      <DependentUpon>201812281238150_EntryContentSubcategoryAsListRemoval.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.cs" />
+    <Compile Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.Designer.cs">
+      <DependentUpon>201812281413012_ContentSubcategoriesRenameMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -533,6 +541,7 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Properties\PublishProfiles\BlogManager - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Custom\cascade-dropdown.js" />
     <Content Include="Scripts\Custom\custom-data-table.js" />
     <Content Include="Scripts\Custom\open-modal.js" />
     <Content Include="Scripts\Custom\pictures-upload.js" />
@@ -752,6 +761,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.resx">
       <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.resx">
+      <DependentUpon>201812281238150_EntryContentSubcategoryAsListRemoval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.resx">
+      <DependentUpon>201812281413012_ContentSubcategoriesRenameMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

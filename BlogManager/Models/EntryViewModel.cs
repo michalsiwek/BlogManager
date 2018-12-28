@@ -15,5 +15,8 @@ namespace BlogManager.Models
 
         [Display(Name = "Category")]
         public IEnumerable<ContentCategory> ContentCategories { get; set; }
+
+        [Display(Name = "Subcategory")]
+        public IEnumerable<ContentSubcategory> ContentSubCategories { get; set; }
     }
 }

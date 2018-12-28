@@ -80,7 +80,8 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = dbEntry,
-                ContentCategories = _contentCategoryRepo.GetActiveContentCategories()
+                ContentCategories = _contentCategoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _contentCategoryRepo.GetContentSubcategoriesByParentId(dbEntry.ContentCategory.Id)
             };
 
             return View(viewModel);
@@ -154,6 +155,12 @@ namespace BlogManager.Controllers
             _entryRepo.DeleteEntry(entryId);
 
             return RedirectToAction("Index", "Entries");
+        }
+
+        public JsonResult GetContentSubcategories(int contentCategoryId)
+        {
+            var contentSubcategories = _contentCategoryRepo.GetContentSubcategoriesByParentId(contentCategoryId);
+            return Json(contentSubcategories, JsonRequestBehavior.AllowGet);
         }
     }
 }

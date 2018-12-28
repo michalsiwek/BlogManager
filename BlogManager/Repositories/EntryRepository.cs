@@ -35,7 +35,7 @@ namespace BlogManager.Repositories
             {
                 var entry = context.Entries
                     .Include(e => e.ContentCategory)
-                    .Include(e => e.ContentCategory.Subcategories)
+                    .Include(e => e.ContentSubcategory)
                     .Include(e => e.Account)
                     .Include(e => e.Paragraphs)
                     .SingleOrDefault(e => e.Id == id);
@@ -50,6 +50,7 @@ namespace BlogManager.Repositories
             {
                 var entries = context.Entries
                     .Include(e => e.ContentCategory)
+                    .Include(e => e.ContentSubcategory)
                     .Include(e => e.Account)
                     .Include(e => e.Paragraphs)
                     .ToList();
@@ -64,11 +65,14 @@ namespace BlogManager.Repositories
                 var dbEntry = context.Entries
                     .Include(e => e.Account)
                     .Include(e => e.ContentCategory)
+                    .Include(e => e.ContentSubcategory)
                     .SingleOrDefault(e => e.Id == entry.Id);
 
                 var dbParagraphs = context.Paragraphs.Where(p => p.EntryId == entry.Id).ToList();
 
                 var contentCategory = context.ContentCategories.SingleOrDefault(c => c.Id == entry.ContentCategory.Id);
+
+                var contentSubcategory = context.ContentSubcategories.SingleOrDefault(c => c.Id == entry.ContentSubcategory.Id);
 
                 var account = context.Users
                     .Include(a => a.AccountType)
@@ -76,12 +80,12 @@ namespace BlogManager.Repositories
 
                 if (dbEntry == null)
                 {
-                    _entryService.PreSavingNewDataProcessing(account, entry, contentCategory);
+                    _entryService.PreSavingNewDataProcessing(account, entry, contentCategory, contentSubcategory);
                     context.Entries.Add(entry);
                 }
                 else
                 {
-                    _entryService.PreSavingModifiedDataProcessing(account, dbEntry, contentCategory, entry);
+                    _entryService.PreSavingModifiedDataProcessing(account, dbEntry, contentCategory, contentSubcategory, entry);
 
                     foreach (var p in dbParagraphs)
                         context.Paragraphs.Remove(p);

@@ -16,6 +16,7 @@ namespace BlogManager.Repositories
         IEnumerable<ContentCategory> GetContentCategories();
         IEnumerable<ContentCategory> GetActiveContentCategories();
         ContentCategory GetContentCategory(int categoryId);
+        IEnumerable<ContentSubcategory> GetContentSubcategoriesByParentId(int id);
         DbRepoStatusCode DeleteContentCategory(int categoryId);
         DbRepoStatusCode ActivateContentCategory(int categoryId, string isActive);
         void SaveContentCategory(ContentCategory contentCategory);
@@ -53,6 +54,15 @@ namespace BlogManager.Repositories
                 return context.ContentCategories
                     .Include(c => c.Subcategories)
                     .SingleOrDefault(c => c.Id == categoryId);
+        }
+
+        public IEnumerable<ContentSubcategory> GetContentSubcategoriesByParentId(int id)
+        {
+            using (var context = new ApplicationDbContext())
+                return context.ContentCategories
+                    .Include(c => c.Subcategories)
+                    .SingleOrDefault(c => c.Id == id)
+                    .Subcategories;
         }
 
         public DbRepoStatusCode DeleteContentCategory(int categoryId)

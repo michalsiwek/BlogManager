@@ -44,7 +44,7 @@ namespace BlogManager.Models.Entries
 
         public ContentCategory ContentCategory { get; set; }
 
-        public List<ContentSubcategory> Subcategories { get; set; }
+        public ContentSubcategory ContentSubcategory { get; set; }
 
         public Account LastModifiedBy { get; set; }
 
