@@ -110,5 +110,17 @@ namespace BlogManager.Controllers
 
             return RedirectToAction("Edit", "ContentCategories", new { id = model.ContentCategoryId });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteSubcategory(int categoryId, int subcategoryId)
+        {
+            var result = _repo.DeleteContentSubcategory(subcategoryId);
+
+            if (result == DbRepoStatusCode.NotFound)
+                return HttpNotFound();
+
+            return RedirectToAction("Edit", "ContentCategories", new { id = categoryId });
+        }
     }
 }

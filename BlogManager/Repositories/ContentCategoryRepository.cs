@@ -21,6 +21,7 @@ namespace BlogManager.Repositories
         DbRepoStatusCode ActivateContentCategory(int categoryId, string isActive);
         void SaveContentCategory(ContentCategory contentCategory);
         void SaveContentSubcategory(ContentSubcategoryViewModel model);
+        DbRepoStatusCode DeleteContentSubcategory(int id);
     }
 
     public class ContentCategoryRepository : IContentCategoryRepository
@@ -134,6 +135,31 @@ namespace BlogManager.Repositories
                 cat.Subcategories.Add(model.ContentSubcategory);
                 
                 context.SaveChanges();
+            }
+        }
+
+        public DbRepoStatusCode DeleteContentSubcategory(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var subcontentCategory = context.ContentSubcategories
+                    .SingleOrDefault(c => c.Id == id);
+
+                if (subcontentCategory == null)
+                    return DbRepoStatusCode.NotFound;
+
+                var entries = context.Entries.Where(e => e.ContentSubcategory.Id == id).ToList();
+
+                if (entries.Count > 0)
+                {
+                    foreach (var entry in entries)
+                        entry.ContentSubcategory = null;
+                }
+
+                context.ContentSubcategories.Remove(subcontentCategory);
+                context.SaveChanges();
+
+                return DbRepoStatusCode.Success;
             }
         }
     }

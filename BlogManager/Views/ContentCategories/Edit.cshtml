@@ -49,7 +49,10 @@
                 </div>
                 <div class="form-group">
                     <div class="text-center">
-                        <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" />
+                        @if (Model.ContentCategory.Subcategories.Count > 0)
+                        {
+                            <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" />
+                        }
                         <input id="new-subcat-btn" type="button" class="btn btn-sm btn-success" value="Add new" />
                     </div>
                 </div>
