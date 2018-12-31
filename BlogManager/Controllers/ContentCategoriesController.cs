@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BlogManager.Helpers.Enums;
 using BlogManager.Repositories;
 using BlogManager.Infrastructure;
+using System.Data.Entity;
 
 namespace BlogManager.Controllers
 {
@@ -113,12 +114,14 @@ namespace BlogManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteSubcategory(int categoryId, int subcategoryId)
+        public ActionResult DeleteSubcategory(int id)
         {
-            var result = _repo.DeleteContentSubcategory(subcategoryId);
+            var result = _repo.DeleteContentSubcategory(id);
 
             if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
+
+            int categoryId = 200;
 
             return RedirectToAction("Edit", "ContentCategories", new { id = categoryId });
         }

@@ -35,15 +35,15 @@
                     <div>
                         @if (Model.ContentCategory.Subcategories.Count == 0)
                         {
-                            @Html.ListBoxFor(m => m.ContentCategory.Subcategories,
+                            @Html.DropDownListFor(m => m.ContentCategory.Subcategories,
                                 new SelectList(new[] {""}),
-                                new {@class = "form-control center-block entry-dropdown"})
+                                new {@class = "form-control center-block entry-dropdown", @size = "5" })
                         }
                         else
                         {
-                            @Html.ListBoxFor(m => m.ContentCategory.Subcategories,
+                            @Html.DropDownListFor(m => m.ContentCategory.Subcategories,
                                 new SelectList(Model.ContentCategory.Subcategories.OrderBy(c => c.Name), "Id", "Name"),
-                                new {@class = "form-control center-block entry-dropdown"})
+                                new {@class = "form-control center-block entry-dropdown", @size = "5" })
                         } 
                     </div>
                 </div>
@@ -104,4 +104,24 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
+    <script>
+        $('#delete-subcat-btn').click(function () {
+            var selectedSubcatId = $("#ContentCategory_Subcategories option:selected").val();
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            if (confirm('Are you sure?')) {
+                $.ajax({
+                    url: "/ContentCategories/DeleteSubcategory/" + selectedSubcatId,
+                    type: "POST",
+                    traditional: true,
+                    data: { 
+                        __RequestVerificationToken: token
+                    },
+                    error: function () {
+                        alert("An error has occured!");
+                    }
+                });
+            }
+        });
+    </script>
 }
