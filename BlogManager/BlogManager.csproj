@@ -543,6 +543,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Custom\cascade-dropdown.js" />
     <Content Include="Scripts\Custom\custom-data-table.js" />
+    <Content Include="Scripts\Custom\delete-subcategory.js" />
     <Content Include="Scripts\Custom\open-modal.js" />
     <Content Include="Scripts\Custom\pictures-upload.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />

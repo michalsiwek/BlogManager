@@ -103,9 +103,22 @@ namespace BlogManager.Controllers
             return PartialView("_SubcategoryForm", viewModel);
         }
 
+        public ActionResult EditSubcategory(int id, int contentCategoryId)
+        {
+            var subcategory = _repo.GetContentSubcategory(id);
+
+            ContentSubcategoryViewModel viewModel = new ContentSubcategoryViewModel()
+            {
+                ContentCategoryId = contentCategoryId,
+                ContentSubcategory = subcategory
+            };
+
+            return PartialView("_SubcategoryForm", viewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveNewSubcategory(ContentSubcategoryViewModel model)
+        public ActionResult SaveSubcategory(ContentSubcategoryViewModel model)
         {
             _repo.SaveContentSubcategory(model);
 
@@ -116,12 +129,11 @@ namespace BlogManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteSubcategory(int id)
         {
+            var categoryId = _repo.GetParentCategoryId(id);
             var result = _repo.DeleteContentSubcategory(id);
 
             if (result == DbRepoStatusCode.NotFound)
                 return HttpNotFound();
-
-            int categoryId = 200;
 
             return RedirectToAction("Edit", "ContentCategories", new { id = categoryId });
         }

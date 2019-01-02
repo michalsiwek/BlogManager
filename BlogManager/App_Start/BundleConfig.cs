@@ -31,6 +31,7 @@ namespace BlogManager
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                         "~/Scripts/Custom/preview.js",
                         "~/Scripts/Custom/open-modal.js",
+                        "~/Scripts/Custom/delete-subcategory.js",
                         "~/Scripts/Custom/pictures-upload.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/custom-datatables").Include(

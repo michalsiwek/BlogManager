@@ -22,6 +22,8 @@ namespace BlogManager.Repositories
         void SaveContentCategory(ContentCategory contentCategory);
         void SaveContentSubcategory(ContentSubcategoryViewModel model);
         DbRepoStatusCode DeleteContentSubcategory(int id);
+        int GetParentCategoryId(int subcategoryId);
+        ContentSubcategory GetContentSubcategory(int id);
     }
 
     public class ContentCategoryRepository : IContentCategoryRepository
@@ -130,9 +132,19 @@ namespace BlogManager.Repositories
                     .Include(c => c.Subcategories)
                     .Single(c => c.Id == model.ContentCategoryId);
 
-                model.ContentSubcategory.CreateDate = DateTime.Now;
+                if (model.ContentSubcategory.Id > 0)
+                {
+                    var subcat = context.ContentSubcategories.Single(s => s.Id == model.ContentSubcategory.Id);
 
-                cat.Subcategories.Add(model.ContentSubcategory);
+                    subcat.Name = model.ContentSubcategory.Name;
+                    subcat.Description = model.ContentSubcategory.Description;
+                    subcat.LastModification = DateTime.Now;
+                }
+                else
+                {
+                    model.ContentSubcategory.CreateDate = DateTime.Now;
+                    cat.Subcategories.Add(model.ContentSubcategory);
+                }          
                 
                 context.SaveChanges();
             }
@@ -160,6 +172,27 @@ namespace BlogManager.Repositories
                 context.SaveChanges();
 
                 return DbRepoStatusCode.Success;
+            }
+        }
+
+        public int GetParentCategoryId(int subcategoryId)
+        {
+            var query = string.Format(@"SELECT ContentCategory_Id FROM dbo.ContentSubcategories WHERE Id = {0}", subcategoryId);
+
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Database
+                    .SqlQuery<int>(query)
+                    .ToList()
+                    .First();
+            }
+        }
+
+        public ContentSubcategory GetContentSubcategory(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.ContentSubcategories.SingleOrDefault(c => c.Id == id);
             }
         }
     }

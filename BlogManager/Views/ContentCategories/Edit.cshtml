@@ -51,7 +51,8 @@
                     <div class="text-center">
                         @if (Model.ContentCategory.Subcategories.Count > 0)
                         {
-                            <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" />
+                            <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" style="cursor: auto;" disabled />
+                            <input id="edit-subcat-btn" type="button" class="btn btn-sm btn-primary" value="Edit" style="cursor: auto;" disabled />
                         }
                         <input id="new-subcat-btn" type="button" class="btn btn-sm btn-success" value="Add new" />
                     </div>
@@ -90,7 +91,7 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Edit Picture</h4>
+                <h4 class="modal-title" id="myModalLabel">New Subcategory</h4>
             </div>
             <div class="modal-body">
                 <div id="form-content">
@@ -101,27 +102,36 @@
     </div>
 </div>
 
+@foreach (var cat in Model.ContentCategory.Subcategories)
+{
+    <div class="modal fade" id="edit-subcat-modal-@cat.Id" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal-close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Subcategory</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="form-content">
+                        @Html.Action("EditSubcategory", "ContentCategories", new { id = @cat.Id, contentCategoryId = @Model.ContentCategory.Id })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
     <script>
-        $('#delete-subcat-btn').click(function () {
-            var selectedSubcatId = $("#ContentCategory_Subcategories option:selected").val();
-            var token = $('input[name="__RequestVerificationToken"]').val();
-
-            if (confirm('Are you sure?')) {
-                $.ajax({
-                    url: "/ContentCategories/DeleteSubcategory/" + selectedSubcatId,
-                    type: "POST",
-                    traditional: true,
-                    data: { 
-                        __RequestVerificationToken: token
-                    },
-                    error: function () {
-                        alert("An error has occured!");
-                    }
-                });
-            }
+        $('#ContentCategory_Subcategories').one('change', function() {
+            $('#delete-subcat-btn').prop('disabled', false);
+            $('#edit-subcat-btn').prop('disabled', false);
         });
     </script>
 }
