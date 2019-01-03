@@ -7,8 +7,8 @@ namespace BlogManager.Migrations
     {
         public override void Up()
         {
-            RenameColumn(table: "dbo.Entries", name: "EntryCategory_Id", newName: "ContentCategory_Id");
-            RenameIndex(table: "dbo.Entries", name: "IX_EntryCategory_Id", newName: "IX_ContentCategory_Id");
+            //RenameColumn(table: "dbo.Entries", name: "EntryCategory_Id", newName: "ContentCategory_Id");
+            //RenameIndex(table: "dbo.Entries", name: "IX_EntryCategory_Id", newName: "IX_ContentCategory_Id");
             CreateTable(
                 "dbo.ContentSubcategories",
                 c => new
