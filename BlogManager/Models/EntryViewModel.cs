@@ -14,6 +14,9 @@ namespace BlogManager.Models
         public Entry Entry { get; set; }
 
         [Display(Name = "Category")]
-        public IEnumerable<EntryCategory> EntryCategories { get; set; }
+        public IEnumerable<ContentCategory> ContentCategories { get; set; }
+
+        [Display(Name = "Subcategory")]
+        public IEnumerable<ContentSubcategory> ContentSubCategories { get; set; }
     }
 }

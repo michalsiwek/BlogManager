@@ -26,6 +26,8 @@ namespace BlogManager.Controllers.Api
             var galleries = _context.Galleries
                 .Include(g => g.Account)
                 .Include(g => g.Pictures)
+                .Include(g => g.ContentCategory)
+                .Include(g => g.ContentSubcategory)
                 .Where(g => g.IsVisible)
                 .ToList()
                 .Select(Mapper.Map<Gallery, GalleryDto>);
@@ -39,6 +41,8 @@ namespace BlogManager.Controllers.Api
             var gallery = _context.Galleries
                 .Include(g => g.Account)
                 .Include(g => g.Pictures)
+                .Include(g => g.ContentCategory)
+                .Include(g => g.ContentSubcategory)
                 .SingleOrDefault(g => g.Id == id && g.IsVisible == true);
 
             if (gallery == null)

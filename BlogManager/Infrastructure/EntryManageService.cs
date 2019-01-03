@@ -10,18 +10,19 @@ namespace BlogManager.Infrastructure
 {
     public interface IEntryManageService
     {
-        void PreSavingNewDataProcessing(Account account, Entry entry, EntryCategory entryCategory);
-        void PreSavingModifiedDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry);
+        void PreSavingNewDataProcessing(Account account, Entry entry, ContentCategory contentCategory, ContentSubcategory contentSubcategory);
+        void PreSavingModifiedDataProcessing(Account account, Entry entry, ContentCategory contentCategory, ContentSubcategory contentSubcategory, Entry formEntry);
         void ValidateEntry(Entry entry, string isVisible, Account account);
     }
 
     public class EntryManageService : IEntryManageService
     { 
-        public void PreSavingNewDataProcessing(Account account, Entry entry, EntryCategory entryCategory)
+        public void PreSavingNewDataProcessing(Account account, Entry entry, ContentCategory contentCategory, ContentSubcategory contentSubcategory)
         {
             entry.NormalizeEntry();
 
-            entry.EntryCategory = entryCategory;
+            entry.ContentCategory = contentCategory;
+            entry.ContentSubcategory = contentSubcategory;
             entry.Account = account;
             entry.CreateDate = DateTime.Now;
             entry.IsVisible = false;
@@ -29,11 +30,12 @@ namespace BlogManager.Infrastructure
             entry.GetParagraphsFromContent();
         }
 
-        public void PreSavingModifiedDataProcessing(Account account, Entry entry, EntryCategory entryCategory, Entry formEntry)
+        public void PreSavingModifiedDataProcessing(Account account, Entry entry, ContentCategory contentCategory, ContentSubcategory contentSubcategory, Entry formEntry)
         {
             entry.NormalizeEntry();
 
-            entry.EntryCategory = entryCategory;
+            entry.ContentCategory = contentCategory;
+            entry.ContentSubcategory = contentSubcategory;
             entry.Title = formEntry.Title;
             entry.Description = formEntry.Description;
             entry.Content = formEntry.Content;

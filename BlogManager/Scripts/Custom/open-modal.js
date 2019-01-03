@@ -13,3 +13,14 @@ $('#change-password-btn').click(function (event) {
     var modalId = "#change-password-modal";
     $(modalId).modal();
 });
+
+$('#new-subcat-btn').click(function (event) {
+    var modalId = "#add-new-subcat-modal";
+    $(modalId).modal();
+});
+
+$('#edit-subcat-btn').click(function (event) {
+    var selectedSubcatId = $("#ContentCategory_Subcategories option:selected").val();
+    var modalId = "#edit-subcat-modal-" + selectedSubcatId;
+    $(modalId).modal();
+});

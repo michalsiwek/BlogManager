@@ -80,6 +80,8 @@ namespace BlogManager.Repositories
                 var output = context.Galleries
                     .Include(g => g.Pictures)
                     .Include(g => g.Account)
+                    .Include(g => g.ContentCategory)
+                    .Include(g => g.ContentSubcategory)
                     .SingleOrDefault(g => g.Id == id);
                 return output;
             }
@@ -108,8 +110,13 @@ namespace BlogManager.Repositories
             using (var context = new ApplicationDbContext())
             {
                 var dbGallery = context.Galleries
+                .Include(g => g.ContentCategory)
+                .Include(g => g.ContentSubcategory)
                 .Include(g => g.Pictures)
                 .SingleOrDefault(g => g.Id == gallery.Id);
+
+                var contentCat = context.ContentCategories.Single(c => c.Id == gallery.ContentCategory.Id);
+                var contentSubcat = context.ContentSubcategories.SingleOrDefault(c => c.Id == gallery.ContentSubcategory.Id);
 
                 gallery.Pictures = new List<Picture>();
 
@@ -118,6 +125,8 @@ namespace BlogManager.Repositories
                     gallery.CreateDate = DateTime.Now;
                     gallery.Account = context.Users.SingleOrDefault(u => u.Email.Equals(email));
                     gallery.IsVisible = false;
+                    gallery.ContentCategory = contentCat;
+                    gallery.ContentSubcategory = contentSubcat;
 
                     context.Galleries.Add(gallery);
                     context.SaveChanges();
@@ -159,6 +168,8 @@ namespace BlogManager.Repositories
                     dbGallery.IsVisible = gallery.IsVisible;
                     dbGallery.LastModification = DateTime.Now;
                     dbGallery.LastModifiedBy = signedUser;
+                    dbGallery.ContentCategory = contentCat;
+                    dbGallery.ContentSubcategory = contentSubcat;
                 }
 
                 context.SaveChanges();

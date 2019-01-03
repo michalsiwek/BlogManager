@@ -6,16 +6,15 @@ using System.Web;
 
 namespace BlogManager.Models.Categories
 {
-    public class EntryCategory
+    public class ContentSubcategory
     {
-        [Required(ErrorMessage = "Entry category is not selected")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [StringLength(25)]
         public string Name { get; set; }
 
-        [StringLength(255)]
+        [StringLength(100)]
         public string Description { get; set; }
 
         [Required]

@@ -25,12 +25,13 @@ namespace BlogManager.Controllers.Api
         {
             var entriesQuery = _context.Entries
                 .Include(e => e.Account)
-                .Include(e => e.EntryCategory)
+                .Include(e => e.ContentCategory)
+                .Include(e => e.ContentSubcategory)
                 .Include(e => e.Paragraphs)
-                .Where(e => e.IsVisible == true && e.EntryCategory.IsActive == true);
+                .Where(e => e.IsVisible == true && e.ContentCategory.IsActive == true);
 
             if(!String.IsNullOrWhiteSpace(query))
-                entriesQuery = entriesQuery.Where(e => e.EntryCategory.Name
+                entriesQuery = entriesQuery.Where(e => e.ContentCategory.Name
                                             .Replace(" ", "_").ToLower().Equals(query));
 
             return Ok(entriesQuery.ToList().Select(Mapper.Map<Entry, EntryDto>));
@@ -41,9 +42,10 @@ namespace BlogManager.Controllers.Api
         {
             var entry = _context.Entries
                 .Include(e => e.Account)
-                .Include(e => e.EntryCategory)
+                .Include(e => e.ContentCategory)
+                .Include(e => e.ContentSubcategory)
                 .Include(e => e.Paragraphs)
-                .SingleOrDefault(e => e.Id == id && e.IsVisible == true && e.EntryCategory.IsActive== true);
+                .SingleOrDefault(e => e.Id == id && e.IsVisible == true && e.ContentCategory.IsActive== true);
 
             if (entry == null)
                 return NotFound();

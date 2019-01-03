@@ -1,0 +1,137 @@
+﻿@using BlogManager.Models
+@using Microsoft.Ajax.Utilities
+@model ContentCategoryViewModel
+@{
+    ViewBag.Title = "Content Category Edit";
+}
+
+<br />
+<h2>@ViewBag.Title.</h2>
+<br />
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <section>
+            @using (Html.BeginForm("Save", "ContentCategories", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <h4 class="text-center">Entry category edit form</h4>
+                <hr />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ContentCategory.Name, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextBoxFor(m => m.ContentCategory.Name, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.ContentCategory.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ContentCategory.Description, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @Html.TextBoxFor(m => m.ContentCategory.Description, new { @class = "form-control center-block entry-form-control" })
+                        @Html.ValidationMessageFor(m => m.ContentCategory.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ContentCategory.Subcategories, new { @class = "col-md-12 control-label entry-form-label" })
+                    <div>
+                        @if (Model.ContentCategory.Subcategories.Count == 0)
+                        {
+                            @Html.DropDownListFor(m => m.ContentCategory.Subcategories,
+                                new SelectList(new[] {""}),
+                                new {@class = "form-control center-block entry-dropdown", @size = "5" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m => m.ContentCategory.Subcategories,
+                                new SelectList(Model.ContentCategory.Subcategories.OrderBy(c => c.Name), "Id", "Name"),
+                                new {@class = "form-control center-block entry-dropdown", @size = "5" })
+                        } 
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        @if (Model.ContentCategory.Subcategories.Count > 0)
+                        {
+                            <input id="delete-subcat-btn" type="button" class="btn btn-sm btn-danger" value="Delete" style="cursor: auto;" disabled />
+                            <input id="edit-subcat-btn" type="button" class="btn btn-sm btn-primary" value="Edit" style="cursor: auto;" disabled />
+                        }
+                        <input id="new-subcat-btn" type="button" class="btn btn-sm btn-success" value="Add new" />
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ContentCategory.IsActive, new { @class = "col-md-6 col-sm-6 col-xs-6 control-label text-right" })
+                    <span class="col-md-6 col-sm-6 col-xs-6">
+                        <label class="switch">
+                            @Html.CheckBoxFor(m => m.ContentCategory.IsActive)
+                            <div class="slider round"></div>
+                        </label>
+                    </span>
+                </div>
+                @Html.HiddenFor(e => e.ContentCategory.Id)
+                @Html.HiddenFor(e => e.ContentCategory.CreateDate)
+                <hr />
+                <div class="form-group">
+                    <div class="text-center">
+                        <input type="reset" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Index", "ContentCategories")'" />
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+<div class="modal fade" id="add-new-subcat-modal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close modal-close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">New Subcategory</h4>
+            </div>
+            <div class="modal-body">
+                <div id="form-content">
+                    @Html.Action("NewSubcategory", "ContentCategories", new { contentCategoryId = @Model.ContentCategory.Id })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (var cat in Model.ContentCategory.Subcategories)
+{
+    <div class="modal fade" id="edit-subcat-modal-@cat.Id" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close modal-close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Subcategory</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="form-content">
+                        @Html.Action("EditSubcategory", "ContentCategories", new { id = @cat.Id, contentCategoryId = @Model.ContentCategory.Id })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+    <script>
+        $('#ContentCategory_Subcategories').one('change', function() {
+            $('#delete-subcat-btn').prop('disabled', false);
+            $('#edit-subcat-btn').prop('disabled', false);
+        });
+    </script>
+}

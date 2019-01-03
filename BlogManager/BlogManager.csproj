@@ -220,7 +220,7 @@
     <Compile Include="Controllers\Api\GalleriesController.cs" />
     <Compile Include="Controllers\Api\PicturesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
-    <Compile Include="Controllers\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\ContentCategoriesController.cs" />
     <Compile Include="Controllers\GalleriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -236,7 +236,7 @@
     <Compile Include="Infrastructure\FileUploadService.cs" />
     <Compile Include="Infrastructure\MailingService.cs" />
     <Compile Include="Infrastructure\AccountManageService.cs" />
-    <Compile Include="Infrastructure\EntryCategoryManageService.cs" />
+    <Compile Include="Infrastructure\ContentCategoryManageService.cs" />
     <Compile Include="Infrastructure\EntryManageService.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.cs" />
     <Compile Include="Migrations\201807312053305_InitialData.Designer.cs">
@@ -302,6 +302,34 @@
     <Compile Include="Migrations\201811211110104_PropertiesStringLengthUpdateMigration.Designer.cs">
       <DependentUpon>201811211110104_PropertiesStringLengthUpdateMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812131031516_ContentSubcategoriesMigration.cs" />
+    <Compile Include="Migrations\201812131031516_ContentSubcategoriesMigration.Designer.cs">
+      <DependentUpon>201812131031516_ContentSubcategoriesMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812140641012_ContentSubcategoryStringLenghtMigration.cs" />
+    <Compile Include="Migrations\201812140641012_ContentSubcategoryStringLenghtMigration.Designer.cs">
+      <DependentUpon>201812140641012_ContentSubcategoryStringLenghtMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.cs" />
+    <Compile Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.Designer.cs">
+      <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.cs" />
+    <Compile Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.Designer.cs">
+      <DependentUpon>201812281238150_EntryContentSubcategoryAsListRemoval.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.cs" />
+    <Compile Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.Designer.cs">
+      <DependentUpon>201812281413012_ContentSubcategoriesRenameMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901031133283_GalleryCategoriesMigration.cs" />
+    <Compile Include="Migrations\201901031133283_GalleryCategoriesMigration.Designer.cs">
+      <DependentUpon>201901031133283_GalleryCategoriesMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.cs" />
+    <Compile Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.Designer.cs">
+      <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -309,11 +337,13 @@
     <Compile Include="Models\Accounts\PasswordResetVerificationCode.cs" />
     <Compile Include="Models\AccountTypeName.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Categories\EntryCategory.cs" />
+    <Compile Include="Models\Categories\ContentCategory.cs" />
+    <Compile Include="Models\Categories\ContentSubcategory.cs" />
+    <Compile Include="Models\ContentSubcategoryViewModel.cs" />
     <Compile Include="Models\EntriesViewModel.cs" />
     <Compile Include="Models\Entries\Entry.cs" />
     <Compile Include="Models\Entries\Paragraph.cs" />
-    <Compile Include="Models\EntryCategoriesViewModel.cs" />
+    <Compile Include="Models\ContentCategoriesViewModel.cs" />
     <Compile Include="Models\EntryCategoryViewModel.cs" />
     <Compile Include="Models\EntryPreviewViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
@@ -328,7 +358,7 @@
     <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\GalleryRepository.cs" />
-    <Compile Include="Repositories\EntryCategoryRepository.cs" />
+    <Compile Include="Repositories\ContentCategoryRepository.cs" />
     <Compile Include="Repositories\EntryRepository.cs" />
     <Compile Include="Repositories\ParagraphRepository.cs" />
     <Compile Include="Startup.cs" />
@@ -519,7 +549,9 @@
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Properties\PublishProfiles\BlogManager - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Custom\cascade-dropdown.js" />
     <Content Include="Scripts\Custom\custom-data-table.js" />
+    <Content Include="Scripts\Custom\delete-subcategory.js" />
     <Content Include="Scripts\Custom\open-modal.js" />
     <Content Include="Scripts\Custom\pictures-upload.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -648,9 +680,9 @@
     <Content Include="Views\Entries\New.cshtml" />
     <Content Include="Views\Entries\Index.cshtml" />
     <Content Include="Views\Entries\Edit.cshtml" />
-    <Content Include="Views\EntryCategories\Edit.cshtml" />
-    <Content Include="Views\EntryCategories\New.cshtml" />
-    <Content Include="Views\EntryCategories\Index.cshtml" />
+    <Content Include="Views\ContentCategories\Edit.cshtml" />
+    <Content Include="Views\ContentCategories\New.cshtml" />
+    <Content Include="Views\ContentCategories\Index.cshtml" />
     <Content Include="Views\Entries\Preview.cshtml" />
     <Content Include="Views\Accounts\Index.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
@@ -663,6 +695,7 @@
     <Content Include="Views\Account\_RemindViaEmail.cshtml" />
     <Content Include="Views\Account\_ResetPassword.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\ContentCategories\_SubcategoryForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -728,6 +761,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811211110104_PropertiesStringLengthUpdateMigration.resx">
       <DependentUpon>201811211110104_PropertiesStringLengthUpdateMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812131031516_ContentSubcategoriesMigration.resx">
+      <DependentUpon>201812131031516_ContentSubcategoriesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812140641012_ContentSubcategoryStringLenghtMigration.resx">
+      <DependentUpon>201812140641012_ContentSubcategoryStringLenghtMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141137486_EntrySubcategoriesPropertyMigration.resx">
+      <DependentUpon>201812141137486_EntrySubcategoriesPropertyMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812281238150_EntryContentSubcategoryAsListRemoval.resx">
+      <DependentUpon>201812281238150_EntryContentSubcategoryAsListRemoval.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812281413012_ContentSubcategoriesRenameMigration.resx">
+      <DependentUpon>201812281413012_ContentSubcategoriesRenameMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901031133283_GalleryCategoriesMigration.resx">
+      <DependentUpon>201901031133283_GalleryCategoriesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.resx">
+      <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

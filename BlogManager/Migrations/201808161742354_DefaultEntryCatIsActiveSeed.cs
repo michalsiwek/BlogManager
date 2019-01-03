@@ -7,7 +7,7 @@ namespace BlogManager.Migrations
     {
         public override void Up()
         {
-            Sql(@"UPDATE dbo.EntryCategories SET IsActive = 'true' WHERE Id = 1");
+            Sql(@"UPDATE dbo.ContentCategories SET IsActive = 'true' WHERE Id = 1");
         }
         
         public override void Down()

@@ -31,8 +31,14 @@ namespace BlogManager
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                         "~/Scripts/Custom/preview.js",
                         "~/Scripts/Custom/open-modal.js",
-                        "~/Scripts/Custom/custom-data-table.js",
+                        "~/Scripts/Custom/delete-subcategory.js",
                         "~/Scripts/Custom/pictures-upload.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom-datatables").Include(
+                        "~/Scripts/Custom/custom-data-table.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom-cascade-dropdowns").Include(
+                "~/Scripts/Custom/cascade-dropdown.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-darkly.css",

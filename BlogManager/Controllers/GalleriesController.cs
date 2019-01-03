@@ -21,6 +21,7 @@ namespace BlogManager.Controllers
     {
         private readonly IAccountRepository _accountRepo;
         private readonly IGalleryRepository _galleryRepo;
+        private readonly IContentCategoryRepository _categoryRepo;
         private readonly IFileUploadService _fileUploadService;
 
         private Account _signedUser;
@@ -29,7 +30,8 @@ namespace BlogManager.Controllers
         {
             _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
             _fileUploadService = new FileUploadService(new FileSecurityValidator());
-            _galleryRepo = new GalleryRepository(new FileSecurityValidator(), _fileUploadService);         
+            _galleryRepo = new GalleryRepository(new FileSecurityValidator(), _fileUploadService);   
+            _categoryRepo = new ContentCategoryRepository(new ContentCategoryManageService());
             _signedUser = new Account();
         }
 
@@ -59,7 +61,8 @@ namespace BlogManager.Controllers
         {
             var viewModel = new GalleryViewModel
             {
-                Gallery = new Gallery()
+                Gallery = new Gallery(),
+                ContentCategories = _categoryRepo.GetActiveContentCategories()
             };
 
             return View(viewModel);
@@ -79,7 +82,12 @@ namespace BlogManager.Controllers
             if (!_signedUser.CanManageAllContent() && !dbGallery.Account.Equals(_signedUser))
                 return RedirectToAction("Index", "Home");
 
-            var viewModel = new GalleryViewModel(dbGallery);
+            var viewModel = new GalleryViewModel
+            {
+                Gallery = dbGallery,
+                ContentCategories = _categoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _categoryRepo.GetContentSubcategoriesByParentId(dbGallery.ContentCategory.Id)
+            };
 
             viewModel.Gallery.Pictures = _galleryRepo.GetGalleryPictures(id);
 
@@ -153,7 +161,9 @@ namespace BlogManager.Controllers
 
             var viewModel = new GalleryViewModel
             {
-                Gallery = _galleryRepo.GetGalleryById(gallery.Id)
+                Gallery = _galleryRepo.GetGalleryById(gallery.Id),
+                ContentCategories = _categoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _categoryRepo.GetContentSubcategoriesByParentId(gallery.ContentCategory.Id)
             };
 
             return View("Edit", viewModel);
@@ -224,6 +234,13 @@ namespace BlogManager.Controllers
             };
 
             return View($"Edit", viewModel);
+        }
+
+        [HttpGet]
+        public JsonResult GetContentSubcategories(int contentCategoryId)
+        {
+            var contentSubcategories = _categoryRepo.GetContentSubcategoriesByParentId(contentCategoryId);
+            return Json(contentSubcategories, JsonRequestBehavior.AllowGet);
         }
 
     }

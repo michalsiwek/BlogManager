@@ -23,7 +23,7 @@
             <tr>
                 <td>@entry.Title</td>
                 <td class="text-center">@entry.Account.UserName</td>
-                <td class="text-center">@entry.EntryCategory.Name</td>
+                <td class="text-center">@entry.ContentCategory.Name</td>
                 <td class="text-center">
                     @if (entry.IsVisible)
                     {
@@ -99,4 +99,5 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/data_tables")
     @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/bundles/custom-datatables")
 }

@@ -46,7 +46,8 @@ namespace BlogManager.Models
     public class ApplicationDbContext : IdentityDbContext<Account, AccountType, int, CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public DbSet<Entry> Entries { get; set; }
-        public DbSet<EntryCategory> EntryCategories { get; set; }
+        public DbSet<ContentCategory> ContentCategories { get; set; }
+        public DbSet<ContentSubcategory> ContentSubcategories { get; set; }
         public DbSet<Paragraph> Paragraphs { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Gallery> Galleries { get; set; }

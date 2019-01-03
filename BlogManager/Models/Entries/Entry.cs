@@ -42,7 +42,9 @@ namespace BlogManager.Models.Entries
 
         public bool IsVisible { get; set; }
 
-        public EntryCategory EntryCategory { get; set; }
+        public ContentCategory ContentCategory { get; set; }
+
+        public ContentSubcategory ContentSubcategory { get; set; }
 
         public Account LastModifiedBy { get; set; }
 
@@ -95,7 +97,7 @@ namespace BlogManager.Models.Entries
 
             var temp = obj as Entry;
 
-            if (EntryCategory.Id == temp.EntryCategory.Id &&
+            if (ContentCategory.Id == temp.ContentCategory.Id &&
                Title.Equals(temp.Title) &&
                Description.Equals(temp.Description) &&
                Content.Equals(temp.Content))
@@ -121,7 +123,7 @@ namespace BlogManager.Models.Entries
             hashCode = hashCode * -1521134295 + EqualityComparer<List<Paragraph>>.Default.GetHashCode(Paragraphs);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ImageUrl);
             hashCode = hashCode * -1521134295 + IsVisible.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<EntryCategory>.Default.GetHashCode(EntryCategory);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ContentCategory>.Default.GetHashCode(ContentCategory);
             hashCode = hashCode * -1521134295 + EqualityComparer<Account>.Default.GetHashCode(LastModifiedBy);
             return hashCode;
         }

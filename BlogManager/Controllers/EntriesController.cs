@@ -20,7 +20,7 @@ namespace BlogManager.Controllers
         private Account _signedUser;
         private readonly IAccountRepository _accountRepo;
         private readonly IEntryRepository _entryRepo;
-        private readonly IEntryCategoryRepository _entryCategoryRepo;
+        private readonly IContentCategoryRepository _contentCategoryRepo;
         private readonly IParagraphRepository _paragraphRepo;
 
 
@@ -29,7 +29,7 @@ namespace BlogManager.Controllers
             _signedUser = new Account();
             _accountRepo = new AccountRepository(new AccountManageService(), new MailingService());
             _entryRepo = new EntryRepository(new EntryManageService());
-            _entryCategoryRepo = new EntryCategoryRepository(new EntryCategoryManageService());
+            _contentCategoryRepo = new ContentCategoryRepository(new ContentCategoryManageService());
             _paragraphRepo = new ParagraphRepository();
         }
 
@@ -60,7 +60,7 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = new Entry(),
-                EntryCategories = _entryCategoryRepo.GetActiveEntryCategories()
+                ContentCategories = _contentCategoryRepo.GetActiveContentCategories()
             };
 
             return View(viewModel);
@@ -80,7 +80,8 @@ namespace BlogManager.Controllers
             var viewModel = new EntryViewModel
             {
                 Entry = dbEntry,
-                EntryCategories = _entryCategoryRepo.GetActiveEntryCategories()
+                ContentCategories = _contentCategoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _contentCategoryRepo.GetContentSubcategoriesByParentId(dbEntry.ContentCategory.Id)
             };
 
             return View(viewModel);
@@ -154,6 +155,13 @@ namespace BlogManager.Controllers
             _entryRepo.DeleteEntry(entryId);
 
             return RedirectToAction("Index", "Entries");
+        }
+
+        [HttpGet]
+        public JsonResult GetContentSubcategories(int contentCategoryId)
+        {
+            var contentSubcategories = _contentCategoryRepo.GetContentSubcategoriesByParentId(contentCategoryId);
+            return Json(contentSubcategories, JsonRequestBehavior.AllowGet);
         }
     }
 }

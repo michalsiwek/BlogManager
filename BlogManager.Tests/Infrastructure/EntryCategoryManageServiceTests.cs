@@ -11,26 +11,26 @@ using NUnit.Framework;
 namespace BlogManager.UnitTests.Infrastructure
 {
     [TestFixture]
-    public class EntryCategoryManageServiceTests
+    public class ContentCategoryManageServiceTests
     {
-        private IEntryCategoryManageService _entryCategoryManageService;
-        private EntryCategory _entryCategory;
+        private IContentCategoryManageService _contentCategoryManageService;
+        private ContentCategory _contentCategory;
 
         [SetUp]
         public void SetUp()
         {
-            _entryCategoryManageService = new EntryCategoryManageService();
-            _entryCategory = new EntryCategory();
+            _contentCategoryManageService = new ContentCategoryManageService();
+            _contentCategory = new ContentCategory();
         }
 
         [Test]
         [TestCase("true", true)]
         [TestCase("false", false)]
-        public void ActivateEntryCategory(string request, bool isActive)
+        public void ActivateContentCategory(string request, bool isActive)
         {
-            _entryCategoryManageService.ActivateEntryCategory(_entryCategory, request);
+            _contentCategoryManageService.ActivateContentCategory(_contentCategory, request);
 
-            Assert.AreEqual(_entryCategory.IsActive, isActive);
+            Assert.AreEqual(_contentCategory.IsActive, isActive);
         }
 
         [Test]
@@ -40,20 +40,20 @@ namespace BlogManager.UnitTests.Infrastructure
         {
             var testDate = DateTime.Now;
             if (!isNew)
-                _entryCategory.CreateDate = testDate;
+                _contentCategory.CreateDate = testDate;
 
             Thread.Sleep(1000);
-            _entryCategoryManageService.PreSavingDataProcessing(_entryCategory);
+            _contentCategoryManageService.PreSavingDataProcessing(_contentCategory);
 
             switch (isNew)
             {
                 case true:
-                    Assert.Greater(_entryCategory.CreateDate, testDate);
-                    Assert.IsNull(_entryCategory.LastModification);
+                    Assert.Greater(_contentCategory.CreateDate, testDate);
+                    Assert.IsNull(_contentCategory.LastModification);
                     break;
                 case false:
-                    Assert.AreEqual(_entryCategory.CreateDate, testDate);
-                    Assert.Greater(_entryCategory.LastModification, testDate);
+                    Assert.AreEqual(_contentCategory.CreateDate, testDate);
+                    Assert.Greater(_contentCategory.LastModification, testDate);
                     break;
             }
             
