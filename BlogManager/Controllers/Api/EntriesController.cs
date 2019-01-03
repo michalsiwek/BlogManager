@@ -26,6 +26,7 @@ namespace BlogManager.Controllers.Api
             var entriesQuery = _context.Entries
                 .Include(e => e.Account)
                 .Include(e => e.ContentCategory)
+                .Include(e => e.ContentSubcategory)
                 .Include(e => e.Paragraphs)
                 .Where(e => e.IsVisible == true && e.ContentCategory.IsActive == true);
 
@@ -42,6 +43,7 @@ namespace BlogManager.Controllers.Api
             var entry = _context.Entries
                 .Include(e => e.Account)
                 .Include(e => e.ContentCategory)
+                .Include(e => e.ContentSubcategory)
                 .Include(e => e.Paragraphs)
                 .SingleOrDefault(e => e.Id == id && e.IsVisible == true && e.ContentCategory.IsActive== true);
 

@@ -157,6 +157,7 @@ namespace BlogManager.Controllers
             return RedirectToAction("Index", "Entries");
         }
 
+        [HttpGet]
         public JsonResult GetContentSubcategories(int contentCategoryId)
         {
             var contentSubcategories = _contentCategoryRepo.GetContentSubcategoriesByParentId(contentCategoryId);

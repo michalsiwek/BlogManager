@@ -31,7 +31,11 @@ namespace BlogManager
                 cfg.CreateMap<Gallery, GalleryDto>()
                 .ForMember(g => g.CreatedBy, a => a.MapFrom(b => b.Account.Nickname))
                 .ForMember(g => g.LastModifiedBy, a => a.MapFrom(b => b.LastModifiedBy.Nickname))
-                .ForMember(g => g.Pictures, a => a.MapFrom(b => b.Pictures));
+                .ForMember(g => g.Pictures, a => a.MapFrom(b => b.Pictures))
+                .ForMember(e => e.CategoryId, c => c.MapFrom(b => b.ContentCategory.Id))
+                .ForMember(e => e.CategoryName, c => c.MapFrom(b => b.ContentCategory.Name))
+                .ForMember(e => e.SubcategoryId, c => c.MapFrom(b => b.ContentSubcategory.Id))
+                .ForMember(e => e.SubcategoryName, c => c.MapFrom(b => b.ContentSubcategory.Name));
 
                 cfg.CreateMap<Picture, PictureDto>();
             });

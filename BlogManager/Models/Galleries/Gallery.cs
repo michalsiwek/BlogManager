@@ -1,4 +1,5 @@
 ﻿using BlogManager.Models.Accounts;
+using BlogManager.Models.Categories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,6 +32,10 @@ namespace BlogManager.Models.Galleries
         public Account LastModifiedBy { get; set; }
 
         public DateTime? LastModification { get; set; }
+
+        public ContentCategory ContentCategory { get; set; }
+
+        public ContentSubcategory ContentSubcategory { get; set; }
 
     }
 }

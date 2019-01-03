@@ -49,6 +49,20 @@
                                 </span>
                             </div>
                         }
+                        <div class="form-group row">
+                            @Html.LabelFor(m => m.ContentCategories, new { @class = "col-md-12 control-label entry-form-label" })
+                            <div>
+                                @Html.DropDownListFor(m => m.Gallery.ContentCategory.Id, new SelectList(Model.ContentCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
+                                @Html.ValidationMessageFor(m => m.Gallery.ContentCategory.Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div id="subcat-dropdown" class="form-group row">
+                            @Html.LabelFor(m => m.ContentSubCategories, new { @class = "col-md-12 control-label entry-form-label" })
+                            <div>
+                                @Html.DropDownListFor(m => m.Gallery.ContentSubcategory.Id, new SelectList(Model.ContentSubCategories, "Id", "Name"), "Select...", new { @class = "form-control center-block entry-dropdown" })
+                                @Html.ValidationMessageFor(m => m.Gallery.ContentSubcategory.Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                         @Html.HiddenFor(g => g.Gallery.Id)
                         <hr />
                         <div class="form-group">
@@ -138,4 +152,5 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/bundles/custom-cascade-dropdowns")
 }
