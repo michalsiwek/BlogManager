@@ -143,6 +143,7 @@ namespace BlogManager.Repositories
                 else
                 {
                     model.ContentSubcategory.CreateDate = DateTime.Now;
+                    model.ContentSubcategory.IsActive = true;
                     cat.Subcategories.Add(model.ContentSubcategory);
                 }          
                 
