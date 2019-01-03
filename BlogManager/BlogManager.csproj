@@ -326,6 +326,10 @@
     <Compile Include="Migrations\201901031133283_GalleryCategoriesMigration.Designer.cs">
       <DependentUpon>201901031133283_GalleryCategoriesMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.cs" />
+    <Compile Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.Designer.cs">
+      <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -775,6 +779,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901031133283_GalleryCategoriesMigration.resx">
       <DependentUpon>201901031133283_GalleryCategoriesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.resx">
+      <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
