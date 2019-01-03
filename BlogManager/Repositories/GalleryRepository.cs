@@ -116,7 +116,7 @@ namespace BlogManager.Repositories
                 .SingleOrDefault(g => g.Id == gallery.Id);
 
                 var contentCat = context.ContentCategories.Single(c => c.Id == gallery.ContentCategory.Id);
-                var contentSubcat = context.ContentSubcategories.Single(c => c.Id == gallery.ContentSubcategory.Id);
+                var contentSubcat = context.ContentSubcategories.SingleOrDefault(c => c.Id == gallery.ContentSubcategory.Id);
 
                 gallery.Pictures = new List<Picture>();
 
