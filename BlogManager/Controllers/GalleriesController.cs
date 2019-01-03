@@ -161,7 +161,9 @@ namespace BlogManager.Controllers
 
             var viewModel = new GalleryViewModel
             {
-                Gallery = _galleryRepo.GetGalleryById(gallery.Id)
+                Gallery = _galleryRepo.GetGalleryById(gallery.Id),
+                ContentCategories = _categoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _categoryRepo.GetContentSubcategoriesByParentId(gallery.ContentCategory.Id)
             };
 
             return View("Edit", viewModel);
