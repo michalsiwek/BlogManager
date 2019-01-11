@@ -360,6 +360,7 @@
     <Compile Include="Models\PersonalDataViewModel.cs" />
     <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\Api\CategoriesRepository.cs" />
     <Compile Include="Repositories\GalleryRepository.cs" />
     <Compile Include="Repositories\ContentCategoryRepository.cs" />
     <Compile Include="Repositories\EntryRepository.cs" />

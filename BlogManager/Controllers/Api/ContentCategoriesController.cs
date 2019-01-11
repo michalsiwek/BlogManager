@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BlogManager.Infrastructure;
-using BlogManager.Repositories;
+using BlogManager.Repositories.Api;
 using AutoMapper;
 using BlogManager.Dtos;
 using BlogManager.Models.Categories;
@@ -15,11 +15,11 @@ namespace BlogManager.Controllers.Api
 {
     public class ContentCategoriesController : ApiController
     {
-        private IContentCategoryRepository _repo;
+        private ICatetegoriesRepository _repo;
 
         public ContentCategoriesController()
         {
-            _repo = new ContentCategoryRepository(new ContentCategoryManageService());
+            _repo = new CategoriesRepository();
         }
 
         [HttpGet]

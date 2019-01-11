@@ -6,20 +6,20 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BlogManager.Infrastructure;
-using BlogManager.Repositories;
 using AutoMapper;
 using BlogManager.Dtos;
 using BlogManager.Models.Categories;
+using BlogManager.Repositories.Api;
 
 namespace BlogManager.Controllers.Api
 {
     public class ContentSubcategoriesController : ApiController
     {
-        private IContentCategoryRepository _repo;
+        private ICatetegoriesRepository _repo;
 
         public ContentSubcategoriesController()
         {
-            _repo = new ContentCategoryRepository(new ContentCategoryManageService());
+            _repo = new CategoriesRepository();
         }
 
         [HttpGet]
