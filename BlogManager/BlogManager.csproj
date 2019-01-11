@@ -217,7 +217,7 @@
     <Compile Include="Controllers\Api\AccountsController.cs" />
     <Compile Include="Controllers\Api\ContentSubcategoriesController.cs" />
     <Compile Include="Controllers\Api\EntriesController.cs" />
-    <Compile Include="Controllers\Api\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\Api\ContentCategoriesController.cs" />
     <Compile Include="Controllers\Api\GalleriesController.cs" />
     <Compile Include="Controllers\Api\PicturesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
