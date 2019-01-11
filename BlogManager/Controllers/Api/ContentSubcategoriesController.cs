@@ -13,25 +13,24 @@ using BlogManager.Models.Categories;
 
 namespace BlogManager.Controllers.Api
 {
-    public class ContentCategoriesController : ApiController
+    public class ContentSubcategoriesController : ApiController
     {
         private IContentCategoryRepository _repo;
 
-        public ContentCategoriesController()
+        public ContentSubcategoriesController()
         {
             _repo = new ContentCategoryRepository(new ContentCategoryManageService());
         }
 
         [HttpGet]
-        public IHttpActionResult GetContentCategories()
+        public IHttpActionResult GetContentSubcategories(int id)
         {
-            var contentCategories = _repo.GetActiveContentCategories();
+            var contentSubcategories = _repo.GetContentSubcategoriesByParentId(id);
 
-            if (contentCategories == null)
+            if (contentSubcategories == null)
                 return NotFound();
 
-            return Ok(contentCategories.ToList().Select(Mapper.Map<ContentCategory, ContentCategoryDto>));
+            return Ok(contentSubcategories.ToList().Select(Mapper.Map<ContentSubcategory, ContentSubcategoryDto>));
         }
-
     }
 }
