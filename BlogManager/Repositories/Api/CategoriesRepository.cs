@@ -24,9 +24,13 @@ namespace BlogManager.Repositories.Api
 
         public IEnumerable<ContentSubcategory> GetContentSubcategoriesByParentId(int id)
         {
-            var query = string.Format(@"SELECT * FROM dbo.ContentSubcategories cs
+            var query = string.Format(@";WITH CTE AS (SELECT DISTINCT cs.Id
+				FROM dbo.ContentSubcategories cs
                             INNER JOIN dbo.Entries e ON e.ContentSubcategory_Id = cs.Id
-                        WHERE cs.ContentCategory_Id = {0}", id);
+                        WHERE cs.ContentCategory_Id = {0})
+						SELECT cs.* FROM dbo.ContentSubcategories cs
+							INNER JOIN CTE c ON c.Id = cs.Id
+						ORDER BY [Name] ASC", id);
 
             using (var context = new ApplicationDbContext())
             {
