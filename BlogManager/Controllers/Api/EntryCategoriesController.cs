@@ -5,31 +5,43 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BlogManager.Infrastructure;
+using BlogManager.Repositories;
+using AutoMapper;
+using BlogManager.Dtos;
+using BlogManager.Models.Categories;
 
 namespace BlogManager.Controllers.Api
 {
     public class ContentCategoriesController : ApiController
     {
-        private ApplicationDbContext _context;
+        private IContentCategoryRepository _repo;
 
         public ContentCategoriesController()
         {
-            _context = new ApplicationDbContext();
+            _repo = new ContentCategoryRepository(new ContentCategoryManageService());
         }
 
-        /*[HttpDelete]
-        [Authorize]
-        public IHttpActionResult DeleteCategory(int id)
+        [HttpGet]
+        public IHttpActionResult GetContentCategories()
         {
-            var catFromDb = _context.ContentCategories.SingleOrDefault(c => c.Id == id && c.Id != 1);
+            var contentCategories = _repo.GetActiveContentCategories();
 
-            if (catFromDb == null)
+            if (contentCategories == null)
                 return NotFound();
 
-            _context.ContentCategories.Remove(catFromDb);
-            _context.SaveChanges();
+            return Ok(contentCategories.ToList().Select(Mapper.Map<ContentCategory, ContentCategoryDto>));
+        }
 
-            return Ok();
-        }*/
+        [HttpGet]
+        public IHttpActionResult GetContentSubcategories(int contentCategoryId)
+        {
+            var contentSubcategories = _repo.GetContentSubcategoriesByParentId(contentCategoryId);
+
+            if (contentSubcategories == null)
+                return NotFound();
+
+            return Ok(contentSubcategories.ToList().Select(Mapper.Map<ContentSubcategory, ContentSubcategoryDto>));
+        }
     }
 }

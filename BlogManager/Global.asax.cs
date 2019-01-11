@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogManager.Dtos;
+using BlogManager.Models.Categories;
 using BlogManager.Models.Entries;
 using BlogManager.Models.Galleries;
 using System;
@@ -38,6 +39,10 @@ namespace BlogManager
                 .ForMember(e => e.SubcategoryName, c => c.MapFrom(b => b.ContentSubcategory.Name));
 
                 cfg.CreateMap<Picture, PictureDto>();
+
+                cfg.CreateMap<ContentCategory, ContentCategoryDto>();
+
+                cfg.CreateMap<ContentSubcategory, ContentSubcategoryDto>();
             });
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
