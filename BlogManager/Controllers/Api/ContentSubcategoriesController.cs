@@ -23,9 +23,20 @@ namespace BlogManager.Controllers.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetContentSubcategories(int id)
+        public IHttpActionResult Entries(int id)
         {
-            var contentSubcategories = _repo.GetContentSubcategoriesByParentId(id);
+            var contentSubcategories = _repo.GetEntryContentSubcategoriesByParentId(id);
+
+            if (contentSubcategories == null)
+                return NotFound();
+
+            return Ok(contentSubcategories.ToList().Select(Mapper.Map<ContentSubcategory, ContentSubcategoryDto>));
+        }
+
+        [HttpGet]
+        public IHttpActionResult Galleries(int id)
+        {
+            var contentSubcategories = _repo.GetGalleryContentSubcategoriesByParentId(id);
 
             if (contentSubcategories == null)
                 return NotFound();

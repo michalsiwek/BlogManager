@@ -22,10 +22,23 @@ namespace BlogManager.Controllers.Api
             _repo = new CategoriesRepository();
         }
 
+        [Route("api/ContentCategories/Entries")]
         [HttpGet]
-        public IHttpActionResult GetContentCategories()
+        public IHttpActionResult Entries()
         {
-            var contentCategories = _repo.GetActiveContentCategories();
+            var contentCategories = _repo.GetActiveEntryContentCategories();
+
+            if (contentCategories == null)
+                return NotFound();
+
+            return Ok(contentCategories.ToList().Select(Mapper.Map<ContentCategory, ContentCategoryDto>));
+        }
+
+        [Route("api/ContentCategories/Galleries")]
+        [HttpGet]
+        public IHttpActionResult Galleries()
+        {
+            var contentCategories = _repo.GetActiveGalleryContentCategories();
 
             if (contentCategories == null)
                 return NotFound();
