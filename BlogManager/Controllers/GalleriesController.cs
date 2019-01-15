@@ -201,9 +201,13 @@ namespace BlogManager.Controllers
             if (result == DbRepoStatusCode.BadRequest)
                 return RedirectToAction("Index", "Home");
 
+            var gallery = _galleryRepo.GetGalleryById(picture.GalleryId);
+
             var viewModel = new GalleryViewModel
             {
-                Gallery = _galleryRepo.GetGalleryById(picture.GalleryId)
+                Gallery = gallery,
+                ContentCategories = _categoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _categoryRepo.GetContentSubcategoriesByParentId(gallery.ContentCategory.Id)
             };
 
             return View("Edit", viewModel);
@@ -228,9 +232,13 @@ namespace BlogManager.Controllers
 
             _fileUploadService.DeleteFile(Server, picToDelete.GalleryId.ToString(), picToDelete.FileName);
 
+            var gallery = _galleryRepo.GetGalleryById(picToDelete.GalleryId);
+
             var viewModel = new GalleryViewModel
             {
-                Gallery = _galleryRepo.GetGalleryById(picToDelete.GalleryId)
+                Gallery = gallery,
+                ContentCategories = _categoryRepo.GetActiveContentCategories(),
+                ContentSubCategories = _categoryRepo.GetContentSubcategoriesByParentId(gallery.ContentCategory.Id)
             };
 
             return View($"Edit", viewModel);
