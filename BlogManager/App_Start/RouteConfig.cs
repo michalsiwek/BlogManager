@@ -54,6 +54,7 @@ namespace BlogManager
                 url: "{controller}/{action}",
                 defaults: new { controller = "Galleries", action = "Index", id = UrlParameter.Optional }
             );
+
         }
     }
 }

@@ -215,8 +215,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\Api\AccountsController.cs" />
+    <Compile Include="Controllers\Api\ContentSubcategoriesController.cs" />
     <Compile Include="Controllers\Api\EntriesController.cs" />
-    <Compile Include="Controllers\Api\EntryCategoriesController.cs" />
+    <Compile Include="Controllers\Api\ContentCategoriesController.cs" />
     <Compile Include="Controllers\Api\GalleriesController.cs" />
     <Compile Include="Controllers\Api\PicturesController.cs" />
     <Compile Include="Controllers\EntriesController.cs" />
@@ -224,6 +225,8 @@
     <Compile Include="Controllers\GalleriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Dtos\ContentCategoryDto.cs" />
+    <Compile Include="Dtos\ContentSubcategoryDto.cs" />
     <Compile Include="Dtos\EntryDto.cs" />
     <Compile Include="Dtos\GalleryDto.cs" />
     <Compile Include="Dtos\PictureDto.cs" />
@@ -330,6 +333,10 @@
     <Compile Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.Designer.cs">
       <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901111920381_InitialAccountsDbDataMigration.cs" />
+    <Compile Include="Migrations\201901111920381_InitialAccountsDbDataMigration.Designer.cs">
+      <DependentUpon>201901111920381_InitialAccountsDbDataMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountsViewModel.cs" />
     <Compile Include="Models\Accounts\Account.cs" />
@@ -357,6 +364,7 @@
     <Compile Include="Models\PersonalDataViewModel.cs" />
     <Compile Include="Models\PictureViewModel.cs" />
     <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\Api\CategoriesRepository.cs" />
     <Compile Include="Repositories\GalleryRepository.cs" />
     <Compile Include="Repositories\ContentCategoryRepository.cs" />
     <Compile Include="Repositories\EntryRepository.cs" />
@@ -782,6 +790,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901032017162_NullGalleryCategoryToDefaultMigration.resx">
       <DependentUpon>201901032017162_NullGalleryCategoryToDefaultMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901111920381_InitialAccountsDbDataMigration.resx">
+      <DependentUpon>201901111920381_InitialAccountsDbDataMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

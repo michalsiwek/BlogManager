@@ -57,7 +57,8 @@ namespace BlogManager.Repositories
                 var output = context.Database
                     .SqlQuery<int>(string.Format(@"SELECT MAX(Id) FROM dbo.Galleries 
                                         WHERE Account_Id = {0}
-                                        AND Title = '{1}'", gallery.Account.Id, gallery.Title))
+                                            AND ContentCategory_Id = {1}
+                                            AND DATEADD(ss, 30, CreateDate) > GETDATE()", gallery.Account.Id, gallery.ContentCategory.Id))
                     .ToList()
                     .First();
                 return output;
@@ -144,7 +145,8 @@ namespace BlogManager.Repositories
 
                             var picture = _fileUploadService.SaveFile(file, server, galleryId);
 
-                            gallery.Pictures.Add(picture);
+                            if(picture != null) 
+                                gallery.Pictures.Add(picture);
                         }
 
                         foreach (var p in gallery.Pictures)
@@ -326,7 +328,9 @@ namespace BlogManager.Repositories
                 if (picToDelete == null || dbGallery == null)
                     return DbRepoStatusCode.NotFound;
 
-                var account = context.Users.SingleOrDefault(a => a.Email.Equals(email));
+                var account = context.Users
+                    .Include(a => a.AccountType)
+                    .SingleOrDefault(a => a.Email.Equals(email));
                 if (!account.CanManageAllContent() && !dbGallery.Account.Equals(account))
                     return DbRepoStatusCode.BadRequest;
 
